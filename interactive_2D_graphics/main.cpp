@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
 
     Image img("../resources/tex.png");
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
-    background.Draw(screenBuffer);
+    background.DrawRoom(screenBuffer, 0);
 
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
