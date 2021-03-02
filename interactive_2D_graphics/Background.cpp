@@ -1,13 +1,14 @@
+#include <cstring>
 #include "Background.h"
 
 
 std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
-    read_background_map(const std::string& background_path){
+    readBackgroundMap(const std::string& background_path){
 
     std::ifstream input_stream(background_path);
     std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>> result;
     if (!input_stream.is_open()){
-        std::cout << "Unable to open file";  // todo log error
+        std::cout << "Unable to open file map\n" << background_path << "\n";  // todo log error
         return result;
     }
 
@@ -28,31 +29,42 @@ std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
     return result;
 };
 
-Background::Background(std::string background_path) : background_path(std::move(background_path)) {
-    this->background_vector = read_background_map(background_path);
+std::vector<std::shared_ptr<Image>> readBackgroundTitles(const std::string&  titles_path){
+    std::string path;
+    std::vector<std::shared_ptr<Image>> titles_vector;
+    std::ifstream title_file(titles_path);  // todo stream does not open error
+    while (std::getline(title_file, path)) {
+        std::cout<<"add tile path \n";
+        titles_vector.push_back(std::make_shared<Image>(path));
+    }
+    title_file.close();
+    return  titles_vector;
+};
+
+
+Background::Background(std::string map_path, std::string  titles_path) :
+                        map_path(std::move(map_path)),
+                        titles_path(std::move(titles_path)) {
+    std::cout << "background_path\n" << this->map_path << "\n";
+    this->background_vector = readBackgroundMap(this->map_path);
+    this->titles_vector = readBackgroundTitles(this->titles_path);
+    this->background_state = new Pixel[h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT];
+};
+
+void drawPixel(Image &screen, const std::shared_ptr<Image>& title, int global_x, int global_y){
+    for (int y=0; y<h_TEXTURE_SIZE; ++y){
+        for (int x=0; x<h_TEXTURE_SIZE; ++x){
+            screen.PutPixel(global_x+x, global_y+y, title->GetPixel(x,y));
+        }
+    }
 };
 
 void Background::Draw(Image &screen) {
-    Pixel my_pixel{100, 100, 100};
-    for (int y=0; y<h_WINDOW_T_HEIGHT*10; ++y){
-        for (int x=0; x<h_WINDOW_T_HEIGHT*10; ++x){
-            screen.PutPixel(x, y, my_pixel);
+    for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
+        for (int x=0; x<h_WINDOW_T_HEIGHT; ++x){
+            drawPixel(screen, this->titles_vector[0], x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
         }
     }
 
-//    if (Moved()) {
-//        for (int y = old_coords.y; y <= old_coords.y + tileSize; ++y) {
-//            for (int x = old_coords.x; x <= old_coords.x + tileSize; ++x) {
-//                screen.PutPixel(x, y, backgroundColor);
-//            }
-//        }
-//        old_coords = coords;
-//    }
-//    Image andrew("./resources/16.png");
-//    for (int y = coords.y; y <= coords.y + tileSize; ++y) {
-//        for (int x = coords.x; x <= coords.x + tileSize; ++x) {
-//            Pixel masha = andrew.GetPixel(x-coords.x, y-coords.y);
-//            screen.PutPixel(x, y, masha);
-//        }
-//    }
+    std::memcpy(background_state, screen.Data(), h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT);
 }

@@ -135,13 +135,15 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    Point starting_pos1{.x = WINDOW_WIDTH / 3, .y = WINDOW_HEIGHT / 3};
-    Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt"};
+    Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
+                          "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
     Player player{starting_pos};
 
     Image img("../resources/tex.png");
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
+    background.Draw(screenBuffer);
+
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     GL_CHECK_ERRORS;
@@ -154,8 +156,6 @@ int main(int argc, char **argv) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         glfwPollEvents();
-
-        background.Draw(screenBuffer);
 
         processPlayerMovement(player);
         player.Draw(screenBuffer);
