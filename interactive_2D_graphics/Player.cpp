@@ -32,11 +32,11 @@ void Player::ProcessInput(MovementDir dir) {
     }
 }
 
-void Player::Draw(Image &screen) {
+void Player::Draw(Image &screen, ScreenState& screen_state) {
     if (Moved()) {
         for (int y = old_coords.y; y <= old_coords.y + tileSize; ++y) {
             for (int x = old_coords.x; x <= old_coords.x + tileSize; ++x) {
-                screen.PutPixel(x, y, backgroundColor);
+                screen.PutPixel(x, y, screen_state.background_state[y*h_WINDOW_HEIGHT+x]);  // todo create function
             }
         }
         old_coords = coords;

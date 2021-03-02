@@ -2,6 +2,7 @@
 #define MAIN_PLAYER_H
 
 #include "Image.h"
+#include "ScreanState.h"
 
 struct Point {
     int x;
@@ -21,7 +22,7 @@ struct Player {
 
     bool Moved() const;
     void ProcessInput(MovementDir dir);
-    void Draw(Image &screen);
+    void Draw(Image &screen, ScreenState& screen_state);
 
 private:
     Point coords{.x = 10, .y = 10};

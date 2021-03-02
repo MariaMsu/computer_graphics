@@ -12,7 +12,7 @@ set(SOURCE_FILES
         Image.cpp
         Player.cpp
         Background.cpp
-        main.cpp Constants.h)
+        main.cpp Constants.h ScreanState.h)
 
 set(ADDITIONAL_INCLUDE_DIRS
         dependencies/include/GLAD)

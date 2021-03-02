@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Background.h"
 #include "Constants.h"
+#include "ScreanState.h"
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
@@ -135,6 +136,7 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
+    ScreenState screen_state = {};
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
                           "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
@@ -142,7 +144,7 @@ int main(int argc, char **argv) {
 
     Image img("../resources/tex.png");
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
-    background.DrawRoom(screenBuffer, 0);
+    background.DrawRoom(screenBuffer, screen_state, 0);
 
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -158,7 +160,7 @@ int main(int argc, char **argv) {
         glfwPollEvents();
 
         processPlayerMovement(player);
-        player.Draw(screenBuffer);
+        player.Draw(screenBuffer, screen_state);
 //        processPlayerMovement(background);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

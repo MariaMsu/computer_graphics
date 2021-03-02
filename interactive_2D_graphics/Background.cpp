@@ -1,4 +1,3 @@
-#include <cstring>
 #include "Background.h"
 
 
@@ -22,9 +21,8 @@ std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
         }
         for (int j=0; j<line.length(); ++j){
             // background_map's items belong to [0,...N]
-            background_map[i][j] = line[j] - 'A';  // todo возможно, поменяб маппинг
+            background_map[i][j] = line[j] - 'A';  // todo возможно, поменяю маппинг
         };
-//        std::copy(line.begin(), line.end(), background_map[i].data());
         ++i;
     }
     input_stream.close();
@@ -37,7 +35,6 @@ std::vector<std::shared_ptr<Image>> readBackgroundTitles(const std::string&  tit
     std::vector<std::shared_ptr<Image>> titles_vector;
     std::ifstream title_file(titles_path);  // todo stream does not open error
     while (std::getline(title_file, path)) {
-        std::cout<<"add tile path \n";
         titles_vector.push_back(std::make_shared<Image>(path));
     }
     title_file.close();
@@ -51,7 +48,6 @@ Background::Background(std::string map_path, std::string  titles_path) :
     std::cout << "background_path\n" << this->map_path << "\n";
     this->map_vector = readBackgroundMap(this->map_path);
     this->titles_vector = readBackgroundTitles(this->titles_path);
-    this->background_state = new Pixel[h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT];
 };
 
 void drawPixel(Image &screen, const std::shared_ptr<Image>& title, int global_x, int global_y){
@@ -62,7 +58,7 @@ void drawPixel(Image &screen, const std::shared_ptr<Image>& title, int global_x,
     }
 };
 
-void Background::DrawRoom(Image &screen, int room_number) {
+void Background::DrawRoom(Image &screen, ScreenState &screen_state, int room_number) {
     // todo check 0<room_number<max
     BackgroundMap background_map = map_vector[room_number];
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
@@ -71,5 +67,5 @@ void Background::DrawRoom(Image &screen, int room_number) {
             drawPixel(screen, title, x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
         }
     }
-    std::memcpy(background_state, screen.Data(), h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT);
+    std::memcpy(screen_state.background_state, screen.Data(), h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT);
 }
