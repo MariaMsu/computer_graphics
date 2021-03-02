@@ -1,11 +1,13 @@
 #include "common.h"
 #include "Image.h"
 #include "Player.h"
+#include "Background.h"
+#include "Constants.h"
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
 
-constexpr GLsizei WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
+constexpr GLsizei WINDOW_WIDTH = h_WINDOW_WIDTH, WINDOW_HEIGHT = h_WINDOW_HEIGHT;
 
 struct InputState {
     bool keys[1024]{}; //массив состояний кнопок - нажата/не нажата
@@ -133,6 +135,8 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
+    Point starting_pos1{.x = WINDOW_WIDTH / 3, .y = WINDOW_HEIGHT / 3};
+    Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt"};
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
     Player player{starting_pos};
 
@@ -151,8 +155,11 @@ int main(int argc, char **argv) {
         lastFrame = currentFrame;
         glfwPollEvents();
 
+        background.Draw(screenBuffer);
+
         processPlayerMovement(player);
         player.Draw(screenBuffer);
+//        processPlayerMovement(background);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         GL_CHECK_ERRORS;

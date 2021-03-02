@@ -41,10 +41,11 @@ void Player::Draw(Image &screen) {
         }
         old_coords = coords;
     }
-
+    Image andrew("./resources/16.png");
     for (int y = coords.y; y <= coords.y + tileSize; ++y) {
         for (int x = coords.x; x <= coords.x + tileSize; ++x) {
-            screen.PutPixel(x, y, color);
+            Pixel masha = andrew.GetPixel(x-coords.x, y-coords.y);
+            screen.PutPixel(x, y, masha);
         }
     }
 }

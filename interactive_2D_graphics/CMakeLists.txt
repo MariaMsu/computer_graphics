@@ -11,7 +11,8 @@ set(SOURCE_FILES
         glad.c
         Image.cpp
         Player.cpp
-        main.cpp)
+        Background.cpp
+        main.cpp Constants.h)
 
 set(ADDITIONAL_INCLUDE_DIRS
         dependencies/include/GLAD)
