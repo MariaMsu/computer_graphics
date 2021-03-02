@@ -12,7 +12,8 @@ struct Pixel {
     uint8_t a;
 };
 
-constexpr Pixel backgroundColor{0, 0, 0, 0};
+//constexpr Pixel backgroundColor{0, 0, 0, 0};
+Pixel blend(Pixel oldPixel, Pixel newPixel);
 
 struct Image {
     explicit Image(const std::string &a_path);
@@ -23,7 +24,7 @@ struct Image {
     int Channels() const { return channels; }
     size_t Size() const { return size; }
     Pixel *Data() { return data; }
-    Pixel GetPixel(int x, int y) { return data[width * y + x]; }
+    Pixel GetPixel(int x, int y) { return data[width * y + x]; }  // todo check x, y
     void PutPixel(int x, int y, const Pixel &pix) { data[width * y + x] = pix; }
 
     ~Image();

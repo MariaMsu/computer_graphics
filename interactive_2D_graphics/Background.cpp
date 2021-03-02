@@ -62,10 +62,10 @@ void Background::DrawRoom(Image &screen, ScreenState &screen_state, int room_num
     // todo check 0<room_number<max
     BackgroundMap background_map = map_vector[room_number];
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
-        for (int x=0; x<h_WINDOW_T_HEIGHT; ++x){
+        for (int x=0; x<h_WINDOW_T_WIDTH; ++x){
             const std::shared_ptr<Image>& title = this->titles_vector[background_map[x][y]];
             drawPixel(screen, title, x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
         }
     }
-    std::memcpy(screen_state.background_state, screen.Data(), h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT);
+    std::memcpy(screen_state.background_state, screen.Data(), h_WINDOW_HEIGHT * h_WINDOW_WIDTH * sizeof(Pixel));
 }

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Player.h"
 
 
@@ -36,7 +37,7 @@ void Player::Draw(Image &screen, ScreenState& screen_state) {
     if (Moved()) {
         for (int y = old_coords.y; y <= old_coords.y + tileSize; ++y) {
             for (int x = old_coords.x; x <= old_coords.x + tileSize; ++x) {
-                screen.PutPixel(x, y, screen_state.background_state[y*h_WINDOW_HEIGHT+x]);  // todo create function
+                screen.PutPixel(x, y, screen_state.background_state[y*h_WINDOW_WIDTH+x]);  // todo create function
             }
         }
         old_coords = coords;
@@ -44,8 +45,12 @@ void Player::Draw(Image &screen, ScreenState& screen_state) {
     Image andrew("./resources/16.png");
     for (int y = coords.y; y <= coords.y + tileSize; ++y) {
         for (int x = coords.x; x <= coords.x + tileSize; ++x) {
-            Pixel masha = andrew.GetPixel(x-coords.x, y-coords.y);
-            screen.PutPixel(x, y, masha);
+
+            Pixel oldPix = screen_state.background_state[y*h_WINDOW_WIDTH+x];
+            Pixel newPix = andrew.GetPixel(x - coords.x, tileSize - y + coords.y);
+            screen.PutPixel(x, y, blend(oldPix, newPix));
+//            Pixel masha = andrew.GetPixel(x-coords.x, y-coords.y);
+//            screen.PutPixel(x, y, masha);
         }
     }
 }

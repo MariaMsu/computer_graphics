@@ -137,6 +137,7 @@ int main(int argc, char **argv) {
         gl_error = glGetError();
 
     ScreenState screen_state = {};
+    // todo remove absolute path
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
                           "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
