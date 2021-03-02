@@ -65,6 +65,5 @@ void Background::Draw(Image &screen) {
             drawPixel(screen, this->titles_vector[0], x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
         }
     }
-
     std::memcpy(background_state, screen.Data(), h_WINDOW_T_HEIGHT * h_WINDOW_T_HEIGHT);
 }
