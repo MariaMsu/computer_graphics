@@ -33,6 +33,22 @@ Image::Image(int a_width, int a_height, int a_channels) {
     }
 }
 
+Pixel Image::GetPixel(int x, int y) {
+    if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
+        std::cout << "incorrect get pixel index\n";
+        return Pixel {0, 0, 0, 0};
+    }
+    return data[width * y + x];
+};
+
+void Image::PutPixel(int x, int y, const Pixel &pix) {
+    if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
+        std::cout << "incorrect set pixel index\n";
+        return;
+    }
+    data[width * y + x] = pix;
+}
+
 
 int Image::Save(const std::string &a_path) {
     auto extPos = a_path.find_last_of('.');
