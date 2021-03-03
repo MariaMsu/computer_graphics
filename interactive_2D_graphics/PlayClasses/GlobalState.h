@@ -20,8 +20,6 @@ struct GlobalState {
     std::shared_ptr<TransitionsData> room_transitions_data;
 
     Pixel *background_state = new Pixel[h_WINDOW_HEIGHT * h_WINDOW_WIDTH];
-    TitleMap* background_map = nullptr;
-
 
     ~GlobalState() {
         delete[] background_state;

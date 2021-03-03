@@ -15,14 +15,12 @@
 struct Background {
     explicit Background(std::string map_path, std::string  titles_path);
 
-    void DrawRoom(Image &screen, GlobalState &screen_state, int room_number);
+    void DrawRoom(Image &screen, GlobalState &screen_state);
 
 private:
     std::string map_path;
     std::string titles_path;
-    std::vector<TitleMap> map_vector;
     std::vector<std::shared_ptr<Image>> titles_vector;  // todo remove shared?
-    int room_number = -1;
 };
 
 #endif // MAIN_BACKGROUND_H

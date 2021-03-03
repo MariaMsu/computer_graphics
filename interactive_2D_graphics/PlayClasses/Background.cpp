@@ -1,35 +1,6 @@
 #include "Background.h"
 
 
-std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
-    readBackgroundMap(const std::string& background_path){
-
-    std::ifstream input_stream(background_path);
-    std::vector<TitleMap> result;
-    if (!input_stream.is_open()){
-        std::cout << "Unable to open file map\n" << background_path << "\n";
-        exit(2);
-    }
-
-    TitleMap background_map = {};
-    std::string line;
-    int i = 0;
-    while (getline(input_stream,line)){
-        if (line.length() != h_WINDOW_T_WIDTH){
-            std::cout << "incorrect h_WINDOW_WIDTH "<<line.length() <<" != " << h_WINDOW_T_WIDTH <<"\n";
-            exit(1);
-        }
-        for (int j=0; j<line.length(); ++j){
-            // background_map's items belong to [0,...N]
-            background_map[h_WINDOW_T_HEIGHT-i-1][j] = line[j] - 'A';  // todo возможно, поменяю маппинг
-        };
-        ++i;
-    }
-    input_stream.close();
-    result.push_back(background_map);
-    return result;
-};
-
 std::vector<std::shared_ptr<Image>> readBackgroundTitles(const std::string&  titles_path){
     std::string path;
     std::vector<std::shared_ptr<Image>> titles_vector;
@@ -45,7 +16,6 @@ std::vector<std::shared_ptr<Image>> readBackgroundTitles(const std::string&  tit
 Background::Background(std::string map_path, std::string  titles_path) :
                         map_path(std::move(map_path)),
                         titles_path(std::move(titles_path)) {
-    this->map_vector = readBackgroundMap(this->map_path);
     this->titles_vector = readBackgroundTitles(this->titles_path);
 };
 
@@ -57,15 +27,14 @@ void drawTitle(Image &screen, const std::shared_ptr<Image>& title, int global_x,
     }
 };
 
-void Background::DrawRoom(Image &screen, GlobalState &screen_state, int room_number) {
-    // todo check 0<room_number<max
-    TitleMap background_map = map_vector[room_number];
+void Background::DrawRoom(Image &screen, GlobalState &screen_state) {
+    TitleMap background_map = *screen_state.room_background_map;
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
         for (int x=0; x<h_WINDOW_T_WIDTH; ++x){
             const std::shared_ptr<Image>& title = this->titles_vector[background_map[y][x]];
             drawTitle(screen, title, x * h_TEXTURE_SIZE, y * h_TEXTURE_SIZE);
         }
     }
-    screen_state.background_map = &map_vector[room_number];  // todo shared ptr?
+    // todo write method to copy
     std::memcpy(screen_state.background_state, screen.Data(), h_WINDOW_HEIGHT * h_WINDOW_WIDTH * sizeof(Pixel));
 }

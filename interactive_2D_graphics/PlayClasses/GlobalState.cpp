@@ -74,8 +74,8 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
 }
 
 void GlobalState::SetRoom(int room_number) {
-    if (room_number >= this->n_rooms) {
-        std::cout << "incorrect room_number " << room_number << " >= " << this->n_rooms << "\n";
+    if ((room_number < 0) || (room_number >= this->n_rooms)) {
+        std::cout << "room_number must to be: 0 <" << room_number << " <= " << this->n_rooms << "\n";
         exit(3);
     }
     this->room_background_map = this->background_map_vector[room_number];

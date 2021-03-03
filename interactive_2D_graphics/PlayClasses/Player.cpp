@@ -9,14 +9,14 @@ bool Player::Moved() const {
         return true;
 }
 
-bool isWall(Point coord, GlobalState &screen_state) {
+bool isWall(Point coord, GlobalState &global_state) {
     int x_left = (coord.x + h_P_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE;
     int y_low = (coord.y + h_P_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE;
     int x_right = (coord.x + h_PLAYER_WIDTH - h_P_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE;
     int y_heigh = (coord.y + h_PLAYER_HEIGHT - h_P_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE;
     for (int x : {x_left, x_right}) {
         for (int y : {y_low, y_heigh}) {
-            char map_element = (*screen_state.background_map)[y][x] + 'A';
+            char map_element = (*global_state.room_background_map)[y][x] + 'A';
             if (h_walls.find(map_element) != h_walls.end()) { return true; }
         }
     }
