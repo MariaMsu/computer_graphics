@@ -7,8 +7,8 @@ std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
     std::ifstream input_stream(background_path);
     std::vector<BackgroundMap> result;
     if (!input_stream.is_open()){
-        std::cout << "Unable to open file map\n" << background_path << "\n";  // todo log error
-        return result;
+        std::cout << "Unable to open file map\n" << background_path << "\n";
+        exit(2);
     }
 
     BackgroundMap background_map = {};
@@ -16,12 +16,12 @@ std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
     int i = 0;
     while (getline(input_stream,line)){
         if (line.length() != h_WINDOW_T_WIDTH){
-            std::cout << "incorrect h_WINDOW_WIDTH";  // todo log error
-            return result;
+            std::cout << "incorrect h_WINDOW_WIDTH "<<line.length() <<" != " << h_WINDOW_T_WIDTH <<"\n";
+            exit(1);
         }
         for (int j=0; j<line.length(); ++j){
             // background_map's items belong to [0,...N]
-            background_map[i][j] = line[j] - 'A';  // todo возможно, поменяю маппинг
+            background_map[h_WINDOW_T_HEIGHT-i-1][j] = line[j] - 'A';  // todo возможно, поменяю маппинг
         };
         ++i;
     }

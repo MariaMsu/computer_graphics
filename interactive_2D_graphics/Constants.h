@@ -11,6 +11,11 @@
 #define h_WINDOW_T_WIDTH h_WINDOW_WIDTH / h_TEXTURE_SIZE
 #define h_WINDOW_T_HEIGHT h_WINDOW_HEIGHT / h_TEXTURE_SIZE
 
+#define h_PLAYER_WIDTH 64
+#define h_PLAYER_HEIGHT 44
+#define h_P_PHIS_WIDTH_SHIFT 15
+#define h_P_PHIS_HEIGHT_SHIFT 5
+
 typedef std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> BackgroundMap;
 
 const std::set<char> h_walls = {'B'};

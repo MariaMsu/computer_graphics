@@ -18,6 +18,7 @@ Pixel blend(Pixel oldPixel, Pixel newPixel){
 Image::Image(const std::string &a_path) {
     if ((data = (Pixel *) stbi_load(a_path.c_str(), &width, &height, &channels, 0)) != nullptr) {
         size = width * height * channels;
+        this->a_path = a_path;
     }
 }
 
@@ -35,7 +36,7 @@ Image::Image(int a_width, int a_height, int a_channels) {
 
 Pixel Image::GetPixel(int x, int y) {
     if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
-        std::cout << "incorrect get pixel index\n";
+        std::cout << "incorrect get pixel index x: "<< x << " y: " << y << this->a_path << "\n";
         return Pixel {0, 0, 0, 0};
     }
     return data[width * y + x];
@@ -43,7 +44,7 @@ Pixel Image::GetPixel(int x, int y) {
 
 void Image::PutPixel(int x, int y, const Pixel &pix) {
     if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
-        std::cout << "incorrect set pixel index\n";
+        std::cout << "incorrect set pixel index x: "<< x << " y: " << y << this->a_path << "\n";
         return;
     }
     data[width * y + x] = pix;

@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
                           "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
-    Player player{"./resources/16.png", starting_pos};
+    Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/img.png", starting_pos};
 
     Image img("../resources/tex.png");
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);

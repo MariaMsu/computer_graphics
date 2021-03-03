@@ -35,6 +35,7 @@ private:
     size_t size = 0;
     Pixel *data = nullptr;
     bool self_allocated = false;
+    std::string a_path = "none";
 };
 
 
