@@ -1,4 +1,4 @@
-#include "common.h"
+#include "SupportClasses/common.h"
 #include "PlayClasses/Image.h"
 #include "PlayClasses/Player.h"
 #include "PlayClasses/Background.h"
