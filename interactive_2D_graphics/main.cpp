@@ -139,8 +139,7 @@ int main(int argc, char **argv) {
     GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
     global_state.SetRoom(0);
     // todo remove absolute path
-    Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
-                          "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
+    Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
     Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/img.png", starting_pos};
 

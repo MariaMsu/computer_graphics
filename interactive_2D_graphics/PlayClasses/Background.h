@@ -13,7 +13,7 @@
 #include "GlobalState.h"
 
 struct Background {
-    explicit Background(std::string map_path, std::string  titles_path);
+    explicit Background(std::string  titles_path);
 
     void DrawRoom(Image &screen, GlobalState &screen_state);
 
