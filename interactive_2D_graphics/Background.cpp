@@ -49,10 +49,12 @@ Background::Background(std::string map_path, std::string  titles_path) :
     this->titles_vector = readBackgroundTitles(this->titles_path);
 };
 
-void drawPixel(Image &screen, const std::shared_ptr<Image>& title, int global_x, int global_y){
+void drawTitle(Image &screen, const std::shared_ptr<Image>& title, int global_x, int global_y){
     for (int y=0; y<h_TEXTURE_SIZE; ++y){
         for (int x=0; x<h_TEXTURE_SIZE; ++x){
-            screen.PutPixel(global_x+x, global_y+y, title->GetPixel(x,y));
+            screen.PutPixel(global_x + x, global_y + (h_TEXTURE_SIZE - y - 1), title->GetPixel(x,y));
+
+//            screen.PutPixel(global_x - x, h_TEXTURE_SIZE - 1 - global_y + y, title->GetPixel(x,y));
         }
     }
 };
@@ -63,7 +65,7 @@ void Background::DrawRoom(Image &screen, ScreenState &screen_state, int room_num
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
         for (int x=0; x<h_WINDOW_T_WIDTH; ++x){
             const std::shared_ptr<Image>& title = this->titles_vector[background_map[y][x]];
-            drawPixel(screen, title, x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
+            drawTitle(screen, title, x * h_TEXTURE_SIZE, y * h_TEXTURE_SIZE);
         }
     }
     screen_state.background_map = &map_vector[room_number];  // todo shared ptr?

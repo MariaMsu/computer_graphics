@@ -1,2 +1,2 @@
-/home/maria/Desktop/computer_graphics/interactive_2D_graphics/Pipoya RPG Tileset 32x32/[A]_type1/[A]Dirt1-Dirt2_pipo.png
-/home/maria/Desktop/computer_graphics/interactive_2D_graphics/Pipoya RPG Tileset 32x32/[A]_type1/[A]Water5_pipo.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass_mountain.png
