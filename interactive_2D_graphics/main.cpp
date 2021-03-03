@@ -137,6 +137,7 @@ int main(int argc, char **argv) {
         gl_error = glGetError();
 
     GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
+    global_state.SetRoom(0);
     // todo remove absolute path
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
                           "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};

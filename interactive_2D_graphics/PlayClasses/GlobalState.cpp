@@ -26,7 +26,8 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
         ++i;
     }
     if (i != h_WINDOW_T_HEIGHT) {
-        std::cout << title_map_path << " incorrect h_WINDOW_T_HEIGHT " << i << " != " << h_WINDOW_T_HEIGHT << "\n";
+        std::cout << title_map_path << " incorrect h_WINDOW_T_HEIGHT "
+                  << i << " != " << h_WINDOW_T_HEIGHT << "\n";
         exit(1);
     }
     input_stream.close();
@@ -69,4 +70,15 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
         this->transitions_data_vector.push_back(
                 readTransitions(single_room_path + "/transitions.txt"));
     }
+    this->n_rooms = this->background_map_vector.size();
+}
+
+void GlobalState::SetRoom(int room_number) {
+    if (room_number >= this->n_rooms) {
+        std::cout << "incorrect room_number " << room_number << " >= " << this->n_rooms << "\n";
+        exit(3);
+    }
+    this->room_background_map = this->background_map_vector[room_number];
+    this->room_objects_map = this->objects_map_vector[room_number];
+    this->room_transitions_data = this->transitions_data_vector[room_number];
 };
