@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Player.h"
 
 
@@ -23,7 +22,7 @@ bool isWall(Point coord, GlobalState &global_state) {
     return false;
 }
 
-void Player::ProcessInput(MovementDir dir, GlobalState &screen_state) {
+void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     int move_dist = move_speed * 1;
     Point tmp_old_coords{this->old_coords};
     Point tmp_coords{this->coords};
@@ -47,7 +46,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &screen_state) {
         default:
             break;
     }
-    if (!isWall(tmp_coords, screen_state)) {
+    if (!isWall(tmp_coords, global_state)) {
         // update coordinates only if player not in the wall
         this->old_coords = tmp_old_coords;
         this->coords = tmp_coords;

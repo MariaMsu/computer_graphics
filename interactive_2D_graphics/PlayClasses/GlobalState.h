@@ -4,10 +4,9 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include "../Constants.h"
 #include "Image.h"
-#include <filesystem>
-namespace fs = std::filesystem;
 
 struct GlobalState {
 
@@ -18,6 +17,7 @@ struct GlobalState {
     std::shared_ptr<TitleMap> room_background_map;
     std::shared_ptr<TitleMap> room_objects_map;
     std::shared_ptr<TransitionsData> room_transitions_data;
+    // todo check TransitionsData
 
     Pixel *background_state = new Pixel[h_WINDOW_HEIGHT * h_WINDOW_WIDTH];
 

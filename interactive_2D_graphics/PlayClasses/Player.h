@@ -21,7 +21,7 @@ struct Player {
             coords(pos), old_coords(coords), player_image(Image(asset_path)) {};
 
     bool Moved() const;
-    void ProcessInput(MovementDir dir, GlobalState& screen_state);
+    void ProcessInput(MovementDir dir, GlobalState& global_state);
     void Draw(Image &screen, GlobalState& screen_state);
 
 private:

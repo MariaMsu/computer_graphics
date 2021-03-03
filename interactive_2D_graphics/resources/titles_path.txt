@@ -1,2 +1,6 @@
 /home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass.png
 /home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass_mountain.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass_mountain1.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass_mountain2.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass_mountain3.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/grass_mountain4.png

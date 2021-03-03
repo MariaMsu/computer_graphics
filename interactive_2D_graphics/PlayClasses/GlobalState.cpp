@@ -61,8 +61,8 @@ std::shared_ptr<TransitionsData> readTransitions(const std::string &transitions_
 
 
 GlobalState::GlobalState(const std::string &rooms_data_path) {
-    for (const std::filesystem::directory_entry &single_room_dir : fs::directory_iterator(rooms_data_path)) {
-        std::string single_room_path = single_room_dir.path();
+    for (int i =0; i < h_N_ROOMS; ++i) {
+        std::string single_room_path = rooms_data_path+"/r"+std::to_string(i);
         this->background_map_vector.push_back(
                 readTitleMap(single_room_path + "/background_map.txt"));
         this->objects_map_vector.push_back(
