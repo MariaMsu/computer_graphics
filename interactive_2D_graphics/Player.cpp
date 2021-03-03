@@ -42,12 +42,11 @@ void Player::Draw(Image &screen, ScreenState& screen_state) {
         }
         old_coords = coords;
     }
-    Image andrew("./resources/16.png");
     for (int y = coords.y; y <= coords.y + tileSize; ++y) {
         for (int x = coords.x; x <= coords.x + tileSize; ++x) {
 
             Pixel oldPix = screen_state.background_state[y*h_WINDOW_WIDTH+x];
-            Pixel newPix = andrew.GetPixel(x - coords.x, tileSize - y + coords.y);
+            Pixel newPix = this->player_image.GetPixel(x - coords.x, tileSize - y + coords.y);
             screen.PutPixel(x, y, blend(oldPix, newPix));
 //            Pixel masha = andrew.GetPixel(x-coords.x, y-coords.y);
 //            screen.PutPixel(x, y, masha);

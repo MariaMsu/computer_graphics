@@ -45,7 +45,6 @@ std::vector<std::shared_ptr<Image>> readBackgroundTitles(const std::string&  tit
 Background::Background(std::string map_path, std::string  titles_path) :
                         map_path(std::move(map_path)),
                         titles_path(std::move(titles_path)) {
-    std::cout << "background_path\n" << this->map_path << "\n";
     this->map_vector = readBackgroundMap(this->map_path);
     this->titles_vector = readBackgroundTitles(this->titles_path);
 };
@@ -63,7 +62,7 @@ void Background::DrawRoom(Image &screen, ScreenState &screen_state, int room_num
     BackgroundMap background_map = map_vector[room_number];
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
         for (int x=0; x<h_WINDOW_T_WIDTH; ++x){
-            const std::shared_ptr<Image>& title = this->titles_vector[background_map[x][y]];
+            const std::shared_ptr<Image>& title = this->titles_vector[background_map[y][x]];
             drawPixel(screen, title, x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
         }
     }
