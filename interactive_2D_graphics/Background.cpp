@@ -66,5 +66,6 @@ void Background::DrawRoom(Image &screen, ScreenState &screen_state, int room_num
             drawPixel(screen, title, x*h_TEXTURE_SIZE, y*h_TEXTURE_SIZE);
         }
     }
+    screen_state.background_map = &map_vector[room_number];  // todo shared ptr?
     std::memcpy(screen_state.background_state, screen.Data(), h_WINDOW_HEIGHT * h_WINDOW_WIDTH * sizeof(Pixel));
 }

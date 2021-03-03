@@ -4,7 +4,6 @@
 #include <utility>
 #include <vector>
 #include <fstream>
-#include <array>
 #include <iostream>
 #include <memory>
 #include <cstring>
@@ -12,8 +11,6 @@
 #include "Player.h"
 #include "Constants.h"
 #include "ScreanState.h"
-
-typedef std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> BackgroundMap;
 
 struct Background {
     explicit Background(std::string map_path, std::string  titles_path);

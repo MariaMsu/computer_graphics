@@ -9,27 +9,44 @@ bool Player::Moved() const {
         return true;
 }
 
-void Player::ProcessInput(MovementDir dir) {
+bool isWall(Point coord, ScreenState& screen_state){
+    int x_title = coord.x / h_TEXTURE_SIZE;
+    int y_title = coord.y / h_TEXTURE_SIZE;
+    char map_element = (*screen_state.background_map)[y_title][x_title]+'A';
+    if (h_walls.find(map_element) != h_walls.end()){
+        return true;
+    }
+    return false;
+}
+
+void Player::ProcessInput(MovementDir dir, ScreenState& screen_state) {
     int move_dist = move_speed * 1;
+    Point tmp_old_coords{this->old_coords};
+    Point tmp_coords{this->coords};
     switch (dir) {
         case MovementDir::UP:
-            old_coords.y = coords.y;
-            coords.y += move_dist;
+            tmp_old_coords.y = coords.y;
+            tmp_coords.y += move_dist;
             break;
         case MovementDir::DOWN:
-            old_coords.y = coords.y;
-            coords.y -= move_dist;
+            tmp_old_coords.y = coords.y;
+            tmp_coords.y -= move_dist;
             break;
         case MovementDir::LEFT:
-            old_coords.x = coords.x;
-            coords.x -= move_dist;
+            tmp_old_coords.x = coords.x;
+            tmp_coords.x -= move_dist;
             break;
         case MovementDir::RIGHT:
-            old_coords.x = coords.x;
-            coords.x += move_dist;
+            tmp_old_coords.x = coords.x;
+            tmp_coords.x += move_dist;
             break;
         default:
             break;
+    }
+    if (!isWall(tmp_coords, screen_state)){
+        // update coordinates only if player not in the wall
+        this->old_coords = tmp_old_coords;
+        this->coords = tmp_coords;
     }
 }
 

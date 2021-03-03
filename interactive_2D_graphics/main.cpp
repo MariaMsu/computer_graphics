@@ -43,15 +43,15 @@ void OnKeyboardPressed(GLFWwindow *window, int key, int scancode, int action, in
     }
 }
 
-void processPlayerMovement(Player &player) {
+void processPlayerMovement(Player &player, ScreenState& screen_state) {
     if (Input.keys[GLFW_KEY_W])
-        player.ProcessInput(MovementDir::UP);
+        player.ProcessInput(MovementDir::UP, screen_state);
     else if (Input.keys[GLFW_KEY_S])
-        player.ProcessInput(MovementDir::DOWN);
+        player.ProcessInput(MovementDir::DOWN, screen_state);
     if (Input.keys[GLFW_KEY_A])
-        player.ProcessInput(MovementDir::LEFT);
+        player.ProcessInput(MovementDir::LEFT, screen_state);
     else if (Input.keys[GLFW_KEY_D])
-        player.ProcessInput(MovementDir::RIGHT);
+        player.ProcessInput(MovementDir::RIGHT, screen_state);
 }
 
 void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) {
@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
         lastFrame = currentFrame;
         glfwPollEvents();
 
-        processPlayerMovement(player);
+        processPlayerMovement(player, screen_state);
         player.Draw(screenBuffer, screen_state);
 //        processPlayerMovement(background);
 
