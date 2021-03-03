@@ -11,10 +11,10 @@ namespace fs = std::filesystem;
 
 struct GlobalState {
 
-    GlobalState(const std::string& rooms_data_path);
+    explicit GlobalState(const std::string& rooms_data_path);
 
     Pixel *background_state = new Pixel[h_WINDOW_HEIGHT * h_WINDOW_WIDTH];
-    BackgroundMap* background_map = nullptr;
+    TitleMap* background_map = nullptr;
 
 
     ~GlobalState() {
@@ -22,7 +22,9 @@ struct GlobalState {
     }
 
 private:
-    std::vector<std::shared_ptr<BackgroundMap>> background_map_vector;
+    std::vector<std::shared_ptr<TitleMap>> background_map_vector;
+    std::vector<std::shared_ptr<TitleMap>> objects_map_vector;
+    std::vector<std::shared_ptr<TransitionsData>> transitions_data_vector;
 };
 
 #endif //MAIN_GLOBALSTATE_H

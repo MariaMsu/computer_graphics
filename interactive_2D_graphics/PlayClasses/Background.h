@@ -20,7 +20,7 @@ struct Background {
 private:
     std::string map_path;
     std::string titles_path;
-    std::vector<BackgroundMap> map_vector;
+    std::vector<TitleMap> map_vector;
     std::vector<std::shared_ptr<Image>> titles_vector;  // todo remove shared?
     int room_number = -1;
 };

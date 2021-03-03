@@ -5,13 +5,13 @@ std::vector<std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT>>
     readBackgroundMap(const std::string& background_path){
 
     std::ifstream input_stream(background_path);
-    std::vector<BackgroundMap> result;
+    std::vector<TitleMap> result;
     if (!input_stream.is_open()){
         std::cout << "Unable to open file map\n" << background_path << "\n";
         exit(2);
     }
 
-    BackgroundMap background_map = {};
+    TitleMap background_map = {};
     std::string line;
     int i = 0;
     while (getline(input_stream,line)){
@@ -59,7 +59,7 @@ void drawTitle(Image &screen, const std::shared_ptr<Image>& title, int global_x,
 
 void Background::DrawRoom(Image &screen, GlobalState &screen_state, int room_number) {
     // todo check 0<room_number<max
-    BackgroundMap background_map = map_vector[room_number];
+    TitleMap background_map = map_vector[room_number];
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){
         for (int x=0; x<h_WINDOW_T_WIDTH; ++x){
             const std::shared_ptr<Image>& title = this->titles_vector[background_map[y][x]];

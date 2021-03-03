@@ -16,7 +16,10 @@
 #define h_P_PHIS_WIDTH_SHIFT 15
 #define h_P_PHIS_HEIGHT_SHIFT 5
 
-typedef std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> BackgroundMap;
+#define h_N_TRANSITIONS 4
+
+typedef std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;
+typedef std::array<int, h_N_TRANSITIONS> TransitionsData;
 
 const std::set<char> h_walls = {'B'};
 
