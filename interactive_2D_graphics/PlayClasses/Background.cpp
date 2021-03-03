@@ -57,7 +57,7 @@ void drawTitle(Image &screen, const std::shared_ptr<Image>& title, int global_x,
     }
 };
 
-void Background::DrawRoom(Image &screen, ScreenState &screen_state, int room_number) {
+void Background::DrawRoom(Image &screen, GlobalState &screen_state, int room_number) {
     // todo check 0<room_number<max
     BackgroundMap background_map = map_vector[room_number];
     for (int y=0; y<h_WINDOW_T_HEIGHT; ++y){

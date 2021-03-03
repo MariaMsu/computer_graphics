@@ -9,7 +9,7 @@ bool Player::Moved() const {
         return true;
 }
 
-bool isWall(Point coord, ScreenState &screen_state) {
+bool isWall(Point coord, GlobalState &screen_state) {
     int x_left = (coord.x + h_P_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE;
     int y_low = (coord.y + h_P_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE;
     int x_right = (coord.x + h_PLAYER_WIDTH - h_P_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE;
@@ -23,7 +23,7 @@ bool isWall(Point coord, ScreenState &screen_state) {
     return false;
 }
 
-void Player::ProcessInput(MovementDir dir, ScreenState &screen_state) {
+void Player::ProcessInput(MovementDir dir, GlobalState &screen_state) {
     int move_dist = move_speed * 1;
     Point tmp_old_coords{this->old_coords};
     Point tmp_coords{this->coords};
@@ -54,7 +54,7 @@ void Player::ProcessInput(MovementDir dir, ScreenState &screen_state) {
     }
 }
 
-void Player::Draw(Image &screen, ScreenState &screen_state) {
+void Player::Draw(Image &screen, GlobalState &screen_state) {
     if (Moved()) {
         for (int y = old_coords.y; y < old_coords.y + h_PLAYER_HEIGHT; ++y) {
             for (int x = old_coords.x; x < old_coords.x + h_PLAYER_WIDTH; ++x) {

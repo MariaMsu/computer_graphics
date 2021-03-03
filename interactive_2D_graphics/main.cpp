@@ -43,7 +43,7 @@ void OnKeyboardPressed(GLFWwindow *window, int key, int scancode, int action, in
     }
 }
 
-void processPlayerMovement(Player &player, ScreenState& screen_state) {
+void processPlayerMovement(Player &player, GlobalState& screen_state) {
     if (Input.keys[GLFW_KEY_W])
         player.ProcessInput(MovementDir::UP, screen_state);
     else if (Input.keys[GLFW_KEY_S])
@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    ScreenState screen_state = {};
+    GlobalState global_state = {"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms"};
     // todo remove absolute path
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background_map.txt",
                           "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
 
     Image img("../resources/tex.png");
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
-    background.DrawRoom(screenBuffer, screen_state, 0);
+    background.DrawRoom(screenBuffer, global_state, 0);
 
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -160,8 +160,8 @@ int main(int argc, char **argv) {
         lastFrame = currentFrame;
         glfwPollEvents();
 
-        processPlayerMovement(player, screen_state);
-        player.Draw(screenBuffer, screen_state);
+        processPlayerMovement(player, global_state);
+        player.Draw(screenBuffer, global_state);
 //        processPlayerMovement(background);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
