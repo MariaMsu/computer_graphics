@@ -1,9 +1,9 @@
 #include "Image.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "../stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "../stb_image_write.h"
 
 #include <iostream>
 
@@ -17,6 +17,7 @@ Pixel blend(Pixel oldPixel, Pixel newPixel){
 
 Image::Image(const std::string &a_path) {
     if ((data = (Pixel *) stbi_load(a_path.c_str(), &width, &height, &channels, 0)) != nullptr) {
+        std::cout<<"path: "<<a_path<<"    width="<<width<<"    height="<<height<<"\n";
         size = width * height * channels;
         this->a_path = a_path;
     }

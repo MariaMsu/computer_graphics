@@ -1,8 +1,9 @@
-#ifndef MAIN_SCREANSTATE_H
-#define MAIN_SCREANSTATE_H
+#ifndef MAIN_GLOBALSTATE_H
+#define MAIN_GLOBALSTATE_H
 
 
-#include "Constants.h"
+#include "../Constants.h"
+#include "Image.h"
 
 // по-хорошему, надо было Screnn унаследовать от Image и
 // все поля ScreenState добавить в наследника
@@ -16,4 +17,4 @@ struct ScreenState {
     }
 };
 
-#endif //MAIN_SCREANSTATE_H
+#endif //MAIN_GLOBALSTATE_H

@@ -1,9 +1,9 @@
 #include "common.h"
-#include "Image.h"
-#include "Player.h"
-#include "Background.h"
+#include "PlayClasses/Image.h"
+#include "PlayClasses/Player.h"
+#include "PlayClasses/Background.h"
 #include "Constants.h"
-#include "ScreanState.h"
+#include "PlayClasses/GlobalState.h"
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>

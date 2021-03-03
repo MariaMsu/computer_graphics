@@ -9,8 +9,8 @@
 #include <cstring>
 #include "Image.h"
 #include "Player.h"
-#include "Constants.h"
-#include "ScreanState.h"
+#include "../Constants.h"
+#include "GlobalState.h"
 
 struct Background {
     explicit Background(std::string map_path, std::string  titles_path);

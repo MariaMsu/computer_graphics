@@ -2,7 +2,7 @@
 #define MAIN_PLAYER_H
 
 #include "Image.h"
-#include "ScreanState.h"
+#include "GlobalState.h"
 
 struct Point {
     int x;

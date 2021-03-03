@@ -53,8 +53,6 @@ void drawTitle(Image &screen, const std::shared_ptr<Image>& title, int global_x,
     for (int y=0; y<h_TEXTURE_SIZE; ++y){
         for (int x=0; x<h_TEXTURE_SIZE; ++x){
             screen.PutPixel(global_x + x, global_y + (h_TEXTURE_SIZE - y - 1), title->GetPixel(x,y));
-
-//            screen.PutPixel(global_x - x, h_TEXTURE_SIZE - 1 - global_y + y, title->GetPixel(x,y));
         }
     }
 };
