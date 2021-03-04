@@ -16,6 +16,13 @@ enum class MovementDir {
     RIGHT
 };
 
+struct ObjectBorders {
+    int x_left;
+    int x_right;
+    int y_low;
+    int y_heigh;
+};
+
 struct Player {
     explicit Player(const std::string& asset_path, Point pos = {.x = 10, .y = 10}):
             coords(pos), old_coords(coords), player_image(Image(asset_path)) {};
@@ -23,6 +30,7 @@ struct Player {
     bool Moved() const;
     void ProcessInput(MovementDir dir, GlobalState& global_state);
     void Draw(Image &screen, GlobalState& screen_state);
+    ObjectBorders GetTitleBorders(Point coord);
 
 private:
     Point coords{.x = 10, .y = 10};
