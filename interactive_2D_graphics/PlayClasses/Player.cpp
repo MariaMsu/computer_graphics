@@ -15,11 +15,12 @@ bool isWall(Point coord, GlobalState &global_state) {
     int y_heigh = (coord.y + h_PLAYER_HEIGHT - h_P_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE;
     for (int x : {x_left, x_right}) {
         for (int y : {y_low, y_heigh}) {
-            char map_element = (*global_state.room_background_map)[y][x] + 'A';
+            short map_element = (*global_state.room_background_map)[y][x];
             if (h_walls.find(map_element) != h_walls.end()) { return true; }
         }
     }
     return false;
+    // todo check field borders
 }
 
 void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {

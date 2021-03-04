@@ -17,11 +17,12 @@
 #define h_P_PHIS_HEIGHT_SHIFT 5
 
 #define h_N_TRANSITIONS 4
-#define h_N_ROOMS 2
+#define h_N_ROOMS 1
+#define h_MAP_CODE_SIZE 3
 
-typedef std::array<std::array<char, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;
+typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;
 typedef std::array<int, h_N_TRANSITIONS> TransitionsData;
 
-const std::set<char> h_walls = {'B', 'C', 'D', 'E', 'F'};
+const std::set<char> h_walls = {1, 2, 3, 4, 5};
 
 #endif //MAIN_CONSTANTS_H

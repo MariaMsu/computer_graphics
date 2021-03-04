@@ -14,14 +14,15 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
     std::string line;
     int i = 0;
     while (getline(input_stream, line)) {
-        if (line.length() != h_WINDOW_T_WIDTH) {
+        if (line.length() != h_WINDOW_T_WIDTH * h_MAP_CODE_SIZE) {
             std::cout << title_map_path << " incorrect h_WINDOW_WIDTH "
-                      << line.length() << " != " << h_WINDOW_T_WIDTH << "\n";
+                      << line.length() << " != " << h_WINDOW_T_WIDTH * h_MAP_CODE_SIZE << "\n";
             exit(1);
         }
-        for (int j = 0; j < line.length(); ++j) {
+        for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
             // title_map's items belong to [0,...N]
-            (*title_map)[h_WINDOW_T_HEIGHT - i - 1][j] = line[j] - 'A';  // todo возможно, поменяю маппинг
+            (*title_map)[h_WINDOW_T_HEIGHT - i - 1][j] =
+                    std::stoi(line.substr(j*h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
         };
         ++i;
     }
@@ -30,7 +31,6 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
                   << i << " != " << h_WINDOW_T_HEIGHT << "\n";
         exit(1);
     }
-    input_stream.close();
     return title_map;
 };
 
