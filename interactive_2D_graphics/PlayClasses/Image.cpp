@@ -1,13 +1,17 @@
 #include "Image.h"
 
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "../SupportClasses/stb_image.h"
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+
 #include "../SupportClasses/stb_image_write.h"  // todo do something with this ubozhestvo
 
 #include <iostream>
+#include <cstring>
 
-Pixel blend(Pixel oldPixel, Pixel newPixel){
+Pixel blend(Pixel oldPixel, Pixel newPixel) {
     newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
     newPixel.g = newPixel.a / 255.0 * (newPixel.g - oldPixel.g) + oldPixel.g;
     newPixel.b = newPixel.a / 255.0 * (newPixel.b - oldPixel.b) + oldPixel.b;
@@ -17,9 +21,11 @@ Pixel blend(Pixel oldPixel, Pixel newPixel){
 
 Image::Image(const std::string &a_path) {
     if ((data = (Pixel *) stbi_load(a_path.c_str(), &width, &height, &channels, 0)) != nullptr) {
-        std::cout<<"path: "<<a_path<<"    width="<<width<<"    height="<<height<<"\n";
+        std::cout << "path: " << a_path << "    width=" << width << "    height=" << height << "\n";
         size = width * height * channels;
         this->a_path = a_path;
+        this->saved_data = new Pixel[width * height]{};
+        std::memcpy(saved_data, data, width * height * sizeof(Pixel));
     }
 }
 
@@ -33,22 +39,33 @@ Image::Image(int a_width, int a_height, int a_channels) {
         channels = a_channels;
         self_allocated = true;
     }
+    this->saved_data = new Pixel[width * height]{};
+    std::memcpy(saved_data, data, width * height * sizeof(Pixel));
 }
 
 Pixel Image::GetPixel(int x, int y) {
-    if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
-        std::cout << "incorrect get pixel index x: "<< x << " y: " << y << this->a_path << "\n";
-        return Pixel {0, 0, 0, 0};
+    if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)) {
+        std::cout << "incorrect get pixel index x: " << x << " y: " << y << this->a_path << "\n";
+        return Pixel{0, 0, 0, 0};
     }
-    return data[width * y + x];
+    return saved_data[width * y + x];
 };
 
-void Image::PutPixel(int x, int y, const Pixel &pix) {
-    if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
-//        std::clog << "incorrect set pixel index x: "<< x << " y: " << y << ", " <<this->a_path << "\n";
-        return;
+bool Image::PutPixel(int x, int y, const Pixel &pix) {
+    if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)) {
+        std::clog << "incorrect set pixel index x: "<< x << " y: " << y << ", " <<this->a_path << "\n";
+        return false;
     }
     data[width * y + x] = pix;
+    return true;
+}
+
+bool Image::PutSavePixel(int x, int y, const Pixel &pix) {
+    if (PutPixel(x, y, pix)) {
+        saved_data[width * y + x] = pix;
+        return true;
+    }
+    return false;
 }
 
 
@@ -71,6 +88,7 @@ int Image::Save(const std::string &a_path) {
 }
 
 Image::~Image() {
+    delete[] saved_data;
     if (self_allocated)
         delete[] data;
     else {

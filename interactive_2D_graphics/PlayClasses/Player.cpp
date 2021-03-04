@@ -109,7 +109,7 @@ void Player::Draw(Image &screen, GlobalState &screen_state) {
     if (Moved()) {
         for (int y = old_coords.y; y < old_coords.y + player_image.Height(); ++y) {
             for (int x = old_coords.x; x < old_coords.x + player_image.Width(); ++x) {
-                screen.PutPixel(x, y, screen_state.background_state[y * h_WINDOW_WIDTH + x]);  // todo create function
+                screen.PutPixel(x, y,  screen.GetPixel(x, y));
             }
         }
         old_coords = coords;
@@ -117,9 +117,8 @@ void Player::Draw(Image &screen, GlobalState &screen_state) {
     for (int y = coords.y; y < coords.y + player_image.Height(); ++y) {
         for (int x = coords.x; x < coords.x + player_image.Width(); ++x) {
 
-            Pixel oldPix = screen_state.background_state[y * h_WINDOW_WIDTH + x];
             Pixel newPix = this->player_image.GetPixel(x - coords.x, player_image.Height() - 1 - y + coords.y);
-            screen.PutPixel(x, y, blend(oldPix, newPix));
+            screen.PutPixel(x, y, blend(screen.GetPixel(x, y), newPix));
         }
     }
 }

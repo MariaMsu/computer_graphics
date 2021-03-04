@@ -13,7 +13,7 @@ set(SOURCE_FILES
         PlayClasses/Player.cpp
         PlayClasses/Background.cpp
         PlayClasses/GlobalState.cpp
-        main.cpp Constants.h PlayClasses/Utils.h)
+        main.cpp Constants.h PlayClasses/UtilsStructures.h PlayClasses/Bridge.h PlayClasses/Bridge.cpp PlayClasses/Utils.cpp)
 
 set(ADDITIONAL_INCLUDE_DIRS
         dependencies/include/GLAD)

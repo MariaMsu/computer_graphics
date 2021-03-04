@@ -1,4 +1,5 @@
 #include "Background.h"
+#include "Utils.h"
 
 
 std::map<int, std::shared_ptr<Image>> readBackgroundTitles(const std::string &titles_path) {
@@ -16,7 +17,6 @@ std::map<int, std::shared_ptr<Image>> readBackgroundTitles(const std::string &ti
             titles_map.insert(new_item);
         }
     }
-    std::cout << "\n";
     title_file.close();
     return titles_map;
 };
@@ -24,14 +24,6 @@ std::map<int, std::shared_ptr<Image>> readBackgroundTitles(const std::string &ti
 
 Background::Background(std::string titles_path) : titles_path(std::move(titles_path)) {
     this->titles_map = readBackgroundTitles(this->titles_path);
-};
-
-void drawTitle(Image &screen, const std::shared_ptr<Image> &title, int global_x, int global_y) {
-    for (int y = 0; y < h_TEXTURE_SIZE; ++y) {
-        for (int x = 0; x < h_TEXTURE_SIZE; ++x) {
-            screen.PutPixel(global_x + x, global_y + (h_TEXTURE_SIZE - y - 1), title->GetPixel(x, y));
-        }
-    }
 };
 
 void Background::DrawRoom(Image &screen, GlobalState &screen_state) {
@@ -44,9 +36,7 @@ void Background::DrawRoom(Image &screen, GlobalState &screen_state) {
                 exit(5);
             }
             const std::shared_ptr<Image> &title = this->titles_map[background_map[y][x]];
-            drawTitle(screen, title, x * h_TEXTURE_SIZE, y * h_TEXTURE_SIZE);
+            drawSaveAsset(screen, title, x * title->Width(), y * title->Height());  // todo why?
         }
     }
-    // todo write method to copy
-    std::memcpy(screen_state.background_state, screen.Data(), h_WINDOW_HEIGHT * h_WINDOW_WIDTH * sizeof(Pixel));
 }

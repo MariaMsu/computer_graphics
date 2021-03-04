@@ -2,7 +2,7 @@
 #define MAIN_IMAGE_H
 
 #include <string>
-#include "Utils.h"
+#include "UtilsStructures.h"
 
 Pixel blend(Pixel oldPixel, Pixel newPixel);
 
@@ -16,7 +16,8 @@ struct Image {
     size_t Size() const { return size; }
     Pixel *Data() { return data; }
     Pixel GetPixel(int x, int y);
-    void PutPixel(int x, int y, const Pixel &pix);
+    bool PutPixel(int x, int y, const Pixel &pix);
+    bool PutSavePixel(int x, int y, const Pixel &pix);
 
     ~Image();
 
@@ -26,6 +27,7 @@ private:
     int channels = 3;
     size_t size = 0;
     Pixel *data = nullptr;
+    Pixel *saved_data = nullptr;
     bool self_allocated = false;
     std::string a_path = "none";
 };

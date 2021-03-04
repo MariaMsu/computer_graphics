@@ -6,7 +6,7 @@
 #include <fstream>
 #include <memory>
 #include "../Constants.h"
-#include "Utils.h"
+#include "UtilsStructures.h"
 
 struct GlobalState {
 
@@ -22,13 +22,6 @@ struct GlobalState {
 
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;
-
-    Pixel *background_state = new Pixel[h_WINDOW_HEIGHT * h_WINDOW_WIDTH];
-
-
-    ~GlobalState() {
-        delete[] background_state;
-    }
 
 private:
     void _ReassigneState(int room_number);

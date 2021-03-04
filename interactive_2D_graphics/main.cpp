@@ -4,6 +4,7 @@
 #include "PlayClasses/Background.h"
 #include "Constants.h"
 #include "PlayClasses/GlobalState.h"
+#include "PlayClasses/Bridge.h"
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
@@ -141,6 +142,7 @@ int main(int argc, char **argv) {
     GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
     Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/img.png"};
+    Bridge bridge{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/bridges_path.txt"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state);
@@ -161,6 +163,7 @@ int main(int argc, char **argv) {
         if (global_state.SwitchRoom()){  // only if transition direction appear
             background.DrawRoom(screenBuffer, global_state);
             player.SetPosition(global_state.GetInitPlayerPosition());
+            bridge.DrawBridge(screenBuffer, global_state, 1, 1);
         }
         player.Draw(screenBuffer, global_state);
 
