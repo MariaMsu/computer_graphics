@@ -43,15 +43,17 @@ void OnKeyboardPressed(GLFWwindow *window, int key, int scancode, int action, in
     }
 }
 
-void processPlayerMovement(Player &player, GlobalState& screen_state) {
+void processPlayerMovement(Player &player, GlobalState& global_state) {
     if (Input.keys[GLFW_KEY_W])
-        player.ProcessInput(MovementDir::UP, screen_state);
+        player.ProcessInput(MovementDir::UP, global_state);
     else if (Input.keys[GLFW_KEY_S])
-        player.ProcessInput(MovementDir::DOWN, screen_state);
+        player.ProcessInput(MovementDir::DOWN, global_state);
     if (Input.keys[GLFW_KEY_A])
-        player.ProcessInput(MovementDir::LEFT, screen_state);
+        player.ProcessInput(MovementDir::LEFT, global_state);
     else if (Input.keys[GLFW_KEY_D])
-        player.ProcessInput(MovementDir::RIGHT, screen_state);
+        player.ProcessInput(MovementDir::RIGHT, global_state);
+    if (Input.keys[GLFW_KEY_SPACE])
+        player.ProcessBridge(global_state);
 }
 
 void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) {
@@ -63,7 +65,6 @@ void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) 
         Input.capturedMouseJustNow = true;
     } else
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
 }
 
 void OnMouseMove(GLFWwindow *window, double xpos, double ypos) {
@@ -161,9 +162,9 @@ int main(int argc, char **argv) {
         glfwPollEvents();
 
         processPlayerMovement(player, global_state);
-        if (global_state.update_room != 0){
+        if (global_state.GetTransitionDirection() != 0){
             int new_room_number = global_state.GetNewRoomNumber();
-            global_state.SetRoom(new_room_number);
+            global_state.SetRoom(new_room_number); // todo write set_new_room()
             background.DrawRoom(screenBuffer, global_state);
         }
         player.Draw(screenBuffer, global_state);

@@ -85,16 +85,17 @@ void GlobalState::SetRoom(int room_number) {
     this->room_objects_map = this->objects_map_vector[room_number];
     this->room_transitions_data = this->transitions_data_vector[room_number];
     this->current_room = room_number;
-    this->update_room = 0;
+    this->transition_direction = 0;
+    this->bridges_state = {false, false, false, false};
 }
 
 int GlobalState::GetNewRoomNumber() {
-    if (this->update_room <= 0) {
+    if (this->transition_direction <= 0) {
         return current_room;
     }
-    int new_room_number = (*this->room_transitions_data)[update_room - 1];
+    int new_room_number = (*this->room_transitions_data)[transition_direction - 1];
     if (new_room_number < 0) {
-        std::clog << "From room " << current_room << " address unset room direction " << update_room << "\n";
+        std::clog << "From room " << current_room << " address unset room direction " << transition_direction << "\n";
         return current_room;
     };
     return new_room_number;

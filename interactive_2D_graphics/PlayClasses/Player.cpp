@@ -8,13 +8,18 @@ bool Player::Moved() const {
         return true;
 }
 
-bool isWall(ObjectBorders borders, GlobalState &global_state) {
+bool titleTypeIntersection(const ObjectBorders borders, const std::set<short> &title_types,
+                           const std::shared_ptr<TitleMap> &room_background_map) {
     for (int x : {borders.x_left, borders.x_right}) {
         for (int y : {borders.y_low, borders.y_heigh}) {
-            short map_element = (*global_state.room_background_map)[y][x];
-            if (h_walls.find(map_element) != h_walls.end()) { return true; }
+            short map_element = (*room_background_map)[y][x];
+            if (title_types.count(map_element) != 0) { return true; }
         }
     }
+    return false;
+};
+
+bool isBeyondWindow(const ObjectBorders borders) {
     if ((borders.y_low >= h_WINDOW_T_HEIGHT - 1) ||
         (borders.x_right >= h_WINDOW_T_WIDTH - 1) ||
         (borders.y_low <= 0) ||
@@ -26,10 +31,8 @@ bool isWall(ObjectBorders borders, GlobalState &global_state) {
 
 const int screen_aspect = h_WINDOW_HEIGHT / h_WINDOW_WIDTH;
 
-int isTransition(ObjectBorders borders, GlobalState &global_state) {
-    // return room_direction [1..4] or 0
-    short map_element = (*global_state.room_background_map)[borders.y_center][borders.x_center];
-    if (h_lava.find(map_element) == h_lava.end()) { return 0; }
+int getTransitionDirection(ObjectBorders borders, GlobalState &global_state) {
+    // return room_direction [1..4]
     if (borders.y_center > h_WINDOW_T_HEIGHT - screen_aspect * borders.x_center) {
         // над побочной диагональю
         if (borders.y_center > screen_aspect * borders.x_center) { return 1; }
@@ -41,12 +44,12 @@ int isTransition(ObjectBorders borders, GlobalState &global_state) {
     }
 };
 
-ObjectBorders Player::GetTitleBorders(Point coord) {
+ObjectBorders Player::GetTitleBorders(Point coord, int add_space=0) {
     return ObjectBorders{
-            (coord.x + h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.x + player_image.Width() - h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.y + h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
-            (coord.y + player_image.Height() - h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
+            (coord.x - add_space + h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
+            (coord.x + add_space + player_image.Width() - h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
+            (coord.y - add_space + h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
+            (coord.y + add_space+ player_image.Height() - h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
     };
 };
 
@@ -76,17 +79,25 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     }
 
     ObjectBorders tmp_borders = GetTitleBorders(tmp_coords);
-    if (int room_direction = isTransition(tmp_borders, global_state)){
-        global_state.update_room = room_direction;
+    if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map)){
+        int room_direction = getTransitionDirection(tmp_borders, global_state);
+        global_state.SetTransitionDirection(room_direction);
         return;
     }
-    if (!isWall(tmp_borders, global_state)) {
+    if (!(isBeyondWindow(tmp_borders) ||
+        titleTypeIntersection(tmp_borders, h_walls, global_state.room_background_map))) {
         // update coordinates only if player not in the wall
         this->old_coords = tmp_old_coords;
         this->coords = tmp_coords;
-        return;
     }
+}
 
+void Player::ProcessBridge(GlobalState &global_state) {
+    ObjectBorders borders = GetTitleBorders(this->coords, h_TEXTURE_SIZE/2);
+    if (!titleTypeIntersection(borders, h_lava, global_state.room_background_map)) { return; }
+    int room_direction = getTransitionDirection(borders, global_state);
+    global_state.PutBridge(room_direction);
+    std::clog << "Put bridge " << room_direction << "\n";
 }
 
 void Player::Draw(Image &screen, GlobalState &screen_state) {

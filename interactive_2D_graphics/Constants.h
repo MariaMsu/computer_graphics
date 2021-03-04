@@ -22,6 +22,6 @@ typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> Title
 typedef std::array<short, h_N_TRANSITIONS> TransitionsData;
 
 const std::set<short> h_walls = {01, 02, 03, 04, 05};
-const std::set<short> h_lava = {10, 11, 12, 13, 14};
+const std::set<short> h_lava = {10, 11, 12, 13, 14, 15, 16, 17, 18};
 
 #endif //MAIN_CONSTANTS_H

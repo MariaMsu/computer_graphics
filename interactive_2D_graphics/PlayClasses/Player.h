@@ -36,8 +36,9 @@ struct Player {
 
     bool Moved() const;
     void ProcessInput(MovementDir dir, GlobalState& global_state);
+    void ProcessBridge(GlobalState& global_state);
     void Draw(Image &screen, GlobalState& screen_state);
-    ObjectBorders GetTitleBorders(Point coord);
+    ObjectBorders GetTitleBorders(Point coord, int add_space);
 
 private:
     Point coords{.x = 10, .y = 10};
