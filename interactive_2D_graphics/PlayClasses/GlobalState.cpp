@@ -15,7 +15,7 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
     std::shared_ptr<TitleMap> title_map = std::make_shared<TitleMap>();
     std::string line;
     int i = 0;
-    while (getline(input_stream, line)) {
+    while (getline(input_stream, line)) { // todo i++
         if (line.length() != h_WINDOW_T_WIDTH * h_MAP_CODE_SIZE) {
             std::cout << title_map_path << " incorrect h_WINDOW_WIDTH "
                       << line.length() << " != " << h_WINDOW_T_WIDTH * h_MAP_CODE_SIZE << "\n";
@@ -24,7 +24,7 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
         for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
             // title_map's items belong to [0,...N]
             (*title_map)[h_WINDOW_T_HEIGHT - i - 1][j] =
-                    std::stoi(line.substr(j*h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
+                    std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
         };
         ++i;
     }
@@ -50,21 +50,22 @@ std::shared_ptr<TransitionsData> readTransitions(const std::string &transitions_
         exit(2);
     }
     input_stream.close();
-    if (line.length() != h_N_TRANSITIONS) {
+    if (line.length() != h_N_TRANSITIONS * h_MAP_CODE_SIZE) {
         std::cout << transitions_path << " incorrect h_N_TRANSITIONS "
-                  << line.length() << " != " << h_N_TRANSITIONS << "\n";
+                  << line.length() << " != " << h_N_TRANSITIONS * h_MAP_CODE_SIZE << "\n";
         exit(2);
     }
-    for (int j = 0; j < line.length(); ++j) {
-        (*transitions_data)[j] = int(line[j]);
+    for (int j = 0; j < h_N_TRANSITIONS; ++j) {
+        (*transitions_data)[j] =
+                std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
     };
     return transitions_data;
 };
 
 
 GlobalState::GlobalState(const std::string &rooms_data_path) {
-    for (int i =0; i < h_N_ROOMS; ++i) {
-        std::string single_room_path = rooms_data_path+"/r"+std::to_string(i);
+    for (int i = 0; i < h_N_ROOMS; ++i) {
+        std::string single_room_path = rooms_data_path + "/r" + std::to_string(i);
         this->background_map_vector.push_back(
                 readTitleMap(single_room_path + "/background_map.txt"));
         this->objects_map_vector.push_back(
@@ -83,7 +84,21 @@ void GlobalState::SetRoom(int room_number) {
     this->room_background_map = this->background_map_vector[room_number];
     this->room_objects_map = this->objects_map_vector[room_number];
     this->room_transitions_data = this->transitions_data_vector[room_number];
+    this->current_room = room_number;
+    this->update_room = 0;
 }
+
+int GlobalState::GetNewRoomNumber() {
+    if (this->update_room <= 0) {
+        return current_room;
+    }
+    int new_room_number = (*this->room_transitions_data)[update_room - 1];
+    if (new_room_number < 0) {
+        std::clog << "From room " << current_room << " address unset room direction " << update_room << "\n";
+        return current_room;
+    };
+    return new_room_number;
+};
 
 //void GlobalState::_CheckTransitions() {
 //    for(std::shared_ptr<TransitionsData> transitions: this->transitions_data_vector){

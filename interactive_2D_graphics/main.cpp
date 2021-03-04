@@ -161,8 +161,12 @@ int main(int argc, char **argv) {
         glfwPollEvents();
 
         processPlayerMovement(player, global_state);
+        if (global_state.update_room != 0){
+            int new_room_number = global_state.GetNewRoomNumber();
+            global_state.SetRoom(new_room_number);
+            background.DrawRoom(screenBuffer, global_state);
+        }
         player.Draw(screenBuffer, global_state);
-//        processPlayerMovement(background);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         GL_CHECK_ERRORS;

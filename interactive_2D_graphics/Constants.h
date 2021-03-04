@@ -19,8 +19,9 @@
 #define h_MAP_CODE_SIZE 3
 
 typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;
-typedef std::array<int, h_N_TRANSITIONS> TransitionsData;
+typedef std::array<short, h_N_TRANSITIONS> TransitionsData;
 
-const std::set<char> h_walls = {1, 2, 3, 4, 5};
+const std::set<short> h_walls = {01, 02, 03, 04, 05};
+const std::set<short> h_lava = {10, 11, 12, 13, 14};
 
 #endif //MAIN_CONSTANTS_H

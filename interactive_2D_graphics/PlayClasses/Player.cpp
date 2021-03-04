@@ -24,12 +24,21 @@ bool isWall(ObjectBorders borders, GlobalState &global_state) {
     return false;
 }
 
-int getTransition(ObjectBorders borders) {
-    // todo magic number 1
-    if (borders.y_low >= h_WINDOW_T_HEIGHT - 1) { return 0; }
-    if (borders.y_low >= h_WINDOW_T_HEIGHT - 1) { return 0; }
-    if (borders.y_low >= h_WINDOW_T_HEIGHT - 1) { return 0; }
-    if (borders.x_left >= h_WINDOW_T_HEIGHT - 1) { return 0; }
+const int screen_aspect = h_WINDOW_HEIGHT / h_WINDOW_WIDTH;
+
+int isTransition(ObjectBorders borders, GlobalState &global_state) {
+    // return room_direction [1..4] or 0
+    short map_element = (*global_state.room_background_map)[borders.y_center][borders.x_center];
+    if (h_lava.find(map_element) == h_lava.end()) { return 0; }
+    if (borders.y_center > h_WINDOW_T_HEIGHT - screen_aspect * borders.x_center) {
+        // над побочной диагональю
+        if (borders.y_center > screen_aspect * borders.x_center) { return 1; }
+        else { return 2; };
+    } else {
+        // под побочной диагональю
+        if (borders.y_center > screen_aspect * borders.x_center) { return 4; }
+        else { return 3; };
+    }
 };
 
 ObjectBorders Player::GetTitleBorders(Point coord) {
@@ -67,11 +76,17 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     }
 
     ObjectBorders tmp_borders = GetTitleBorders(tmp_coords);
+    if (int room_direction = isTransition(tmp_borders, global_state)){
+        global_state.update_room = room_direction;
+        return;
+    }
     if (!isWall(tmp_borders, global_state)) {
         // update coordinates only if player not in the wall
         this->old_coords = tmp_old_coords;
         this->coords = tmp_coords;
+        return;
     }
+
 }
 
 void Player::Draw(Image &screen, GlobalState &screen_state) {

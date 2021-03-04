@@ -24,11 +24,15 @@ struct GlobalState {
         delete[] background_state;
     }
 
+    int GetNewRoomNumber();
+    int update_room = 0;  // todo more nice
+
 private:
 //    void _CheckTransitions();
     std::vector<std::shared_ptr<TitleMap>> background_map_vector;
     std::vector<std::shared_ptr<TitleMap>> objects_map_vector;
     std::vector<std::shared_ptr<TransitionsData>> transitions_data_vector;
+    int current_room;
     int n_rooms;
 };
 

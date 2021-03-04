@@ -17,10 +17,17 @@ enum class MovementDir {
 };
 
 struct ObjectBorders {
+    explicit ObjectBorders(int x_left, int x_right, int y_low, int y_heigh):
+            x_left(x_left), x_right(x_right), y_low(y_low), y_heigh(y_heigh) {
+        x_center = (x_left + x_right + 1) / 2;
+        y_center = (y_low + y_heigh + 1) / 2;
+    };
     int x_left;
     int x_right;
+    int x_center;
     int y_low;
     int y_heigh;
+    int y_center;
 };
 
 struct Player {
