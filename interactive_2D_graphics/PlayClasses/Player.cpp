@@ -15,16 +15,29 @@ bool isWall(ObjectBorders borders, GlobalState &global_state) {
             if (h_walls.find(map_element) != h_walls.end()) { return true; }
         }
     }
+    if ((borders.y_low >= h_WINDOW_T_HEIGHT - 1) ||
+        (borders.x_right >= h_WINDOW_T_WIDTH - 1) ||
+        (borders.y_low <= 0) ||
+        (borders.x_left <= 0)) {
+        return true;
+    }
     return false;
-    // todo check field borders
 }
+
+int getTransition(ObjectBorders borders) {
+    // todo magic number 1
+    if (borders.y_low >= h_WINDOW_T_HEIGHT - 1) { return 0; }
+    if (borders.y_low >= h_WINDOW_T_HEIGHT - 1) { return 0; }
+    if (borders.y_low >= h_WINDOW_T_HEIGHT - 1) { return 0; }
+    if (borders.x_left >= h_WINDOW_T_HEIGHT - 1) { return 0; }
+};
 
 ObjectBorders Player::GetTitleBorders(Point coord) {
     return ObjectBorders{
-            (coord.x + h_P_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.x + player_image.Width() - h_P_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.y + h_P_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
-            (coord.y + player_image.Height() - h_P_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
+            (coord.x + h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
+            (coord.x + player_image.Width() - h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
+            (coord.y + h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
+            (coord.y + player_image.Height() - h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
     };
 };
 
@@ -52,6 +65,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
         default:
             break;
     }
+
     ObjectBorders tmp_borders = GetTitleBorders(tmp_coords);
     if (!isWall(tmp_borders, global_state)) {
         // update coordinates only if player not in the wall

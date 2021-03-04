@@ -2,7 +2,7 @@
 #define MAIN_BACKGROUND_H
 
 #include <utility>
-#include <vector>
+#include <map>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -20,7 +20,7 @@ struct Background {
 private:
     std::string map_path;
     std::string titles_path;
-    std::vector<std::shared_ptr<Image>> titles_vector;  // todo remove shared?
+    std::map<int, std::shared_ptr<Image>> titles_map;
 };
 
 #endif // MAIN_BACKGROUND_H

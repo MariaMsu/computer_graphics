@@ -2,6 +2,8 @@
 #include "GlobalState.h"
 
 #include <memory>
+#include <algorithm>
+
 
 std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
     std::ifstream input_stream(title_map_path);
@@ -81,4 +83,15 @@ void GlobalState::SetRoom(int room_number) {
     this->room_background_map = this->background_map_vector[room_number];
     this->room_objects_map = this->objects_map_vector[room_number];
     this->room_transitions_data = this->transitions_data_vector[room_number];
-};
+}
+
+//void GlobalState::_CheckTransitions() {
+//    for(std::shared_ptr<TransitionsData> transitions: this->transitions_data_vector){
+//        for (int room: *transitions){
+//            TransitionsData target_room_t = *(this->transitions_data_vector[room]);
+//            if (std::find(target_room_t.begin(), target_room_t.end(), room) == target_room_t.end()){
+//                std::cout<<"room "<<room<<"'s transition data has not transition to "<<
+//            };
+//        }
+//    }
+//};
