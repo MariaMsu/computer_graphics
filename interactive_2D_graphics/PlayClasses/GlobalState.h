@@ -11,7 +11,10 @@
 struct GlobalState {
 
     explicit GlobalState(const std::string &rooms_data_path);
-    void PutBridge(int direction) { bridges_state[direction - 1] = true; };
+    void PutBridge(int direction) {
+        bridges_state[direction - 1] = true;
+        draw_bridge = true;
+    };
     void SetTransitionDirection(int direction) {
         if (bridges_state[direction - 1]) { this->transition_direction = direction; }
     };
@@ -22,6 +25,7 @@ struct GlobalState {
 
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;
+    bool draw_bridge = false;
 
 private:
     void _ReassigneState(int room_number);

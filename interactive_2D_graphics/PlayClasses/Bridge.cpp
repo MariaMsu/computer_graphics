@@ -23,5 +23,5 @@ Bridge::Bridge(const std::string &titles_path) {
 
 void Bridge::DrawBridge(Image &screen, GlobalState &screen_state, int direction, int position) {
     const std::shared_ptr<Image> &title = this->bridges_array[direction-1];
-    drawAsset(screen, title, 200, 200);
+    drawSaveAsset(screen, title, 200, 200);
 }

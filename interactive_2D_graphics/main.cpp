@@ -160,10 +160,13 @@ int main(int argc, char **argv) {
         glfwPollEvents();
 
         processPlayerMovement(player, global_state);
+        if (global_state.draw_bridge){
+            bridge.DrawBridge(screenBuffer, global_state, 1, 1);
+            global_state.draw_bridge = false;
+        }
         if (global_state.SwitchRoom()){  // only if transition direction appear
             background.DrawRoom(screenBuffer, global_state);
             player.SetPosition(global_state.GetInitPlayerPosition());
-            bridge.DrawBridge(screenBuffer, global_state, 1, 1);
         }
         player.Draw(screenBuffer, global_state);
 

@@ -26,7 +26,9 @@ struct PlayerBorders {
 };
 
 struct Player {
-    explicit Player(const std::string &asset_path) : player_image(Image(asset_path)) {};
+    explicit Player(const std::string &asset_path) : player_image(Image(asset_path)) {
+//        image_ptr = std::make_shared<Image>(player_image);
+    };
     void SetPosition(Point player_position) { this->coords = player_position; }
     bool Moved() const;
     void ProcessInput(MovementDir dir, GlobalState &global_state);
@@ -40,6 +42,7 @@ private:
     Pixel color{.r = 255, .g = 255, .b = 0, .a = 255};
     int move_speed = 4;
     Image player_image;
+//    std::shared_ptr<Image> image_ptr; // double free?
 };
 
 #endif //MAIN_PLAYER_H
