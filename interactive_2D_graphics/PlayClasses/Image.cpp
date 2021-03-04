@@ -45,7 +45,7 @@ Pixel Image::GetPixel(int x, int y) {
 
 void Image::PutPixel(int x, int y, const Pixel &pix) {
     if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)){
-        std::cout << "incorrect set pixel index x: "<< x << " y: " << y << this->a_path << "\n";
+//        std::clog << "incorrect set pixel index x: "<< x << " y: " << y << ", " <<this->a_path << "\n";
         return;
     }
     data[width * y + x] = pix;

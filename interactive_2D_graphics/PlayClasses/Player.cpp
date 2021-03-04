@@ -8,10 +8,11 @@ bool Player::Moved() const {
         return true;
 }
 
-bool titleTypeIntersection(const ObjectBorders borders, const std::set<short> &title_types,
+bool titleTypeIntersection(const PlayerBorders borders, const std::set<short> &title_types,
                            const std::shared_ptr<TitleMap> &room_background_map) {
-    for (int x : {borders.x_left, borders.x_right}) {
-        for (int y : {borders.y_low, borders.y_heigh}) {
+    // checking only corners is not enough
+    for (int x=borders.x_left; x<=borders.x_right; ++x){
+        for (int y=borders.y_low; y<=borders.y_heigh; ++y){
             short map_element = (*room_background_map)[y][x];
             if (title_types.count(map_element) != 0) { return true; }
         }
@@ -19,8 +20,8 @@ bool titleTypeIntersection(const ObjectBorders borders, const std::set<short> &t
     return false;
 };
 
-bool isBeyondWindow(const ObjectBorders borders) {
-    if ((borders.y_low >= h_WINDOW_T_HEIGHT - 1) ||
+bool isBeyondWindow(const PlayerBorders borders) {
+    if ((borders.y_heigh >= h_WINDOW_T_HEIGHT - 1) ||
         (borders.x_right >= h_WINDOW_T_WIDTH - 1) ||
         (borders.y_low <= 0) ||
         (borders.x_left <= 0)) {
@@ -31,7 +32,7 @@ bool isBeyondWindow(const ObjectBorders borders) {
 
 const int screen_aspect = h_WINDOW_HEIGHT / h_WINDOW_WIDTH;
 
-int getTransitionDirection(ObjectBorders borders, GlobalState &global_state) {
+int getTransitionDirection(PlayerBorders borders, GlobalState &global_state) {
     // return room_direction [1..4]
     if (borders.y_center > h_WINDOW_T_HEIGHT - screen_aspect * borders.x_center) {
         // над побочной диагональю
@@ -44,12 +45,16 @@ int getTransitionDirection(ObjectBorders borders, GlobalState &global_state) {
     }
 };
 
-ObjectBorders Player::GetTitleBorders(Point coord, int add_space=0) {
-    return ObjectBorders{
-            (coord.x - add_space + h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.x + add_space + player_image.Width() - h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.y - add_space + h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
-            (coord.y + add_space+ player_image.Height() - h_PLAYER_PHIS_HEIGHT_SHIFT) / h_TEXTURE_SIZE,
+PlayerBorders Player::GetTitleBorders(Point coord, int add_space = 0) {
+    return PlayerBorders{
+            (coord.x - add_space +
+             h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
+            (coord.x + player_image.Width() + add_space -
+             h_PLAYER_PHIS_WIDTH_SHIFT ) / h_TEXTURE_SIZE,
+            (coord.y - add_space +
+             h_PLAYER_PHIS_HEIGHT_SHIFT ) / h_TEXTURE_SIZE,
+            (coord.y + player_image.Height() + add_space -
+             h_PLAYER_PHIS_HEIGHT_SHIFT ) / h_TEXTURE_SIZE,
     };
 };
 
@@ -78,14 +83,17 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
             break;
     }
 
-    ObjectBorders tmp_borders = GetTitleBorders(tmp_coords);
-    if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map)){
+    PlayerBorders tmp_borders = GetTitleBorders(tmp_coords);
+//    std::cout<<"x: "<<tmp_coords.x<<" res= "<<tmp_borders.x_left<<", "<<tmp_borders.x_right<<"\n";
+//    std::cout<<"y: "<<tmp_coords.y<<" res= "<<tmp_borders.y_low<<", "<<tmp_borders.y_heigh<<"\n";
+//    std::cout<<"\n";
+    if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map)) {
         int room_direction = getTransitionDirection(tmp_borders, global_state);
         global_state.SetTransitionDirection(room_direction);
         return;
     }
-    if (!(isBeyondWindow(tmp_borders) ||
-        titleTypeIntersection(tmp_borders, h_walls, global_state.room_background_map))) {
+    if (!isBeyondWindow(tmp_borders) &&
+          !titleTypeIntersection(tmp_borders, h_walls, global_state.room_background_map)) {
         // update coordinates only if player not in the wall
         this->old_coords = tmp_old_coords;
         this->coords = tmp_coords;
@@ -93,7 +101,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
 }
 
 void Player::ProcessBridge(GlobalState &global_state) {
-    ObjectBorders borders = GetTitleBorders(this->coords, h_TEXTURE_SIZE/2);
+    PlayerBorders borders = GetTitleBorders(this->coords, h_TEXTURE_SIZE / 2);
     if (!titleTypeIntersection(borders, h_lava, global_state.room_background_map)) { return; }
     int room_direction = getTransitionDirection(borders, global_state);
     global_state.PutBridge(room_direction);

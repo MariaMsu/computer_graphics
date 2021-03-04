@@ -11,8 +11,8 @@ enum class MovementDir {
     RIGHT
 };
 
-struct ObjectBorders {
-    explicit ObjectBorders(int x_left, int x_right, int y_low, int y_heigh) :
+struct PlayerBorders {
+    explicit PlayerBorders(int x_left, int x_right, int y_low, int y_heigh) :
             x_left(x_left), x_right(x_right), y_low(y_low), y_heigh(y_heigh) {
         x_center = (x_left + x_right + 1) / 2;
         y_center = (y_low + y_heigh + 1) / 2;
@@ -27,14 +27,12 @@ struct ObjectBorders {
 
 struct Player {
     explicit Player(const std::string &asset_path) : player_image(Image(asset_path)) {};
-
     void SetPosition(Point player_position) { this->coords = player_position; }
-
     bool Moved() const;
     void ProcessInput(MovementDir dir, GlobalState &global_state);
     void ProcessBridge(GlobalState &global_state);
     void Draw(Image &screen, GlobalState &screen_state);
-    ObjectBorders GetTitleBorders(Point coord, int add_space);
+    PlayerBorders GetTitleBorders(Point coord, int add_space);
 
 private:
     Point coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
