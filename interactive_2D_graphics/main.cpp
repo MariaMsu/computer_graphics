@@ -137,17 +137,13 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
-    global_state.SetRoom(0);
     // todo remove absolute path
+    GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
-    Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
-    Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/img.png", starting_pos};
+    Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/img.png"};
 
-    Image img("../resources/tex.png");
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state);
-
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     GL_CHECK_ERRORS;
@@ -162,10 +158,9 @@ int main(int argc, char **argv) {
         glfwPollEvents();
 
         processPlayerMovement(player, global_state);
-        if (global_state.GetTransitionDirection() != 0){
-            int new_room_number = global_state.GetNewRoomNumber();
-            global_state.SetRoom(new_room_number); // todo write set_new_room()
+        if (global_state.SwitchRoom()){  // only if transition direction appear
             background.DrawRoom(screenBuffer, global_state);
+            player.SetPosition(global_state.GetInitPlayerPosition());
         }
         player.Draw(screenBuffer, global_state);
 

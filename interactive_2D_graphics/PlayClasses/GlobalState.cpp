@@ -74,11 +74,12 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
                 readTransitions(single_room_path + "/transitions.txt"));
     }
     this->n_rooms = this->background_map_vector.size();
+    this->_ReassigneState(0);
 }
 
-void GlobalState::SetRoom(int room_number) {
+void GlobalState::_ReassigneState(int room_number) {
     if ((room_number < 0) || (room_number >= this->n_rooms)) {
-        std::cout << "room_number must to be: 0 <" << room_number << " <= " << this->n_rooms << "\n";
+        std::cerr << "room_number must to be: 0 <" << room_number << " <= " << this->n_rooms << "\n";
         exit(3);
     }
     this->room_background_map = this->background_map_vector[room_number];
@@ -89,16 +90,26 @@ void GlobalState::SetRoom(int room_number) {
     this->bridges_state = {false, false, false, false};
 }
 
-int GlobalState::GetNewRoomNumber() {
-    if (this->transition_direction <= 0) {
-        return current_room;
+Point getNewPlayerPosition(int transition_direction){
+    switch(transition_direction){
+        case 1: return Point{h_WINDOW_WIDTH/2, h_TEXTURE_SIZE*3};
+        case 2: return Point{h_WINDOW_WIDTH - h_TEXTURE_SIZE*3, h_WINDOW_HEIGHT/2};
+        case 3: return Point{h_WINDOW_WIDTH/2, h_WINDOW_HEIGHT - h_TEXTURE_SIZE*3};
+        case 4: return Point{h_TEXTURE_SIZE*3, h_WINDOW_HEIGHT/2};
+        default: return {h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
     }
+};
+
+bool GlobalState::SwitchRoom() {
+    if (this->transition_direction <= 0) { return false; }
     int new_room_number = (*this->room_transitions_data)[transition_direction - 1];
     if (new_room_number < 0) {
         std::clog << "From room " << current_room << " address unset room direction " << transition_direction << "\n";
-        return current_room;
+        return false;
     };
-    return new_room_number;
+    this->init_player_position = getNewPlayerPosition(this->transition_direction);
+    _ReassigneState(new_room_number);
+    return true;
 };
 
 //void GlobalState::_CheckTransitions() {

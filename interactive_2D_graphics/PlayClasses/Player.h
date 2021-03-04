@@ -4,11 +4,6 @@
 #include "Image.h"
 #include "GlobalState.h"
 
-struct Point {
-    int x;
-    int y;
-};
-
 enum class MovementDir {
     UP,
     DOWN,
@@ -17,7 +12,7 @@ enum class MovementDir {
 };
 
 struct ObjectBorders {
-    explicit ObjectBorders(int x_left, int x_right, int y_low, int y_heigh):
+    explicit ObjectBorders(int x_left, int x_right, int y_low, int y_heigh) :
             x_left(x_left), x_right(x_right), y_low(y_low), y_heigh(y_heigh) {
         x_center = (x_left + x_right + 1) / 2;
         y_center = (y_low + y_heigh + 1) / 2;
@@ -31,18 +26,19 @@ struct ObjectBorders {
 };
 
 struct Player {
-    explicit Player(const std::string& asset_path, Point pos = {.x = 10, .y = 10}):
-            coords(pos), old_coords(coords), player_image(Image(asset_path)) {};
+    explicit Player(const std::string &asset_path) : player_image(Image(asset_path)) {};
+
+    void SetPosition(Point player_position) { this->coords = player_position; }
 
     bool Moved() const;
-    void ProcessInput(MovementDir dir, GlobalState& global_state);
-    void ProcessBridge(GlobalState& global_state);
-    void Draw(Image &screen, GlobalState& screen_state);
+    void ProcessInput(MovementDir dir, GlobalState &global_state);
+    void ProcessBridge(GlobalState &global_state);
+    void Draw(Image &screen, GlobalState &screen_state);
     ObjectBorders GetTitleBorders(Point coord, int add_space);
 
 private:
-    Point coords{.x = 10, .y = 10};
-    Point old_coords{.x = 10, .y = 10};
+    Point coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
+    Point old_coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
     Pixel color{.r = 255, .g = 255, .b = 0, .a = 255};
     int move_speed = 4;
     Image player_image;

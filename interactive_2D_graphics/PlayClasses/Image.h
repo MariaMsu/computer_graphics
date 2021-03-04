@@ -2,15 +2,7 @@
 #define MAIN_IMAGE_H
 
 #include <string>
-
-constexpr int tileSize = 16;
-
-struct Pixel {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    uint8_t a;
-};
+#include "Utils.h"
 
 Pixel blend(Pixel oldPixel, Pixel newPixel);
 
