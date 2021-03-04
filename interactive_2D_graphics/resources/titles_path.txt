@@ -8,10 +8,12 @@
 
 
 
-
-
-
-
-
-
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l0.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l1.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l2.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l3.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l4.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l5.png
 /home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l6.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l7.png
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/background/lava/l8.png
