@@ -45,16 +45,12 @@ int getTransitionDirection(PlayerBorders borders, GlobalState &global_state) {
     }
 };
 
-PlayerBorders Player::GetTitleBorders(Point coord, int add_space = 0) {
+PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
     return PlayerBorders{
-            (coord.x - add_space +
-             h_PLAYER_PHIS_WIDTH_SHIFT) / h_TEXTURE_SIZE,
-            (coord.x + player_image.Width() + add_space -
-             h_PLAYER_PHIS_WIDTH_SHIFT ) / h_TEXTURE_SIZE,
-            (coord.y - add_space +
-             h_PLAYER_PHIS_HEIGHT_SHIFT ) / h_TEXTURE_SIZE,
-            (coord.y + player_image.Height() + add_space -
-             h_PLAYER_PHIS_HEIGHT_SHIFT ) / h_TEXTURE_SIZE,
+            (coord.x - x_add_space) / h_TEXTURE_SIZE,
+            (coord.x + player_image.Width() + x_add_space) / h_TEXTURE_SIZE,
+            (coord.y - y_add_space) / h_TEXTURE_SIZE,
+            (coord.y + player_image.Height() + y_add_space) / h_TEXTURE_SIZE,
     };
 };
 
@@ -83,7 +79,8 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
             break;
     }
 
-    PlayerBorders tmp_borders = GetTitleBorders(tmp_coords);
+    PlayerBorders tmp_borders = GetTitleBorders(
+            tmp_coords,  -h_PLAYER_PHIS_WIDTH_SHIFT, -h_PLAYER_PHIS_HEIGHT_SHIFT);
 //    std::cout<<"x: "<<tmp_coords.x<<" res= "<<tmp_borders.x_left<<", "<<tmp_borders.x_right<<"\n";
 //    std::cout<<"y: "<<tmp_coords.y<<" res= "<<tmp_borders.y_low<<", "<<tmp_borders.y_heigh<<"\n";
 //    std::cout<<"\n";
@@ -101,7 +98,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
 }
 
 void Player::ProcessBridge(GlobalState &global_state) {
-    PlayerBorders borders = GetTitleBorders(this->coords, h_TEXTURE_SIZE / 2);
+    PlayerBorders borders = GetTitleBorders(this->coords, h_TEXTURE_SIZE, h_TEXTURE_SIZE);
     if (!titleTypeIntersection(borders, h_lava, global_state.room_background_map)) { return; }
     int room_direction = getTransitionDirection(borders, global_state);
     global_state.PutBridge(room_direction);

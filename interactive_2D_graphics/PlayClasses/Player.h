@@ -32,7 +32,7 @@ struct Player {
     void ProcessInput(MovementDir dir, GlobalState &global_state);
     void ProcessBridge(GlobalState &global_state);
     void Draw(Image &screen, GlobalState &screen_state);
-    PlayerBorders GetTitleBorders(Point coord, int add_space);
+    PlayerBorders GetTitleBorders(Point coord, int x_add_space, int y_add_space);
 
 private:
     Point coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
