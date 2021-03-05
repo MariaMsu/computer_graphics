@@ -3,10 +3,8 @@
 #include "../Constants.h"
 
 #include <cmath>
-
-//Point PointT2Point(PointT p){
-//    return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y* h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
-//};
+double getPointsDistance(Point p1, Point p2);
+Point PointT2Point(PointT p);
 
 Pixel blend(Pixel oldPixel, Pixel newPixel);
 

@@ -102,13 +102,6 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     }
 }
 
-Point PointT2Point(PointT p){
-    return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y* h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
-};
-
-double getPointsDistance(Point p1, Point p2){
-    return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
-}
 
 void Player::ProcessBridge(GlobalState &global_state) {
     double smallest_distance = h_BRIDGE_REQ_DISTANCE;

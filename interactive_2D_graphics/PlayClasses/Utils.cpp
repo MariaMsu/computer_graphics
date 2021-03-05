@@ -2,6 +2,14 @@
 #include "Image.h"
 #include "Utils.h"
 
+double getPointsDistance(Point p1, Point p2){
+    return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
+}
+
+Point PointT2Point(PointT p){
+    return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y* h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
+};
+
 Pixel blend(Pixel oldPixel, Pixel newPixel) {
     newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
     newPixel.g = newPixel.a / 255.0 * (newPixel.g - oldPixel.g) + oldPixel.g;
