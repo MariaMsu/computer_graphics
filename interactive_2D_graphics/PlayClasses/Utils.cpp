@@ -10,7 +10,7 @@ double detNearestPointT(Point main_point, std::shared_ptr<std::vector<PointT>>& 
     int local_nearest_index = -1;
     for (int i = 0; i < points->size(); ++i){
         double distance = getPointsDistance(main_point, PointT2Point((*points)[i]));
-        std::clog<<"distance: "<<distance<<" ("<<(*points)[i].x<<", "<<(*points)[i].y<<")\n";
+//        std::clog<<"distance: "<<distance<<" ("<<(*points)[i].x<<", "<<(*points)[i].y<<")\n";
         if (distance < smallest_distance){
             smallest_distance = distance;
             local_nearest_index = i;

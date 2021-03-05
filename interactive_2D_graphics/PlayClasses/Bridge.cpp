@@ -25,26 +25,22 @@ void Bridge::DrawBridge(Image &screen, PointT bridge_point) {
     assert((1<=direction) && (direction<=4));
     const std::shared_ptr<Image> &title = this->bridges_array[direction-1];
     int global_x, global_y ;
-    switch (direction) {  // todo replace macros
+    switch (direction) {
         case 1:
-            global_x = bridge_point.x * h_TEXTURE_SIZE;
-            global_y = bridge_point.y * h_TEXTURE_SIZE;
-            break;
         case 2:
-            global_x = bridge_point.x * h_TEXTURE_SIZE;
-            global_y = bridge_point.y * h_TEXTURE_SIZE;
+            global_x = (bridge_point.x-1) * h_TEXTURE_SIZE;
+            global_y = (bridge_point.y-1) * h_TEXTURE_SIZE;
             break;
         case 3:
-            global_x = bridge_point.x * h_TEXTURE_SIZE;
-            global_y = bridge_point.y * h_TEXTURE_SIZE;
+            global_x = (bridge_point.x-1) * h_TEXTURE_SIZE;
+            global_y = (bridge_point.y) * h_TEXTURE_SIZE;
             break;
         case 4:
-            global_x = bridge_point.x * h_TEXTURE_SIZE;
-            global_y = bridge_point.y * h_TEXTURE_SIZE;
+            global_x = (bridge_point.x) * h_TEXTURE_SIZE;
+            global_y = (bridge_point.y-1) * h_TEXTURE_SIZE;
             break;
         default:
             global_x = 0, global_y = 0;
     }
-    std::cout<<"global_x "<<global_x<<", global_y "<<global_y<<", direction "<<direction<<"\n";
     drawTrSaveAsset(screen, title, global_x, global_y);
 }
