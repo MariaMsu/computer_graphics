@@ -98,12 +98,31 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     }
 }
 
+Point PointT2Point(PointT p){
+    return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y* h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
+};
+
+double getPointsDistance(Point p1, Point p2){
+    return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
+}
+
 void Player::ProcessBridge(GlobalState &global_state) {
-    PlayerBorders borders = GetTitleBorders(this->coords, h_TEXTURE_SIZE, h_TEXTURE_SIZE);
-    if (!titleTypeIntersection(borders, h_lava, global_state.room_background_map)) { return; }
-    int room_direction = getTransitionDirection(borders, global_state);
-    global_state.PutBridge(room_direction);
-    std::clog << "Put bridge " << room_direction << "\n";
+    double smallest_distance = h_BRIDGE_REQ_DISTANCE;
+    int nearest_transition = -1;
+    for(int i = 0; i < global_state.room_transitions_points->size(); ++i){
+        double distance = getPointsDistance(coords, PointT2Point((*global_state.room_transitions_points)[i]));
+        std::clog<<"distance: "<<distance<<" ("<<(*global_state.room_transitions_points)[i].x<<", ";
+        std::clog<<(*global_state.room_transitions_points)[i].y<<")\n";
+        if (distance < smallest_distance){
+            smallest_distance = distance;
+            nearest_transition = i;
+        }
+    }
+
+    std::clog<<"\n";
+    if (nearest_transition >= 0){ global_state.PushStateBridge(nearest_transition);
+    std::clog<<"put bridge\n";
+    }
 }
 
 void Player::Draw(Image &screen, GlobalState &screen_state) {

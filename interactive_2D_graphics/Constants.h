@@ -24,5 +24,6 @@ typedef std::array<short, h_N_TRANSITIONS> TransitionsData;
 const std::set<short> h_walls = {01, 02, 03, 04, 05};
 const std::set<short> h_lava = {10, 11, 12, 13, 14, 15, 16, 17, 18};
 #define h_LAVA_CENTRE 14
+#define h_BRIDGE_REQ_DISTANCE 200
 
 #endif //MAIN_CONSTANTS_H

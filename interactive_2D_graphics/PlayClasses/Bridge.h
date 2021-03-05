@@ -10,7 +10,7 @@
 
 struct Bridge {
     explicit Bridge(const std::string &titles_path);
-    void DrawBridge(Image &screen, GlobalState &screen_state, int direction, int position);
+    void DrawBridge(Image &screen, PointT bridge_point);
 
 
 private:

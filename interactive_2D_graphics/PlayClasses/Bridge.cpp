@@ -21,25 +21,27 @@ Bridge::Bridge(const std::string &titles_path) {
     title_file.close();
 }
 
-void Bridge::DrawBridge(Image &screen, GlobalState &screen_state, int direction, int position) {
-    const std::shared_ptr<Image> &title = this->bridges_array[0];
+void Bridge::DrawBridge(Image &screen, PointT bridge_point) {
+    int direction = getTransitionDirection(bridge_point);
+    assert((1<=direction) && (direction<=4));
+    const std::shared_ptr<Image> &title = this->bridges_array[direction];
     int global_x, global_y ;
     switch (direction) {  // todo replace macros
         case 1:
-            global_x = position * h_TEXTURE_SIZE;
-            global_y = (h_WINDOW_T_HEIGHT - 2)*h_TEXTURE_SIZE;
+            global_x = bridge_point.x * h_TEXTURE_SIZE;
+            global_y = bridge_point.y * h_TEXTURE_SIZE;
             break;
         case 2:
-            global_x = (h_WINDOW_T_WIDTH - 3)*h_TEXTURE_SIZE;
-            global_y = (position - 1) * h_TEXTURE_SIZE;
+            global_x = bridge_point.x * h_TEXTURE_SIZE;
+            global_y = bridge_point.y * h_TEXTURE_SIZE;
             break;
         case 3:
-            global_x = (position - 1) * h_TEXTURE_SIZE;
-            global_y = 0;
+            global_x = bridge_point.x * h_TEXTURE_SIZE;
+            global_y = bridge_point.y * h_TEXTURE_SIZE;
             break;
         case 4:
-            global_x = 0;
-            global_y = (position - 1) * h_TEXTURE_SIZE;
+            global_x = bridge_point.x * h_TEXTURE_SIZE;
+            global_y = bridge_point.y * h_TEXTURE_SIZE;
             break;
         default:
             global_x = 0, global_y = 0;

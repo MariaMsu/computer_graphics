@@ -35,3 +35,11 @@ void drawTrSaveAsset(Image &screen, const std::shared_ptr<Image> &asset, int glo
         }
     }
 };
+
+int getTransitionDirection(PointT p){
+if (p.y == h_WINDOW_T_HEIGHT - 1){return 1;}
+if (p.x == h_WINDOW_T_WIDTH - 1){return 2;}
+if (p.y == 0){return 3;}
+if (p.x == 0){return 4;}
+return -1;
+}

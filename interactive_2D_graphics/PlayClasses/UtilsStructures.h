@@ -13,4 +13,9 @@ struct Point {
     int y;
 };
 
+struct PointT {
+    int x;
+    int y;
+};
+
 #endif //MAIN_UTILSSTRUCTURES_H
