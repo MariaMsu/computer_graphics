@@ -4,6 +4,8 @@
 #include <memory>
 #include <algorithm>
 
+#include <unistd.h>
+
 
 std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
     std::ifstream input_stream(title_map_path);
@@ -36,52 +38,54 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
     return title_map;
 };
 
-std::shared_ptr<TransitionsData> readTransitions(const std::string &transitions_path) {
+std::shared_ptr<std::vector<int>> readTransitions(const std::string &transitions_path) {
     std::ifstream input_stream(transitions_path);
     if (!input_stream.is_open()) {
         std::cout << "Unable to open room file " << transitions_path << "\n";
         exit(2);
     }
 
-    std::shared_ptr<TransitionsData> transitions_data = std::make_shared<TransitionsData>();
+    std::shared_ptr<std::vector<int>> transitions_data = std::make_shared<std::vector<int>>();
     std::string line;
-    if (!getline(input_stream, line)) {
-        std::cout << "Transitions incorrect " << transitions_path << "\n";
-        exit(2);
+    int i;
+    std::cout << transitions_path << " h_N_TRANSITIONS \n";
+    for (i = 0; getline(input_stream, line); ++i) {
+        std::cout<<"|"<<line<<"|\n";
+        if (line.length() == 1){continue;}  // empty wall
+        if (line.length() % h_MAP_CODE_SIZE != 0) {
+            std::cout << transitions_path << " incorrect h_N_TRANSITIONS "
+                      << line.length() << " not multiple 3\n";
+            exit(2);
+        }
+        for (int j = 0; j < line.length() / h_MAP_CODE_SIZE; ++j) {
+            transitions_data->push_back(
+                    std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE)));
+        };
     }
     input_stream.close();
-    if (line.length() != h_N_TRANSITIONS * h_MAP_CODE_SIZE) {
-        std::cout << transitions_path << " incorrect h_N_TRANSITIONS "
-                  << line.length() << " != " << h_N_TRANSITIONS * h_MAP_CODE_SIZE << "\n";
-        exit(2);
-    }
-    for (int j = 0; j < h_N_TRANSITIONS; ++j) {
-        (*transitions_data)[j] =
-                std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
-    };
+    assert(i==4);
     return transitions_data;
 };
 
 std::shared_ptr<std::vector<PointT>> getTransitionPoints(
-        std::shared_ptr<TransitionsData> &transitions_data,
         std::shared_ptr<TitleMap>& background_map) {
     std::shared_ptr<std::vector<PointT>> transition_points = std::make_shared<std::vector<PointT>>();
-        for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
-            if ((*background_map)[h_WINDOW_T_HEIGHT - 1][j] == h_LAVA_CENTRE) {
-                transition_points->push_back(PointT{j, h_WINDOW_T_HEIGHT - 1});
-            }};
-        for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
-            if ((*background_map)[i][h_WINDOW_T_WIDTH - 1] == h_LAVA_CENTRE) {
-                transition_points->push_back(PointT{h_WINDOW_T_WIDTH - 1, i});
-            }};
-        for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
-            if ((*background_map)[0][j] == h_LAVA_CENTRE) {
-                transition_points->push_back(PointT{j, 0});
-            }};
-        for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
-            if ((*background_map)[i][0] == h_LAVA_CENTRE) {
-                transition_points->push_back(PointT{0, i});
-            }};
+    for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
+        if ((*background_map)[h_WINDOW_T_HEIGHT - 1][j] == h_LAVA_CENTRE) {
+            transition_points->push_back(PointT{j, h_WINDOW_T_HEIGHT - 1});
+        }};
+    for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
+        if ((*background_map)[i][h_WINDOW_T_WIDTH - 1] == h_LAVA_CENTRE) {
+            transition_points->push_back(PointT{h_WINDOW_T_WIDTH - 1, i});
+        }};
+    for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
+        if ((*background_map)[0][j] == h_LAVA_CENTRE) {
+            transition_points->push_back(PointT{j, 0});
+        }};
+    for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
+        if ((*background_map)[i][0] == h_LAVA_CENTRE) {
+            transition_points->push_back(PointT{0, i});
+        }};
     return transition_points;
 }
 
@@ -95,8 +99,14 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
                 readTitleMap(single_room_path + "/objects_map.txt"));
         this->transitions_data_vector.push_back(
                 readTransitions(single_room_path + "/transitions.txt"));
-        this->transitions_points_vector.push_back(getTransitionPoints(
-                transitions_data_vector.back(),background_map_vector.back()));
+        this->transitions_points_vector.push_back(getTransitionPoints(background_map_vector.back()));
+        if (transitions_points_vector.back()->size() != transitions_data_vector.back()->size()) {
+            std::clog << "Transition data in room "<< i << " is inconsistent: " <<
+                transitions_points_vector.back()->size()
+                <<" != "<< transitions_data_vector.back()->size() << "\n";
+            exit(2);
+        }
+        assert(transitions_points_vector.back()->size() == transitions_data_vector.back()->size());
     }
     this->n_rooms = this->background_map_vector.size();
     this->reassigneState(0);

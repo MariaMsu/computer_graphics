@@ -42,14 +42,14 @@ private:
     // inner
     bool switch_room = false;
     bool draw_bridge = false;
-    std::shared_ptr<TransitionsData> room_transitions_data;
-    TransitionsData bridges_state{false, false, false, false};
+    std::shared_ptr<std::vector<int>> room_transitions_data;
+    TransitionsData bridges_state{false, false, false, false}; // todo
     std::shared_ptr<TitleMap> room_objects_map; // todo remove?
 
     // all rooms data
     std::vector<std::shared_ptr<TitleMap>> background_map_vector;
     std::vector<std::shared_ptr<TitleMap>> objects_map_vector;
-    std::vector<std::shared_ptr<TransitionsData>> transitions_data_vector;
+    std::vector<std::shared_ptr<std::vector<int>>> transitions_data_vector;
     std::vector<std::shared_ptr<std::vector<PointT>>> transitions_points_vector;
 //    std::vector<std::shared_ptr<TransitionsData>> transitions_pos_vector;
     int current_room = 0;
