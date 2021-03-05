@@ -1,5 +1,4 @@
 #include <fstream>
-#include <iostream>
 #include "Bridge.h"
 #include "Utils.h"
 
@@ -24,7 +23,7 @@ Bridge::Bridge(const std::string &titles_path) {
 void Bridge::DrawBridge(Image &screen, PointT bridge_point) {
     int direction = getTransitionDirection(bridge_point);
     assert((1<=direction) && (direction<=4));
-    const std::shared_ptr<Image> &title = this->bridges_array[direction];
+    const std::shared_ptr<Image> &title = this->bridges_array[direction-1];
     int global_x, global_y ;
     switch (direction) {  // todo replace macros
         case 1:

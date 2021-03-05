@@ -1,14 +1,9 @@
 #ifndef MAIN_BACKGROUND_H
 #define MAIN_BACKGROUND_H
 
-#include <utility>
 #include <map>
 #include <fstream>
-#include <iostream>
-#include <memory>
-#include <cstring>
 #include "Image.h"
-#include "Player.h"
 #include "../Constants.h"
 #include "GlobalState.h"
 

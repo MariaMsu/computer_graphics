@@ -1,10 +1,4 @@
-
 #include "GlobalState.h"
-
-#include <memory>
-#include <algorithm>
-
-#include <unistd.h>
 
 
 std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
@@ -48,9 +42,7 @@ std::shared_ptr<std::vector<int>> readTransitions(const std::string &transitions
     std::shared_ptr<std::vector<int>> transitions_data = std::make_shared<std::vector<int>>();
     std::string line;
     int i;
-    std::cout << transitions_path << " h_N_TRANSITIONS \n";
     for (i = 0; getline(input_stream, line); ++i) {
-        std::cout<<"|"<<line<<"|\n";
         if (line.length() == 1){continue;}  // empty wall
         if (line.length() % h_MAP_CODE_SIZE != 0) {
             std::cout << transitions_path << " incorrect h_N_TRANSITIONS "

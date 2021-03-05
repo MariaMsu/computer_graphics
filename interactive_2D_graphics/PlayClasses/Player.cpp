@@ -10,12 +10,15 @@ bool Player::Moved() const {
 }
 
 bool titleTypeIntersection(const PlayerBorders borders, const std::set<short> &title_types,
-                           const std::shared_ptr<TitleMap> &room_background_map) {
+                           const std::shared_ptr<TitleMap> &room_background_map, PointT& intersection) {
     // checking only corners is not enough
     for (int x = borders.x_left; x <= borders.x_right; ++x) {
         for (int y = borders.y_low; y <= borders.y_heigh; ++y) {
             short map_element = (*room_background_map)[y][x];
-            if (title_types.count(map_element) != 0) { return true; }
+            if (title_types.count(map_element) != 0) {
+                intersection = PointT{x, y};
+                return true;
+            }
         }
     }
     return false;
@@ -85,13 +88,14 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
 //    std::cout<<"x: "<<tmp_coords.x<<" res= "<<tmp_borders.x_left<<", "<<tmp_borders.x_right<<"\n";
 //    std::cout<<"y: "<<tmp_coords.y<<" res= "<<tmp_borders.y_low<<", "<<tmp_borders.y_heigh<<"\n";
 //    std::cout<<"\n";
-    if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map)) {
+    PointT intersection;
+    if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map, intersection)) {
         int room_direction = getTransitionDirection(tmp_borders, global_state);
         global_state.SetTransitionDirection(room_direction);
         return;
     }
     if (!isBeyondWindow(tmp_borders) &&
-        !titleTypeIntersection(tmp_borders, h_walls, global_state.room_background_map)) {
+        !titleTypeIntersection(tmp_borders, h_walls, global_state.room_background_map, intersection)) {
         // update coordinates only if player not in the wall
         this->old_coords = tmp_old_coords;
         this->coords = tmp_coords;
