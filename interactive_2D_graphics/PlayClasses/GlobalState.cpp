@@ -62,6 +62,41 @@ std::shared_ptr<TransitionsData> readTransitions(const std::string &transitions_
     return transitions_data;
 };
 
+std::shared_ptr<TransitionsData> getTransitionsPos(
+        std::shared_ptr<TransitionsData> &transitions_data,
+        std::shared_ptr<TitleMap>& background_map) {
+    std::shared_ptr<TransitionsData> transitions_pos = std::make_shared<TransitionsData>(
+            TransitionsData{h_WINDOW_T_WIDTH / 2,
+                            h_WINDOW_T_HEIGHT / 2,
+                            h_WINDOW_T_WIDTH / 2,
+                            h_WINDOW_T_HEIGHT / 2});
+    if ((*transitions_data)[0] >= 0) {
+        for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
+            if ((*background_map)[h_WINDOW_T_HEIGHT - 1][j] == h_LAVA_CENTRE) {
+                (*transitions_pos)[0] = j;
+                break;
+            }}};
+    if ((*transitions_data)[1] >= 0) {
+        for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
+            if ((*background_map)[i][h_WINDOW_T_WIDTH - 1] == h_LAVA_CENTRE) {
+                (*transitions_pos)[1] = i;
+                break;
+            }}};
+    if ((*transitions_data)[2] >= 0) {
+        for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
+            if ((*background_map)[0][j] == h_LAVA_CENTRE) {
+                (*transitions_pos)[0] = j;
+                break;
+            }}};
+    if ((*transitions_data)[3] >= 0) {
+        for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
+            if ((*background_map)[i][0] == h_LAVA_CENTRE) {
+                (*transitions_pos)[3] = i;
+                break;
+            }}};
+    return transitions_pos;
+}
+
 
 GlobalState::GlobalState(const std::string &rooms_data_path) {
     for (int i = 0; i < h_N_ROOMS; ++i) {
@@ -72,6 +107,8 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
                 readTitleMap(single_room_path + "/objects_map.txt"));
         this->transitions_data_vector.push_back(
                 readTransitions(single_room_path + "/transitions.txt"));
+        this->transitions_pos_vector.push_back(getTransitionsPos(transitions_data_vector.back(),
+                                                                 background_map_vector.back()));
     }
     this->n_rooms = this->background_map_vector.size();
     this->_ReassigneState(0);
@@ -90,12 +127,12 @@ void GlobalState::_ReassigneState(int room_number) {
     this->bridges_state = {false, false, false, false};
 }
 
-Point getNewPlayerPosition(int transition_direction){
-    switch(transition_direction){
-        case 1: return Point{h_WINDOW_WIDTH/2, h_TEXTURE_SIZE*3};
-        case 2: return Point{h_WINDOW_WIDTH - h_TEXTURE_SIZE*3, h_WINDOW_HEIGHT/2};
-        case 3: return Point{h_WINDOW_WIDTH/2, h_WINDOW_HEIGHT - h_TEXTURE_SIZE*3};
-        case 4: return Point{h_TEXTURE_SIZE*3, h_WINDOW_HEIGHT/2};
+Point getNewPlayerPosition(int transition_direction) {
+    switch (transition_direction) {
+        case 1: return Point{h_WINDOW_WIDTH / 2, h_TEXTURE_SIZE * 3};
+        case 2: return Point{h_WINDOW_WIDTH - h_TEXTURE_SIZE * 3, h_WINDOW_HEIGHT / 2};
+        case 3: return Point{h_WINDOW_WIDTH / 2, h_WINDOW_HEIGHT - h_TEXTURE_SIZE * 3};
+        case 4: return Point{h_TEXTURE_SIZE * 3, h_WINDOW_HEIGHT / 2};
         default: return {h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
     }
 };

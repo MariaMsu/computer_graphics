@@ -16,9 +16,16 @@ struct GlobalState {
         draw_bridge = true;
     };
     void SetTransitionDirection(int direction) {
-        if (bridges_state[direction - 1]) { this->transition_direction = direction; }
+        tmp_transition_direction = direction;
+        if (bridges_state[direction - 1]) {this->transition_direction = direction; }
     };
-    int GetTransitionDirection() const { return transition_direction; }
+    int GetTransitionDirection() const { return tmp_transition_direction; }
+    int GetTransitionPosition() const {
+        if (transition_direction <= 0){
+            return 10;
+        }
+        return (*transitions_pos_vector[current_room])[transition_direction-1];
+    }
     bool SwitchRoom();
 
     Point GetInitPlayerPosition() const { return init_player_position; };
@@ -28,6 +35,7 @@ struct GlobalState {
     bool draw_bridge = false;
 
 private:
+    int tmp_transition_direction = 0;
     void _ReassigneState(int room_number);
 
     std::shared_ptr<TransitionsData> room_transitions_data;
@@ -38,6 +46,7 @@ private:
     std::vector<std::shared_ptr<TitleMap>> background_map_vector;
     std::vector<std::shared_ptr<TitleMap>> objects_map_vector;
     std::vector<std::shared_ptr<TransitionsData>> transitions_data_vector;
+    std::vector<std::shared_ptr<TransitionsData>> transitions_pos_vector;
     int current_room = 0;
     int n_rooms;
     int transition_direction = 0;
