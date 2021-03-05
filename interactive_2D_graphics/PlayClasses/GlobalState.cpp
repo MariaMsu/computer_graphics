@@ -43,7 +43,7 @@ std::shared_ptr<std::vector<int>> readTransitions(const std::string &transitions
     std::string line;
     int i;
     for (i = 0; getline(input_stream, line); ++i) {
-        if (line.length() == 1){continue;}  // empty wall
+        if (line.length() == 1) { continue; }  // empty wall
         if (line.length() % h_MAP_CODE_SIZE != 0) {
             std::cout << transitions_path << " incorrect h_N_TRANSITIONS "
                       << line.length() << " not multiple 3\n";
@@ -55,29 +55,33 @@ std::shared_ptr<std::vector<int>> readTransitions(const std::string &transitions
         };
     }
     input_stream.close();
-    assert(i==4);
+    assert(i == 4);
     return transitions_data;
 };
 
 std::shared_ptr<std::vector<PointT>> getTransitionPoints(
-        std::shared_ptr<TitleMap>& background_map) {
+        std::shared_ptr<TitleMap> &background_map) {
     std::shared_ptr<std::vector<PointT>> transition_points = std::make_shared<std::vector<PointT>>();
     for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
         if ((*background_map)[h_WINDOW_T_HEIGHT - 1][j] == h_LAVA_CENTRE) {
             transition_points->push_back(PointT{j, h_WINDOW_T_HEIGHT - 1});
-        }};
+        }
+    };
     for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
         if ((*background_map)[i][h_WINDOW_T_WIDTH - 1] == h_LAVA_CENTRE) {
             transition_points->push_back(PointT{h_WINDOW_T_WIDTH - 1, i});
-        }};
+        }
+    };
     for (int j = 0; j < h_WINDOW_T_WIDTH; ++j) {
         if ((*background_map)[0][j] == h_LAVA_CENTRE) {
             transition_points->push_back(PointT{j, 0});
-        }};
+        }
+    };
     for (int i = 0; i < h_WINDOW_T_HEIGHT; ++i) {
         if ((*background_map)[i][0] == h_LAVA_CENTRE) {
             transition_points->push_back(PointT{0, i});
-        }};
+        }
+    };
     return transition_points;
 }
 
@@ -93,9 +97,9 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
                 readTransitions(single_room_path + "/transitions.txt"));
         this->transitions_points_vector.push_back(getTransitionPoints(background_map_vector.back()));
         if (transitions_points_vector.back()->size() != transitions_data_vector.back()->size()) {
-            std::clog << "Transition data in room "<< i << " is inconsistent: " <<
-                transitions_points_vector.back()->size()
-                <<" != "<< transitions_data_vector.back()->size() << "\n";
+            std::clog << "Transition data in room " << i << " is inconsistent: " <<
+                      transitions_points_vector.back()->size()
+                      << " != " << transitions_data_vector.back()->size() << "\n";
             exit(2);
         }
         assert(transitions_points_vector.back()->size() == transitions_data_vector.back()->size());
@@ -113,9 +117,10 @@ void GlobalState::reassigneState(int room_number) {
     this->room_objects_map = this->objects_map_vector[room_number];
     this->room_transitions_data = this->transitions_data_vector[room_number];
     this->room_transitions_points = this->transitions_points_vector[room_number];
+    this->bridges_state.clear();
+    for (int i = 0; i < room_transitions_data->size(); ++i) { bridges_state.push_back(false); }
     this->room_ind = room_number;
     this->transition_direction = 0;
-    this->bridges_state = {false, false, false, false};
     this->update_room = false;
     this->update_bridge = false;
 }
@@ -145,14 +150,14 @@ Point getNewPlayerPosition(int transition_direction) {
 
 
 void GlobalState::PushStateBridge(int transition_num) {
-    assert((0<=transition_num) && (transition_num < bridges_state.size()));
+    assert((0 <= transition_num) && (transition_num < bridges_state.size()));
     update_bridge = true;
     bridges_state[transition_num] = true;
     bridge_point = (*room_transitions_points)[transition_num];
 }
 
 bool GlobalState::PopStateBridge(PointT &p) {
-    if (! update_bridge) {return false;}
+    if (!update_bridge) { return false; }
     p = bridge_point;
     update_bridge = false;
     return true;
@@ -163,15 +168,15 @@ void GlobalState::PushStateRoom(Point player) {
     double distance = detNearestPointT(
             player, this->room_transitions_points, nearest_transition);
     assert(distance >= 0); // < 0 if something with arguments is wrong
-    // todo check bridges state
+    if (! this->bridges_state[nearest_transition]) {return;}
     this->transition_direction = getTransitionDirection((*room_transitions_points)[nearest_transition]);
-    assert((1<=transition_direction) && (transition_direction <= 4));
+    assert((1 <= transition_direction) && (transition_direction <= 4));
     update_room = true;
     room_new_ind = (*this->room_transitions_data)[nearest_transition];
 }
 
 bool GlobalState::PopStateRoom(Point &player_position) {
-    if (!update_room){return false;}
+    if (!update_room) { return false; }
     player_position = getNewPlayerPosition(this->transition_direction);
     update_room = false;
     this->room_ind = room_new_ind;

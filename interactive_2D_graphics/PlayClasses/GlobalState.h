@@ -40,7 +40,7 @@ private:
     int room_new_ind = 0;
     bool update_bridge = false;
     std::shared_ptr<std::vector<int>> room_transitions_data;
-    TransitionsData bridges_state{false, false, false, false}; // todo
+    std::vector<bool> bridges_state;
     std::shared_ptr<TitleMap> room_objects_map; // todo remove?
 
     // all rooms data
