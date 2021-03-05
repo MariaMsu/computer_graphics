@@ -3,7 +3,11 @@
 #include "../Constants.h"
 
 #include <cmath>
+#include <vector>
+#include <iostream>
+
 double getPointsDistance(Point p1, Point p2);
+double detNearestPointT(Point main_point, std::shared_ptr<std::vector<PointT>>& points, int & nearest_index);
 Point PointT2Point(PointT p);
 
 Pixel blend(Pixel oldPixel, Pixel newPixel);

@@ -6,6 +6,23 @@ double getPointsDistance(Point p1, Point p2){
     return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
 }
 
+double detNearestPointT(Point main_point, std::shared_ptr<std::vector<PointT>>& points, int & nearest_index){
+    // return distance
+    double smallest_distance = h_WINDOW_WIDTH * h_WINDOW_HEIGHT * 100;  // 100 just fore clam
+    int local_nearest_index = -1;
+    for (int i = 0; i < points->size(); ++i){
+        double distance = getPointsDistance(main_point, PointT2Point((*points)[i]));
+        std::clog<<"distance: "<<distance<<" ("<<(*points)[i].x<<", "<<(*points)[i].y<<")\n";
+        if (distance < smallest_distance){
+            smallest_distance = distance;
+            local_nearest_index = i;
+        }
+    }
+    if (local_nearest_index < 0){        return -1;    }
+    nearest_index = local_nearest_index;
+    return smallest_distance;
+};
+
 Point PointT2Point(PointT p){
     return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y* h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
 };

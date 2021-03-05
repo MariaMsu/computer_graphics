@@ -102,22 +102,11 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     }
 }
 
-
 void Player::ProcessBridge(GlobalState &global_state) {
-    double smallest_distance = h_BRIDGE_REQ_DISTANCE;
-    int nearest_transition = -1;
-    for(int i = 0; i < global_state.room_transitions_points->size(); ++i){
-        double distance = getPointsDistance(coords, PointT2Point((*global_state.room_transitions_points)[i]));
-        std::clog<<"distance: "<<distance<<" ("<<(*global_state.room_transitions_points)[i].x<<", ";
-        std::clog<<(*global_state.room_transitions_points)[i].y<<")\n";
-        if (distance < smallest_distance){
-            smallest_distance = distance;
-            nearest_transition = i;
-        }
-    }
-
-    std::clog<<"\n";
-    if (nearest_transition >= 0){ global_state.PushStateBridge(nearest_transition);
+    int nearest_transition;
+    double distance = detNearestPointT(
+            coords, global_state.room_transitions_points, nearest_transition);
+    if (distance < h_BRIDGE_REQ_DISTANCE){ global_state.PushStateBridge(nearest_transition);
     std::clog<<"put bridge\n";
     }
 }
