@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "Utils.h"
 
 
 bool Player::Moved() const {
@@ -36,18 +35,18 @@ bool isBeyondWindow(const PlayerBorders borders) {
 
 const int screen_aspect = h_WINDOW_HEIGHT / h_WINDOW_WIDTH;
 
-int getTransitionDirection(PlayerBorders borders, GlobalState &global_state) {
-    // return room_direction [1..4]
-    if (borders.y_center > h_WINDOW_T_HEIGHT - screen_aspect * borders.x_center) {
-        // над побочной диагональю
-        if (borders.y_center > screen_aspect * borders.x_center) { return 1; }
-        else { return 2; };
-    } else {
-        // под побочной диагональю
-        if (borders.y_center > screen_aspect * borders.x_center) { return 4; }
-        else { return 3; };
-    }
-};
+//int getTransitionDirection(PlayerBorders borders, GlobalState &global_state) {
+//    // return room_direction [1..4]
+//    if (borders.y_center > h_WINDOW_T_HEIGHT - screen_aspect * borders.x_center) {
+//        // над побочной диагональю
+//        if (borders.y_center > screen_aspect * borders.x_center) { return 1; }
+//        else { return 2; };
+//    } else {
+//        // под побочной диагональю
+//        if (borders.y_center > screen_aspect * borders.x_center) { return 4; }
+//        else { return 3; };
+//    }
+//};
 
 PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
     return PlayerBorders{
@@ -90,8 +89,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
 //    std::cout<<"\n";
     PointT intersection;
     if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map, intersection)) {
-        int room_direction = getTransitionDirection(tmp_borders, global_state);
-        global_state.SetTransitionDirection(room_direction);
+        global_state.PushStateRoom(coords);
         return;
     }
     if (!isBeyondWindow(tmp_borders) &&

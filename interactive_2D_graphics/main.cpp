@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
     Bridge bridge{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/bridges_path.txt"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
-    background.DrawRoom(screenBuffer, global_state);
+    background.DrawRoom(screenBuffer, global_state.room_background_map);
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     GL_CHECK_ERRORS;
@@ -160,14 +160,18 @@ int main(int argc, char **argv) {
         glfwPollEvents();
 
         processPlayerMovement(player, global_state);
+
         PointT bridge_position;
         if (global_state.PopStateBridge(bridge_position)){
             bridge.DrawBridge(screenBuffer, bridge_position);
         }
-        if (global_state.SwitchRoom()){  // only if transition direction appear
-            background.DrawRoom(screenBuffer, global_state);
-            player.SetPosition(global_state.GetInitPlayerPosition());
+
+        Point player_position;
+        if (global_state.PopStateRoom(player_position)){  // only if transition direction appear
+            background.DrawRoom(screenBuffer, global_state.room_background_map);
+            player.SetPosition(player_position);
         }
+
         player.Draw(screenBuffer, global_state);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -2,6 +2,7 @@
 #define MAIN_PLAYER_H
 
 #include "Image.h"
+#include "Utils.h"
 #include "GlobalState.h"
 
 enum class MovementDir {

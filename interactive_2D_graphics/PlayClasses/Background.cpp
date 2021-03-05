@@ -26,16 +26,15 @@ Background::Background(std::string titles_path) : titles_path(std::move(titles_p
     this->titles_map = readBackgroundTitles(this->titles_path);
 };
 
-void Background::DrawRoom(Image &screen, GlobalState &screen_state) {
-    TitleMap background_map = *screen_state.room_background_map;
+void Background::DrawRoom(Image &screen, std::shared_ptr<TitleMap> &background_map) {
     for (int y = 0; y < h_WINDOW_T_HEIGHT; ++y) {
         for (int x = 0; x < h_WINDOW_T_WIDTH; ++x) {
-            int key = background_map[y][x];
+            int key = (*background_map)[y][x];
             if (titles_map.count(key) == 0) {
                 std::cerr << "Title " << key << " did not loaded\n";
                 exit(5);
             }
-            const std::shared_ptr<Image> &title = this->titles_map[background_map[y][x]];
+            const std::shared_ptr<Image> &title = this->titles_map[(*background_map)[y][x]];
             drawSaveAsset(screen, title, x * title->Width(), y * title->Height());  // todo why?
         }
     }

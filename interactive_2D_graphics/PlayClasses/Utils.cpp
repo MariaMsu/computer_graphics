@@ -1,5 +1,3 @@
-#include <memory>
-#include "Image.h"
 #include "Utils.h"
 
 double getPointsDistance(Point p1, Point p2){

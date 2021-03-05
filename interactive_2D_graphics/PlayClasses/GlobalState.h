@@ -8,21 +8,17 @@
 #include <cassert>
 #include "../Constants.h"
 #include "UtilsStructures.h"
+#include "Utils.h"
 
 
 struct GlobalState {
-
     explicit GlobalState(const std::string &rooms_data_path);
 
     void PushStateBridge(int transition_num);
     bool PopStateBridge(PointT& p);
 
-    bool SetTransitionDirection(int direction);
-    int GetTransitionDirection() const { return transition_direction; }
-
-    bool SwitchRoom();
-
-    Point GetInitPlayerPosition() const { return init_player_position; };
+    void PushStateRoom(Point player);
+    bool PopStateRoom(Point &player_position);
 
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;
@@ -40,8 +36,9 @@ private:
     // in & out sate
 
     // inner
-    bool switch_room = false;
-    bool draw_bridge = false;
+    bool update_room = false;
+    int room_new_ind = 0;
+    bool update_bridge = false;
     std::shared_ptr<std::vector<int>> room_transitions_data;
     TransitionsData bridges_state{false, false, false, false}; // todo
     std::shared_ptr<TitleMap> room_objects_map; // todo remove?
@@ -52,7 +49,7 @@ private:
     std::vector<std::shared_ptr<std::vector<int>>> transitions_data_vector;
     std::vector<std::shared_ptr<std::vector<PointT>>> transitions_points_vector;
 //    std::vector<std::shared_ptr<TransitionsData>> transitions_pos_vector;
-    int current_room = 0;
+    int room_ind = 0;
     int n_rooms;
     Point init_player_position{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
 };

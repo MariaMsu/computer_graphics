@@ -1,7 +1,9 @@
 #ifndef MAIN_UTILS_H
 #define MAIN_UTILS_H
 #include "../Constants.h"
+#include "Image.h"
 
+#include <memory>
 #include <cmath>
 #include <vector>
 #include <iostream>

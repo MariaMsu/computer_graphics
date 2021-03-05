@@ -113,11 +113,11 @@ void GlobalState::reassigneState(int room_number) {
     this->room_objects_map = this->objects_map_vector[room_number];
     this->room_transitions_data = this->transitions_data_vector[room_number];
     this->room_transitions_points = this->transitions_points_vector[room_number];
-    this->current_room = room_number;
+    this->room_ind = room_number;
     this->transition_direction = 0;
     this->bridges_state = {false, false, false, false};
-    this->switch_room = false;
-    this->draw_bridge = false;
+    this->update_room = false;
+    this->update_bridge = false;
 }
 
 Point getNewPlayerPosition(int transition_direction) {
@@ -130,39 +130,52 @@ Point getNewPlayerPosition(int transition_direction) {
     }
 };
 
-bool GlobalState::SwitchRoom() {
-    if (! this->switch_room) { return false; }
-    int new_room_number = (*this->room_transitions_data)[transition_direction - 1];
-    if (new_room_number < 0) {
-        std::clog << "From room " << current_room << " address unset room direction " << transition_direction << "\n";
-        return false;
-    };
-    this->init_player_position = getNewPlayerPosition(this->transition_direction);
-    reassigneState(new_room_number);
-    return true;
-}
+//bool GlobalState::SwitchRoom() {
+//    if (! this->update_room) { return false; }
+//    int new_room_number = (*this->room_transitions_data)[transition_direction - 1];
+//    if (new_room_number < 0) {
+//        std::clog << "From room " << room_ind << " address unset room direction " << transition_direction << "\n";
+//        return false;
+//    };
+//    this->init_player_position = getNewPlayerPosition(this->transition_direction);
+//    reassigneState(new_room_number);
+//    return true;
+//}
 
-bool GlobalState::SetTransitionDirection(int direction)  {
-    assert((0 < direction) && ( direction <= 4));
-    transition_direction = direction;
-    if (bridges_state[direction - 1]) {
-        this->switch_room = true;
-        return true;
-    }
-    return false;
-}
+
 
 void GlobalState::PushStateBridge(int transition_num) {
     assert((0<=transition_num) && (transition_num < bridges_state.size()));
+    update_bridge = true;
     bridges_state[transition_num] = true;
     bridge_point = (*room_transitions_points)[transition_num];
-    draw_bridge = true;
 }
 
 bool GlobalState::PopStateBridge(PointT &p) {
-    if (! draw_bridge) {return false;}
+    if (! update_bridge) {return false;}
     p = bridge_point;
-    draw_bridge = false;
+    update_bridge = false;
+    return true;
+}
+
+void GlobalState::PushStateRoom(Point player) {
+    int nearest_transition;
+    double distance = detNearestPointT(
+            player, this->room_transitions_points, nearest_transition);
+    assert(distance >= 0); // < 0 if something with arguments is wrong
+    // todo check bridges state
+    this->transition_direction = getTransitionDirection((*room_transitions_points)[nearest_transition]);
+    assert((1<=transition_direction) && (transition_direction <= 4));
+    update_room = true;
+    room_new_ind = (*this->room_transitions_data)[nearest_transition];
+}
+
+bool GlobalState::PopStateRoom(Point &player_position) {
+    if (!update_room){return false;}
+    player_position = getNewPlayerPosition(this->transition_direction);
+    update_room = false;
+    this->room_ind = room_new_ind;
+    reassigneState(room_new_ind);
     return true;
 }
 

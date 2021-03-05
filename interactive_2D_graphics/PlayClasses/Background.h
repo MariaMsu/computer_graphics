@@ -10,7 +10,7 @@
 struct Background {
     explicit Background(std::string  titles_path);
 
-    void DrawRoom(Image &screen, GlobalState &screen_state);
+    void DrawRoom(Image &screen, std::shared_ptr<TitleMap> &background_map);
 
 private:
     std::string map_path;
