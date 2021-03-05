@@ -10,8 +10,8 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
 
     std::shared_ptr<TitleMap> title_map = std::make_shared<TitleMap>();
     std::string line;
-    int i = 0;
-    while (getline(input_stream, line)) { // todo i++
+    int i;
+    for (i=0; getline(input_stream, line); ++i) {
         if (line.length() != h_WINDOW_T_WIDTH * h_MAP_CODE_SIZE) {
             std::cout << title_map_path << " incorrect h_WINDOW_WIDTH "
                       << line.length() << " != " << h_WINDOW_T_WIDTH * h_MAP_CODE_SIZE << "\n";
@@ -22,7 +22,6 @@ std::shared_ptr<TitleMap> readTitleMap(const std::string &title_map_path) {
             (*title_map)[h_WINDOW_T_HEIGHT - i - 1][j] =
                     std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
         };
-        ++i;
     }
     if (i != h_WINDOW_T_HEIGHT) {
         std::cout << title_map_path << " incorrect h_WINDOW_T_HEIGHT "
@@ -125,29 +124,22 @@ void GlobalState::reassigneState(int room_number) {
     this->update_bridge = false;
 }
 
-Point getNewPlayerPosition(int transition_direction) {
-    switch (transition_direction) {
-        case 1: return Point{h_WINDOW_WIDTH / 2, h_TEXTURE_SIZE * 3};
-        case 2: return Point{h_WINDOW_WIDTH - h_TEXTURE_SIZE * 3, h_WINDOW_HEIGHT / 2};
-        case 3: return Point{h_WINDOW_WIDTH / 2, h_WINDOW_HEIGHT - h_TEXTURE_SIZE * 3};
-        case 4: return Point{h_TEXTURE_SIZE * 3, h_WINDOW_HEIGHT / 2};
-        default: return {h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
+Point GlobalState::getNewPlayerPosition(int old_room_ind) {
+    // should be called after 'room_transitions_data' updating
+    for(int i = 0; i< this->room_transitions_data->size(); ++i){
+        if ((*room_transitions_data)[i] != old_room_ind){continue;}
+        PointT point = (*room_transitions_points)[i];
+        std::cout<<"transition point x="<<point.x<<", y="<<point.y<<"\n";
+        if (point.y == h_WINDOW_T_HEIGHT-1) {return PointT2Point(PointT{point.x, h_WINDOW_T_HEIGHT-3});}
+        if (point.x == h_WINDOW_T_WIDTH-1) {return PointT2Point(PointT{h_WINDOW_T_WIDTH-3, point.y});}
+        if (point.y == 0) {return PointT2Point(PointT{point.x, 0+3});}
+        if (point.x == 0) {return PointT2Point(PointT{0+3, point.y});}
+        std::clog<<"Incorrect transition point x="<<point.x<<", y="<<point.y<<"\n";
+        return Point{h_WINDOW_WIDTH / 2, h_WINDOW_HEIGHT / 2};
     }
+    std::clog<<"Transition point not found\n";
+    return Point{h_WINDOW_WIDTH / 2, h_WINDOW_HEIGHT / 2};
 };
-
-//bool GlobalState::SwitchRoom() {
-//    if (! this->update_room) { return false; }
-//    int new_room_number = (*this->room_transitions_data)[transition_direction - 1];
-//    if (new_room_number < 0) {
-//        std::clog << "From room " << room_ind << " address unset room direction " << transition_direction << "\n";
-//        return false;
-//    };
-//    this->init_player_position = getNewPlayerPosition(this->transition_direction);
-//    reassigneState(new_room_number);
-//    return true;
-//}
-
-
 
 void GlobalState::PushStateBridge(int transition_num) {
     assert((0 <= transition_num) && (transition_num < bridges_state.size()));
@@ -177,10 +169,11 @@ void GlobalState::PushStateRoom(Point player) {
 
 bool GlobalState::PopStateRoom(Point &player_position) {
     if (!update_room) { return false; }
-    player_position = getNewPlayerPosition(this->transition_direction);
     update_room = false;
+    int old_room_ind = this->room_ind;
     this->room_ind = room_new_ind;
     reassigneState(room_new_ind);
+    player_position = getNewPlayerPosition(old_room_ind);
     return true;
 }
 

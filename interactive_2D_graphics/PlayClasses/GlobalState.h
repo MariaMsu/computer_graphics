@@ -26,6 +26,7 @@ struct GlobalState {
 
 private:
     void reassigneState(int room_number);
+    Point getNewPlayerPosition(int old_room_ind);
 
     // in state
     int transition_direction = 0;  // [1..4]

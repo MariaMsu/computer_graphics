@@ -9,11 +9,13 @@ struct Pixel {
 };
 
 struct Point {
+    // координаты в пикселях
     int x;
     int y;
 };
 
 struct PointT {
+    // координаты в тайтлах
     int x;
     int y;
 };

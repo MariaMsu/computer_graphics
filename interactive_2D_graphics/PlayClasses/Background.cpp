@@ -35,7 +35,7 @@ void Background::DrawRoom(Image &screen, std::shared_ptr<TitleMap> &background_m
                 exit(5);
             }
             const std::shared_ptr<Image> &title = this->titles_map[(*background_map)[y][x]];
-            drawSaveAsset(screen, title, x * title->Width(), y * title->Height());  // todo why?
+            drawSaveAsset(screen, title, x * title->Width(), y * title->Height());
         }
     }
 }

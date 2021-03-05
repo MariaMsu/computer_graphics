@@ -30,7 +30,7 @@ struct Player {
     explicit Player(const std::string &asset_path) : player_image(Image(asset_path)) {
 //        image_ptr = std::make_shared<Image>(player_image);
     };
-    void SetPosition(Point player_position) { this->coords = player_position; }
+    void SetPosition(Point player_position);
     bool Moved() const;
     void ProcessInput(MovementDir dir, GlobalState &global_state);
     void ProcessBridge(GlobalState &global_state);

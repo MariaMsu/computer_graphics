@@ -33,21 +33,6 @@ bool isBeyondWindow(const PlayerBorders borders) {
     return false;
 }
 
-const int screen_aspect = h_WINDOW_HEIGHT / h_WINDOW_WIDTH;
-
-//int getTransitionDirection(PlayerBorders borders, GlobalState &global_state) {
-//    // return room_direction [1..4]
-//    if (borders.y_center > h_WINDOW_T_HEIGHT - screen_aspect * borders.x_center) {
-//        // над побочной диагональю
-//        if (borders.y_center > screen_aspect * borders.x_center) { return 1; }
-//        else { return 2; };
-//    } else {
-//        // под побочной диагональю
-//        if (borders.y_center > screen_aspect * borders.x_center) { return 4; }
-//        else { return 3; };
-//    }
-//};
-
 PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
     return PlayerBorders{
             (coord.x - x_add_space) / h_TEXTURE_SIZE,
@@ -126,4 +111,9 @@ void Player::Draw(Image &screen, GlobalState &screen_state) {
             screen.PutPixel(x, y, blend(screen.GetPixel(x, y), newPix));
         }
     }
+}
+
+void Player::SetPosition(Point player_position) {
+    coords.x = player_position.x - player_image.Width() / 2;
+    coords.y = player_position.y - player_image.Height() / 2;
 }
