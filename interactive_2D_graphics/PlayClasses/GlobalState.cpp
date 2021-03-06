@@ -130,10 +130,14 @@ Point GlobalState::getNewPlayerPosition(int old_room_ind) {
         if ((*room_transitions_data)[i] != old_room_ind){continue;}
         PointT point = (*room_transitions_points)[i];
         std::cout<<"transition point x="<<point.x<<", y="<<point.y<<"\n";
-        if (point.y == h_WINDOW_T_HEIGHT-1) {return PointT2Point(PointT{point.x, h_WINDOW_T_HEIGHT-3});}
-        if (point.x == h_WINDOW_T_WIDTH-1) {return PointT2Point(PointT{h_WINDOW_T_WIDTH-3, point.y});}
-        if (point.y == 0) {return PointT2Point(PointT{point.x, 0+3});}
-        if (point.x == 0) {return PointT2Point(PointT{0+3, point.y});}
+        if (point.y == h_WINDOW_T_HEIGHT-1) { return PointT2Point(
+                PointT{point.x, point.y - h_PLAYER_NEW_POINT_SHIFT}); }
+        if (point.x == h_WINDOW_T_WIDTH-1) { return PointT2Point(
+                PointT{point.x - h_PLAYER_NEW_POINT_SHIFT, point.y}); }
+        if (point.y == 0) { return PointT2Point(
+                PointT{point.x, point.y+h_PLAYER_NEW_POINT_SHIFT}); }
+        if (point.x == 0) { return PointT2Point(
+                PointT{point.x+h_PLAYER_NEW_POINT_SHIFT, point.y}); }
         std::clog<<"Incorrect transition point x="<<point.x<<", y="<<point.y<<"\n";
         return Point{h_WINDOW_WIDTH / 2, h_WINDOW_HEIGHT / 2};
     }

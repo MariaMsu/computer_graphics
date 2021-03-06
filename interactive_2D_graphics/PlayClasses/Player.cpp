@@ -160,7 +160,6 @@ void Player::updateSkin() {
         }
         return;
     }
-    std::cout<<"move x="<<movement.x<<", y="<<movement.y<<"\n";
     if ((movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && movement.y >= h_PLAYER_SKIN_SPEED)){
         current_skin = dynamic_skins_right[(skin_ind_right++) % dynamic_skins_right.size()];
         movement.x = 0, movement.y = 0;
