@@ -24,7 +24,8 @@ typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> Title
 
 const std::set<short> h_walls = {01, 02, 03, 04, 05,
                                  21, 22, 23, 24, 25, 26, 27,
-                                 41, 42, 43, 44, 45};
+                                 41, 42, 43, 44, 45,
+                                 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73};
 const std::set<short> h_lava = {91, 92, 93, 94, 95, 96, 97, 98, 99};
 #define h_LAVA_CENTRE 95
 #define h_BRIDGE_REQ_DISTANCE 160

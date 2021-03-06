@@ -58,26 +58,26 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+../resources/background/grass2_pipo/grass.png
+../resources/background/grass2_pipo/water1.png
+../resources/background/grass2_pipo/water2.png
+../resources/background/grass2_pipo/water3.png
+../resources/background/grass2_pipo/water4.png
+../resources/background/grass2_pipo/water5.png
+../resources/background/grass2_pipo/water6.png
+../resources/background/grass2_pipo/water7.png
+../resources/background/grass2_pipo/water8.png
+../resources/background/grass2_pipo/water9.png
+../resources/background/grass2_pipo/water10.png
+../resources/background/grass2_pipo/water11.png
+../resources/background/grass2_pipo/water12.png
+../resources/background/grass2_pipo/water13.png
+../resources/background/grass2_pipo/ground1.png
+../resources/background/grass2_pipo/ground2.png
+../resources/background/grass2_pipo/ground3.png
+../resources/background/grass2_pipo/ground4.png
+../resources/background/grass2_pipo/ground5.png
+../resources/background/grass2_pipo/ground6.png
 
 
 
