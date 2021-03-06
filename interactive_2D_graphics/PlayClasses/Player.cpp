@@ -78,26 +78,25 @@ PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_ad
 };
 
 void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
-    int move_dist = move_speed * 1;
     Point tmp_old_coords{this->old_coords};
     Point tmp_coords{this->coords};
     this->is_moved = true;
     switch (dir) {
         case MovementDir::UP:
             tmp_old_coords.y = coords.y;
-            tmp_coords.y += move_dist;
+            tmp_coords.y += h_PLAYER_MOVE_SPEED;
             break;
         case MovementDir::DOWN:
             tmp_old_coords.y = coords.y;
-            tmp_coords.y -= move_dist;
+            tmp_coords.y -= h_PLAYER_MOVE_SPEED;
             break;
         case MovementDir::LEFT:
             tmp_old_coords.x = coords.x;
-            tmp_coords.x -= move_dist;
+            tmp_coords.x -= h_PLAYER_MOVE_SPEED;
             break;
         case MovementDir::RIGHT:
             tmp_old_coords.x = coords.x;
-            tmp_coords.x += move_dist;
+            tmp_coords.x += h_PLAYER_MOVE_SPEED;
             break;
         default:
             break;
@@ -161,13 +160,13 @@ void Player::updateSkin() {
         }
         return;
     }
-//    std::cout<<"move x="<<movement.x<<", y="<<movement.y<<"\n";
-    if ((movement.x >= h_PLAYER_SKIN_SPEED) || (movement.y >= h_PLAYER_SKIN_SPEED)){
+    std::cout<<"move x="<<movement.x<<", y="<<movement.y<<"\n";
+    if ((movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && movement.y >= h_PLAYER_SKIN_SPEED)){
         current_skin = dynamic_skins_right[(skin_ind_right++) % dynamic_skins_right.size()];
         movement.x = 0, movement.y = 0;
         return;
     }
-    if ((-movement.x >= h_PLAYER_SKIN_SPEED) || (-movement.y >= h_PLAYER_SKIN_SPEED)){
+    if ((-movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && (-movement.y) >= h_PLAYER_SKIN_SPEED)){
         current_skin = dynamic_skins_left[(skin_ind_left++) % dynamic_skins_left.size()];
         movement.x = 0, movement.y = 0;
         return;

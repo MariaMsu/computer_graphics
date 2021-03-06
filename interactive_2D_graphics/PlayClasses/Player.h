@@ -43,8 +43,6 @@ private:
     int height;
     Point coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
     Point old_coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
-    Pixel color{.r = 255, .g = 255, .b = 0, .a = 255};
-    int move_speed = 4;  // todo const
     std::shared_ptr<Image> static_skin;
     std::vector<std::shared_ptr<Image>> dynamic_skins_right;
     std::vector<std::shared_ptr<Image>> dynamic_skins_left;
