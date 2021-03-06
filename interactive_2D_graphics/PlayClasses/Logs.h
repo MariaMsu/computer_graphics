@@ -22,25 +22,8 @@ struct Logs {
 private:
 
     bool initLogPoint(PointT & point);
-    void drawNewRoom(Image &screen){
-        for (int i = 0; i < _logs_number; ++i) {
-            PointT point;
-            if (!initLogPoint(point)) { continue;}
-            this->log_points.push_back(point);
-            std::cout << "Draw log x=" << point.x << ", y=" << point.y << "\n";
-            drawTrSaveAsset(screen, logs_image,
-                            point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
-                            point.y * h_TEXTURE_SIZE);
-        }
-    }
-    void drawOldRoom(Image &screen, int room_ind){
-        this->log_points = all_rooms_logs_positions[room_ind];
-        for(PointT point: log_points){
-            drawTrSaveAsset(screen, logs_image,
-                            point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
-                            point.y * h_TEXTURE_SIZE);
-        }
-    }
+    void drawNewRoom(Image &screen);
+    void drawOldRoom(Image &screen, int room_ind);
 
     int _weight;
     int _height;

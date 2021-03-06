@@ -171,6 +171,11 @@ Point GlobalState::getNewPlayerPosition(int old_room_ind) {
 
 void GlobalState::PushStateBridge(int transition_num) {
     assert((0 <= transition_num) && (transition_num < bridges_state.size()));
+    if (bridges_state[transition_num]){return;} // bridge already set
+    if (logs_counter <= 0){
+        std::cout<<"USER: no logs left\n";
+        return;
+    }
     update_bridge = true;
     bridges_state[transition_num] = true;
     bridge_point = room_info->transition_points[transition_num];
@@ -180,6 +185,8 @@ bool GlobalState::PopStateBridge(PointT &p) {
     if (!update_bridge) { return false; }
     p = bridge_point;
     update_bridge = false;
+    logs_counter -= 1;
+    std::cout<<"USER: "<<logs_counter<<" logs left\n";
     return true;
 }
 
@@ -193,7 +200,7 @@ void GlobalState::PushStateRoom(Point player) {
     assert((1 <= transition_direction) && (transition_direction <= h_N_ROOM_SIDES));
     update_room = true;
     room_new_ind = this->room_info->transition_rooms[nearest_transition];
-    std::clog<<"Transition to the room " << room_new_ind << "\n";
+//    std::clog<<"Transition to the room " << room_new_ind << "\n";
 }
 
 bool GlobalState::PopStateRoom(Point &player_position) {
@@ -211,7 +218,7 @@ void GlobalState::PushStateLogs(int nearest_point_ind) { this->remove_logs_by_in
 bool GlobalState::PopStateLogs(int &removing_ind) {
     if (this->remove_logs_by_ind < 0){ return false;}
     removing_ind = remove_logs_by_ind;
-    logs_counter += 1; // todo substruct
+    logs_counter += 1;
     this->remove_logs_by_ind = -1;
     return true;
 }

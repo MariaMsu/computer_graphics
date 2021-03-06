@@ -32,11 +32,33 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
     global_state.log_points = std::vector<PointT>(this->log_points);
 }
 
+void Logs::drawNewRoom(Image &screen) {
+    this->log_points.clear();
+    for (int i = 0; i < _logs_number; ++i) {
+        PointT point;
+        if (!initLogPoint(point)) { continue;}
+        this->log_points.push_back(point);
+//            std::cout << "Draw log x=" << point.x << ", y=" << point.y << "\n";
+        drawTrSaveAsset(screen, logs_image,
+                        point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
+                        point.y * h_TEXTURE_SIZE);
+    }
+}
+
+void Logs::drawOldRoom(Image &screen, int room_ind) {
+    this->log_points = all_rooms_logs_positions[room_ind];
+    for(PointT point: log_points){
+        drawTrSaveAsset(screen, logs_image,
+                        point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
+                        point.y * h_TEXTURE_SIZE);
+    }
+}
+
 void Logs::RemoveLog(int removing_ind, GlobalState &globalState, ObjectBorders &borders) {
     assert(removing_ind < log_points.size());
     PointT p = log_points[removing_ind];
     borders = ObjectBorders{p.x - 1, p.x + 1, p.y, p.y};
     log_points.erase(log_points.begin() + removing_ind);
     globalState.log_points = log_points;
-    std::cout << "remove x=" << p.x << ", y=" << p.y << "\n";
+//    std::cout << "remove x=" << p.x << ", y=" << p.y << "\n";
 }

@@ -1,5 +1,5 @@
 logs_number:
-0
+2
 transitions:
  01
  03
