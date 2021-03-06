@@ -175,7 +175,7 @@ int main(int argc, char **argv) {
         Point player_position;
         if (global_state.PopStateRoom(player_position)){  // only if transition direction appear
             background.DrawRoom(screenBuffer, global_state.room_background_map);
-            //log.DrawRoom();
+            logs.DrawRoom(screenBuffer, global_state);
             player.SetPosition(player_position);
         }
 

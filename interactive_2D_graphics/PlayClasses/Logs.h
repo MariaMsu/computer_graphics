@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <set>
+#include <map>
 #include "UtilsStructures.h"
 #include "Image.h"
 #include "Utils.h"
@@ -21,6 +22,25 @@ struct Logs {
 private:
 
     bool initLogPoint(PointT & point);
+    void drawNewRoom(Image &screen){
+        for (int i = 0; i < _logs_number; ++i) {
+            PointT point;
+            if (!initLogPoint(point)) { continue;}
+            this->log_points.push_back(point);
+            std::cout << "Draw log x=" << point.x << ", y=" << point.y << "\n";
+            drawTrSaveAsset(screen, logs_image,
+                            point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
+                            point.y * h_TEXTURE_SIZE);
+        }
+    }
+    void drawOldRoom(Image &screen, int room_ind){
+        this->log_points = all_rooms_logs_positions[room_ind];
+        for(PointT point: log_points){
+            drawTrSaveAsset(screen, logs_image,
+                            point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
+                            point.y * h_TEXTURE_SIZE);
+        }
+    }
 
     int _weight;
     int _height;
@@ -28,7 +48,7 @@ private:
     int _logs_number;
     std::shared_ptr<TitleMap> _background_map;
     std::vector<PointT> log_points;
-    std::vector<std::vector<PointT>> all_rooms_log_positions;
+    std::map<int, std::vector<PointT>> all_rooms_logs_positions;
     std::shared_ptr<Image> logs_image;
     std::shared_ptr<Image> attention_image;
 };
