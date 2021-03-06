@@ -23,8 +23,8 @@
 typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;
 
 const std::set<short> h_walls = {01, 02, 03, 04, 05};
-const std::set<short> h_lava = {10, 11, 12, 13, 14, 15, 16, 17, 18};
-#define h_LAVA_CENTRE 14
+const std::set<short> h_lava = {91, 92, 93, 94, 95, 96, 97, 98, 99};
+#define h_LAVA_CENTRE 95
 #define h_BRIDGE_REQ_DISTANCE 160
 
 #endif //MAIN_CONSTANTS_H
