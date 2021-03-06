@@ -1,5 +1,10 @@
 #include "Utils.h"
 
+
+Point PointT2Point(PointT p) {
+    return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
+};
+
 double getPointsDistance(Point p1, Point p2) {
     return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
 }
@@ -10,7 +15,7 @@ double detNearestPointT(Point main_point, std::vector<PointT> &points, int &near
     int local_nearest_index = -1;
     for (int i = 0; i < points.size(); ++i) {
         double distance = getPointsDistance(main_point, PointT2Point(points[i]));
-//        std::clog<<"distance: "<<distance<<" ("<<(*points)[i].x<<", "<<(*points)[i].y<<")\n";
+        std::clog<<"distance: "<<distance<<" ("<<points[i].x<<", "<<points[i].y<<")\n";
         if (distance < smallest_distance) {
             smallest_distance = distance;
             local_nearest_index = i;
@@ -21,9 +26,21 @@ double detNearestPointT(Point main_point, std::vector<PointT> &points, int &near
     return smallest_distance;
 };
 
-Point PointT2Point(PointT p) {
-    return Point{p.x * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2, p.y * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 2};
+bool titleTypeIntersection(ObjectBorders borders, const std::set<short> &title_types,
+                           const std::shared_ptr<TitleMap> &room_background_map, PointT &intersection) {
+    // checking only corners is not enough
+    for (int x = borders.x_left; x <= borders.x_right; ++x) {
+        for (int y = borders.y_low; y <= borders.y_heigh; ++y) {
+            short map_element = (*room_background_map)[y][x];
+            if (title_types.count(map_element) != 0) {
+                intersection = PointT{x, y};
+                return true;
+            }
+        }
+    }
+    return false;
 };
+
 
 Pixel blend(Pixel oldPixel, Pixel newPixel) {
     newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;

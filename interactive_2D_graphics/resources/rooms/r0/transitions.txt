@@ -1,5 +1,5 @@
-room_type:
-0
+logs_number:
+5
 transitions:
  01
  02

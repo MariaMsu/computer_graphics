@@ -11,7 +11,7 @@
 #include "Utils.h"
 
 struct RoomInfo{
-    int room_type;
+    int logs_number;
     std::vector<int> transition_rooms;
     std::vector<PointT> transition_points;
 
@@ -27,20 +27,22 @@ struct GlobalState {
     void PushStateRoom(Point player);
     bool PopStateRoom(Point &player_position);
 
+    void PushStateLogs(int nearest_point_ind);
+    bool PopStateLogs(int & removing_ind);
+
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;
-
-
-    std::vector<PointT> &GetTransitionsPoints(){
-        return room_info->transition_points;
-    }
+    std::vector<PointT> log_points;
+    // todo да, нужно выпилить &
+    std::vector<PointT> &GetTransitionsPoints(){ return room_info->transition_points; }
+    int GetRoomInd(){ return room_ind; }
+    int GetLogsNumber(){ return room_info->logs_number; }
 
 private:
     void reassigneState(int room_number);
     Point getNewPlayerPosition(int old_room_ind);
 
     // in state
-    int transition_direction = 0;  // [1..4]
 
     // out state
     PointT bridge_point = {};
@@ -48,9 +50,12 @@ private:
     // in & out sate
 
     // inner
-    bool update_room = false;
+    int logs_counter;
+    int transition_direction = 0;  // [1..4]
     int room_new_ind = 0;
+    bool update_room = false;
     bool update_bridge = false;
+    int remove_logs_by_ind = -1;
     std::shared_ptr<RoomInfo> room_info;
     std::vector<bool> bridges_state;
     std::shared_ptr<TitleMap> room_objects_map; // todo remove?

@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "PlayClasses/GlobalState.h"
 #include "PlayClasses/Bridge.h"
+#include "PlayClasses/Logs.h"
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
@@ -53,8 +54,10 @@ void processPlayerMovement(Player &player, GlobalState& global_state) {
         player.ProcessInput(MovementDir::LEFT, global_state);
     else if (Input.keys[GLFW_KEY_D])
         player.ProcessInput(MovementDir::RIGHT, global_state);
-    if (Input.keys[GLFW_KEY_SPACE])
+    if (Input.keys[GLFW_KEY_P])
         player.ProcessBridge(global_state);
+    if (Input.keys[GLFW_KEY_G])
+        player.ProcessLogs(global_state);
 }
 
 void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) {
@@ -116,7 +119,8 @@ int main(int argc, char **argv) {
 //	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow *window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "task1 base project", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(
+            WINDOW_WIDTH, WINDOW_HEIGHT, "task1 base project", nullptr, nullptr);
     if (window == nullptr) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -143,9 +147,11 @@ int main(int argc, char **argv) {
     Background background{"../resources/path_backdround.txt"};
     Player player{"../resources/path_player.txt"};
     Bridge bridge{"../resources/path_bridges.txt"};
+    Logs logs{"../resources/log1.png", "../resources/log1.png"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state.room_background_map);
+    logs.DrawRoom(screenBuffer, global_state);
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     GL_CHECK_ERRORS;
@@ -169,9 +175,17 @@ int main(int argc, char **argv) {
         Point player_position;
         if (global_state.PopStateRoom(player_position)){  // only if transition direction appear
             background.DrawRoom(screenBuffer, global_state.room_background_map);
+            //log.DrawRoom();
             player.SetPosition(player_position);
         }
 
+         int removing_ind;
+         if (global_state.PopStateLogs(removing_ind)){
+//             (int remove_logs_by_ind, GlobalState& globalState, Point &begin, Point & size
+            Point begin, size;
+             logs.RemoveLog(removing_ind, global_state, begin, size);
+         }
+        //log.DrawUpdate( add timer);
         player.Draw(screenBuffer, global_state);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

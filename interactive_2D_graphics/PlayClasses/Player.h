@@ -12,23 +12,15 @@ enum class MovementDir {
     RIGHT
 };
 
-struct PlayerBorders {
-    explicit PlayerBorders(int x_left, int x_right, int y_low, int y_heigh) :
-            x_left(x_left), x_right(x_right), y_low(y_low), y_heigh(y_heigh) {};
-    int x_left;
-    int x_right;
-    int y_low;
-    int y_heigh;
-};
-
 struct Player {
     explicit Player(const std::string &skins_path);
 
     void SetPosition(Point player_position);
     void ProcessInput(MovementDir dir, GlobalState &global_state);
     void ProcessBridge(GlobalState &global_state);
-    void Draw(Image &screen, GlobalState &screen_state);
-    PlayerBorders GetTitleBorders(Point coord, int x_add_space, int y_add_space);
+    void ProcessLogs(GlobalState &global_state);
+    void Draw(Image &screen, GlobalState &global_state);
+    ObjectBorders GetTitleBorders(Point coord, int x_add_space, int y_add_space);
 
 private:
     void updateSkin();

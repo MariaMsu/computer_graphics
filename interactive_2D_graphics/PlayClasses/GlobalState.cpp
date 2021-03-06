@@ -38,14 +38,14 @@ std::shared_ptr<RoomInfo> readRoomInfo(const std::string &transitions_path) {
     }
     std::shared_ptr<RoomInfo> room_info = std::make_shared<RoomInfo>();
     std::string line;
-    if(!getline(input_stream, line) || line!="room_type:"){
-        std::cerr << "Incorrect room info format: 'room_type:'. " << transitions_path << "\n";
+    if(!getline(input_stream, line) || line!="logs_number:"){
+        std::cerr << "Incorrect room info format: 'logs_number:'. " << transitions_path << "\n";
         exit(2);
     }
     getline(input_stream, line);
-    room_info->room_type = std::stoi(line);
-    if(0 > room_info->room_type || room_info->room_type >= h_N_ROOM_TYPES){
-        std::cerr << "Incorrect room info format: room_type. " << transitions_path << "\n";
+    room_info->logs_number = std::stoi(line);
+    if(0 > room_info->logs_number){
+        std::cerr << "Incorrect room info format: logs_number. " << transitions_path << "\n";
         exit(2);
     }
     if(!getline(input_stream, line) || line!="transitions:"){
@@ -123,6 +123,7 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
         setTransitionPoints(cur_room_info, background_map_vector.back());
         this->common_info_vector.push_back(cur_room_info);
     }
+    this->logs_counter = h_INIT_LOGS_NUMBER;
     this->reassigneState(0);
 }
 
@@ -138,10 +139,12 @@ void GlobalState::reassigneState(int room_number) {
     for (int i = 0; i < room_info->transition_points.size(); ++i) {
         bridges_state.push_back(false);
     }
+    this->log_points.clear();
     this->room_ind = room_number;
     this->transition_direction = 0;
     this->update_room = false;
     this->update_bridge = false;
+    this->remove_logs_by_ind = -1;
 }
 
 Point GlobalState::getNewPlayerPosition(int old_room_ind) {
@@ -182,7 +185,7 @@ bool GlobalState::PopStateBridge(PointT &p) {
 
 void GlobalState::PushStateRoom(Point player) {
     int nearest_transition;
-    double distance = detNearestPointT(
+    double distance = detNearestPointT( // todo make easier
             player, this->room_info->transition_points, nearest_transition);
     assert(distance >= 0); // < 0 if something with arguments is wrong
     if (! this->bridges_state[nearest_transition]) {return;}
@@ -200,6 +203,16 @@ bool GlobalState::PopStateRoom(Point &player_position) {
     this->room_ind = room_new_ind;
     reassigneState(room_new_ind);
     player_position = getNewPlayerPosition(old_room_ind);
+    return true;
+}
+
+void GlobalState::PushStateLogs(int nearest_point_ind) { remove_logs_by_ind = nearest_point_ind; }
+
+bool GlobalState::PopStateLogs(int &removing_ind) {
+    if (remove_logs_by_ind < 0){ return false;}
+    removing_ind = remove_logs_by_ind;
+    logs_counter += 1; // todo sustruct
+    remove_logs_by_ind = -1;
     return true;
 }
 

@@ -1,22 +1,6 @@
 #include "Player.h"
 
-
-bool titleTypeIntersection(const PlayerBorders borders, const std::set<short> &title_types,
-                           const std::shared_ptr<TitleMap> &room_background_map, PointT &intersection) {
-    // checking only corners is not enough
-    for (int x = borders.x_left; x <= borders.x_right; ++x) {
-        for (int y = borders.y_low; y <= borders.y_heigh; ++y) {
-            short map_element = (*room_background_map)[y][x];
-            if (title_types.count(map_element) != 0) {
-                intersection = PointT{x, y};
-                return true;
-            }
-        }
-    }
-    return false;
-};
-
-bool isBeyondWindow(const PlayerBorders borders) {
+bool isBeyondWindow(const ObjectBorders borders) {
     if ((borders.y_heigh >= h_WINDOW_T_HEIGHT - 1) ||
         (borders.x_right >= h_WINDOW_T_WIDTH - 1) ||
         (borders.y_low <= 0) ||
@@ -68,8 +52,8 @@ Player::Player(const std::string &skins_path) {
     current_skin = static_skin;
 };
 
-PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
-    return PlayerBorders{
+ObjectBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
+    return ObjectBorders{
             (coord.x - x_add_space) / h_TEXTURE_SIZE,
             (coord.x + width + x_add_space) / h_TEXTURE_SIZE,
             (coord.y - y_add_space) / h_TEXTURE_SIZE,
@@ -104,7 +88,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     movement.x += tmp_coords.x - tmp_old_coords.x;
     movement.y += tmp_coords.y - tmp_old_coords.y;
 
-    PlayerBorders tmp_borders = GetTitleBorders(
+    ObjectBorders tmp_borders = GetTitleBorders(
             tmp_coords, -h_PLAYER_PHIS_WIDTH_SHIFT, -h_PLAYER_PHIS_HEIGHT_SHIFT);
 //    std::cout<<"x: "<<tmp_coords.x<<" res= "<<tmp_borders.x_left<<", "<<tmp_borders.x_right<<"\n";
 //    std::cout<<"y: "<<tmp_coords.y<<" res= "<<tmp_borders.y_low<<", "<<tmp_borders.y_heigh<<"\n";
@@ -131,7 +115,18 @@ void Player::ProcessBridge(GlobalState &global_state) {
     }
 }
 
-void Player::Draw(Image &screen, GlobalState &screen_state) {
+void Player::ProcessLogs(GlobalState &global_state) {
+    int nearest_transition;
+    double distance = detNearestPointT(
+            coords, global_state.log_points, nearest_transition);
+    std::cout<<"\n";
+    if (distance < h_LOGS_REQ_DISTANCE) {
+        global_state.PushStateLogs(nearest_transition);
+        std::cout<<"ProcessLogs "<<nearest_transition<<"\n";
+    }
+}
+
+void Player::Draw(Image &screen, GlobalState &global_state) {
     updateSkin();
     if (is_moved) {
         for (int y = old_coords.y; y < old_coords.y + height; ++y) {

@@ -1,4 +1,4 @@
-room_type:
+logs_number:
 0
 transitions:
  01
