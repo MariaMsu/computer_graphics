@@ -17,7 +17,7 @@ set(SOURCE_FILES
         PlayClasses/Player.cpp
         PlayClasses/Background.cpp
         PlayClasses/Bridge.cpp
-        PlayClasses/Logs.cpp PlayClasses/Logs.h)
+        PlayClasses/Logs.cpp)
 
 set(ADDITIONAL_INCLUDE_DIRS
         dependencies/include/GLAD)

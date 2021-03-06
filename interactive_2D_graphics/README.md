@@ -1,8 +1,7 @@
-
-sudo apt-get install cmake
-sudo apt-get install libglfw3-dev
-
 ```
+$ sudo apt-get install cmake
+$ sudo apt-get install libglfw3-dev
+
 $ cmake .
 $ make
 $ ./bin/main

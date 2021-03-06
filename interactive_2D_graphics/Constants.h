@@ -9,8 +9,8 @@
 #define h_TXT_BACKGROUND "../resources/path_background.txt"
 #define h_TXT_PLAYER "../resources/path_player.txt"
 #define h_TXT_BRIDGE "../resources/path_bridges.txt"
-#define h_PATH_LOG "../resources/log1.png"
-#define h_PATH_LAMP "../resources/lamp8.png"
+#define h_PATH_LOG "../resources/log_assets/log.png"
+#define h_PATH_LAMP "../resources/log_assets/lamp.png"
 
 #define h_WINDOW_WIDTH 768
 #define h_WINDOW_HEIGHT 768
