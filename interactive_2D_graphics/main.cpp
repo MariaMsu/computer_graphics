@@ -142,12 +142,11 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    // todo remove ugly path
-    GlobalState global_state = GlobalState("../resources/rooms");
-    Background background{"../resources/path_backdround.txt"};
-    Player player{"../resources/path_player.txt"};
-    Bridge bridge{"../resources/path_bridges.txt"};
-    Logs logs{"../resources/log1.png", "../resources/lamp8.png"};
+    GlobalState global_state = GlobalState(h_PATH_ROOMS);
+    Background background{h_TXT_BACKGROUND};
+    Player player{h_TXT_PLAYER};
+    Bridge bridge{h_TXT_BRIDGE};
+    Logs logs{h_PATH_LOG, h_PATH_LAMP};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state.room_background_map);

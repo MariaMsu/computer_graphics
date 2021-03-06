@@ -5,6 +5,13 @@
 #include <array>
 #include <algorithm>
 
+#define h_PATH_ROOMS "../resources/rooms"
+#define h_TXT_BACKGROUND "../resources/path_background.txt"
+#define h_TXT_PLAYER "../resources/path_player.txt"
+#define h_TXT_BRIDGE "../resources/path_bridges.txt"
+#define h_PATH_LOG "../resources/log1.png"
+#define h_PATH_LAMP "../resources/lamp8.png"
+
 #define h_WINDOW_WIDTH 768
 #define h_WINDOW_HEIGHT 768
 
@@ -36,7 +43,7 @@ const std::set<short> h_not_flore = {01, 02, 03, 04, 05,
                                      91, 92, 93, 94, 95, 96, 97, 98, 99};
 #define h_LAVA_CENTRE 95
 #define h_BRIDGE_REQ_DISTANCE 160
-#define h_LOGS_REQ_DISTANCE 60
+#define h_LOGS_REQ_DISTANCE 70
 #define h_INIT_LOGS_NUMBER 8
 
 #define h_N_ROOM_SIDES 4
