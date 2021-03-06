@@ -1,0 +1,4 @@
+../resources/bridge/b1.png
+../resources/bridge/b2.png
+../resources/bridge/b3.png
+../resources/bridge/b4.png

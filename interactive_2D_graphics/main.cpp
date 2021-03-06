@@ -138,11 +138,11 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    // todo remove absolute path
-    GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
-    Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
-    Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player_path.txt"};
-    Bridge bridge{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/bridges_path.txt"};
+    // todo remove ugly path
+    GlobalState global_state = GlobalState("../resources/rooms");
+    Background background{"../resources/path_backdround.txt"};
+    Player player{"../resources/path_player.txt"};
+    Bridge bridge{"../resources/path_bridges.txt"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state.room_background_map);
