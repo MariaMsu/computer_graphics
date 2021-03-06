@@ -1,3 +1,4 @@
+/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/Warrior_Attack_1.png
 /home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/Warrior_Run_1.png
 /home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/Warrior_Run_2.png
 /home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/Warrior_Run_3.png

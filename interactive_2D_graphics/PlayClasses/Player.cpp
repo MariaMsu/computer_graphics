@@ -51,22 +51,21 @@ Player::Player(const std::string &skins_path) {
     }
     int i_width, i_height;
     while (std::getline(skin_file, path)) {
-        this->dynamic_skins_right.push_back(std::make_shared<Image>(path));
-
-//        std::shared_ptr<Image> image = std::make_shared<Image>(path);
-//        this->dynamic_skins_right.push_back(image);
-//        i_width = image->Width(), i_height = image->Height();
-//        this->dynamic_skins_left.push_back(std::make_shared<Image>
-//                                                   (makeMirrorPixelData(image->Data(), i_width, i_height),
-//                                                    i_width,
-//                                                    i_height,
-//                                                    image->Channels())
-//        );
+        std::shared_ptr<Image> image = std::make_shared<Image>(path);
+        this->dynamic_skins_right.push_back(image);
+        i_width = image->Width(), i_height = image->Height();
+        this->dynamic_skins_left.push_back(std::make_shared<Image>
+                                                   (makeMirrorPixelData(image->Data(), i_width, i_height),
+                                                    i_width,
+                                                    i_height,
+                                                    image->Channels())
+        );
     }
     skin_file.close();
     assert(!dynamic_skins_right.empty());
-    width = 64;
-    height = 44; // todo
+    width = i_width;
+    height = i_height;
+    current_skin = static_skin;
 };
 
 PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
@@ -103,8 +102,8 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
         default:
             break;
     }
-    movement.x += tmp_old_coords.x - tmp_coords.x;
-    movement.y += tmp_old_coords.y - tmp_coords.y;
+    movement.x += tmp_coords.x - tmp_old_coords.x;
+    movement.y += tmp_coords.y - tmp_old_coords.y;
 
     PlayerBorders tmp_borders = GetTitleBorders(
             tmp_coords, -h_PLAYER_PHIS_WIDTH_SHIFT, -h_PLAYER_PHIS_HEIGHT_SHIFT);
@@ -144,7 +143,7 @@ void Player::Draw(Image &screen, GlobalState &screen_state) {
         }
         old_coords = coords;
     }
-    drawTrAsset(screen, dynamic_skins_right[skin_inx], coords.x, coords.y);
+    drawTrAsset(screen, current_skin, coords.x, coords.y);
     is_moved = false;
 }
 
@@ -153,29 +152,26 @@ void Player::SetPosition(Point player_position) {
     coords.y = player_position.y - height / 2;
 }
 
-bool Player::updateSkin() {
-    if (!is_moved) { return false; }
-    if (movement.x >= 8) {
-        skin_inx = (skin_inx + 1) % dynamic_skins_right.size();
-        movement.x = 0;
-        return true;
+void Player::updateSkin() {
+    if (!is_moved) {
+        if (current_skin != static_skin){
+            current_skin = static_skin;
+            movement.x = 0,  movement.y = 0;
+            skin_ind_right = 0, skin_ind_left = 0;
+        }
+        return;
     }
-    if (movement.x <= -8) {
-        skin_inx = (skin_inx + 1) % dynamic_skins_right.size();
-        movement.x = 0;
-        return true;
+//    std::cout<<"move x="<<movement.x<<", y="<<movement.y<<"\n";
+    if ((movement.x >= h_PLAYER_SKIN_SPEED) || (movement.y >= h_PLAYER_SKIN_SPEED)){
+        current_skin = dynamic_skins_right[(skin_ind_right++) % dynamic_skins_right.size()];
+        movement.x = 0, movement.y = 0;
+        return;
     }
-    if (movement.y >= 8) {
-        skin_inx = (skin_inx + 1) % dynamic_skins_right.size();
-        movement.y = 0;
-        return true;
+    if ((-movement.x >= h_PLAYER_SKIN_SPEED) || (-movement.y >= h_PLAYER_SKIN_SPEED)){
+        current_skin = dynamic_skins_left[(skin_ind_left++) % dynamic_skins_left.size()];
+        movement.x = 0, movement.y = 0;
+        return;
     }
-    if (movement.y <= -8) {
-        skin_inx = (skin_inx + 1) % dynamic_skins_right.size();
-        movement.y = 0;
-        return true;
-    }
-    return false;
 }
 
 

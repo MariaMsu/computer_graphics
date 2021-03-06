@@ -9,7 +9,7 @@ Pixel blend(Pixel oldPixel, Pixel newPixel);
 struct Image {
     explicit Image(const std::string &a_path);
     Image(int a_width, int a_height, int a_channels);
-//    Image(Pixel* in_data, int a_width, int a_height, int a_channels);
+    Image(Pixel* in_data, int a_width, int a_height, int a_channels);
     int Save(const std::string &a_path);
     int Width() const { return width; }
     int Height() const { return height; }

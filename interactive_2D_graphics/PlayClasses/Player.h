@@ -31,8 +31,11 @@ struct Player {
     PlayerBorders GetTitleBorders(Point coord, int x_add_space, int y_add_space);
 
 private:
-    bool updateSkin();
-    int skin_inx = 0;
+    void updateSkin();
+    int skin_ind_right = 0;
+    int skin_ind_left = 0;
+    std::shared_ptr<Image> current_skin;
+
     Point movement = {};
     bool is_moved = false;
 

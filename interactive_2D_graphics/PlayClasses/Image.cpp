@@ -35,18 +35,19 @@ Image::Image(int a_width, int a_height, int a_channels) {
     std::memcpy(saved_data, data, width * height * sizeof(Pixel));
 }
 
-//// todo убрать копипасту
-//Image::Image(Pixel* in_data, int a_width, int a_height, int a_channels) {
-//    data = in_data;
-//    this->saved_data = new Pixel[width * height]{};
-//    assert(data != nullptr); // todo сделать проверки везде
-//    width = a_width;
-//    height = a_height;
-//    size = a_width * a_height * a_channels;
-//    channels = a_channels;
-//    self_allocated = true;
-//    std::memcpy(saved_data, data, width * height * sizeof(Pixel));
-//}
+// todo убрать копипасту
+Image::Image(Pixel* in_data, int a_width, int a_height, int a_channels) {
+    data = in_data;
+    this->saved_data = new Pixel[width * height]{};
+    assert(data != nullptr); // todo сделать проверки везде
+    width = a_width;
+    height = a_height;
+    size = a_width * a_height * a_channels;
+    channels = a_channels;
+    self_allocated = true;
+    this->saved_data = new Pixel[width * height]{};
+    std::memcpy(saved_data, data, width * height * sizeof(Pixel));
+}
 
 Pixel Image::GetPixel(int x, int y) {
     if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)) {
