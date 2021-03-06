@@ -110,7 +110,7 @@ void Player::ProcessBridge(GlobalState &global_state) {
     int nearest_transition;
     double distance = detNearestPointT(
             coords, global_state.GetTransitionsPoints(), nearest_transition);
-    if (distance < h_BRIDGE_REQ_DISTANCE) {
+    if((0<=distance) &&(distance < h_BRIDGE_REQ_DISTANCE)) {
         global_state.PushStateBridge(nearest_transition);
     }
 }
@@ -120,7 +120,7 @@ void Player::ProcessLogs(GlobalState &global_state) {
     double distance = detNearestPointT(
             coords, global_state.log_points, nearest_transition);
     std::cout<<"\n";
-    if (distance < h_LOGS_REQ_DISTANCE) {
+    if ((0<=distance) &&(distance < h_LOGS_REQ_DISTANCE)) {
         global_state.PushStateLogs(nearest_transition);
         std::cout<<"ProcessLogs "<<nearest_transition<<"\n";
     }

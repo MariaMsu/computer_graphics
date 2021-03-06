@@ -206,13 +206,13 @@ bool GlobalState::PopStateRoom(Point &player_position) {
     return true;
 }
 
-void GlobalState::PushStateLogs(int nearest_point_ind) { remove_logs_by_ind = nearest_point_ind; }
+void GlobalState::PushStateLogs(int nearest_point_ind) { this->remove_logs_by_ind = nearest_point_ind; }
 
 bool GlobalState::PopStateLogs(int &removing_ind) {
-    if (remove_logs_by_ind < 0){ return false;}
+    if (this->remove_logs_by_ind < 0){ return false;}
     removing_ind = remove_logs_by_ind;
-    logs_counter += 1; // todo sustruct
-    remove_logs_by_ind = -1;
+    logs_counter += 1; // todo substruct
+    this->remove_logs_by_ind = -1;
     return true;
 }
 

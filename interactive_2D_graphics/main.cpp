@@ -181,8 +181,7 @@ int main(int argc, char **argv) {
 
          int removing_ind;
          if (global_state.PopStateLogs(removing_ind)){
-//             (int remove_logs_by_ind, GlobalState& globalState, Point &begin, Point & size
-            Point begin, size;
+             Point begin, size;
              logs.RemoveLog(removing_ind, global_state, begin, size);
          }
         //log.DrawUpdate( add timer);
