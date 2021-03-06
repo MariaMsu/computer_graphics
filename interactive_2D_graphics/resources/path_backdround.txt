@@ -1,18 +1,9 @@
 ../resources/background/grass_pipo/grass.png
-../resources/background/grass_pipo/grass_mountain.png
-../resources/background/grass_pipo/grass_mountain1.png
-../resources/background/grass_pipo/grass_mountain2.png
-../resources/background/grass_pipo/grass_mountain3.png
-../resources/background/grass_pipo/grass_mountain4.png
-
-
-
-
-../resources/background/grass_pipo/flower0.png
-../resources/background/grass_pipo/flower1.png
-../resources/background/grass_pipo/flower2.png
-../resources/background/grass_pipo/flower3.png
-../resources/background/grass_pipo/flower4.png
+../resources/background/grass_pipo/mountain.png
+../resources/background/grass_pipo/mountain1.png
+../resources/background/grass_pipo/mountain2.png
+../resources/background/grass_pipo/mountain3.png
+../resources/background/grass_pipo/mountain4.png
 
 
 
@@ -27,12 +18,21 @@
 
 
 
+../resources/background/grass4_pipo/grass.png
+../resources/background/grass4_pipo/mountain.png
+../resources/background/grass4_pipo/mountain1.png
+../resources/background/grass4_pipo/mountain2.png
+../resources/background/grass4_pipo/mountain3.png
+../resources/background/grass4_pipo/mountain4.png
+../resources/background/grass4_pipo/mountain5.png
+../resources/background/grass4_pipo/mountain6.png
 
 
-
-
-
-
+../resources/background/grass4_pipo/flower0.png
+../resources/background/grass4_pipo/flower1.png
+../resources/background/grass4_pipo/flower2.png
+../resources/background/grass4_pipo/flower3.png
+../resources/background/grass4_pipo/flower4.png
 
 
 
