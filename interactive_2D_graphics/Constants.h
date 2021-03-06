@@ -17,7 +17,7 @@
 #define h_PLAYER_SKIN_SPEED 10
 #define h_PLAYER_NEW_POINT_SHIFT 2
 
-#define h_N_ROOMS 3
+#define h_N_ROOMS 4
 #define h_MAP_CODE_SIZE 3
 
 typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;

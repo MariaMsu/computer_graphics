@@ -128,7 +128,6 @@ void Player::ProcessBridge(GlobalState &global_state) {
             coords, global_state.room_transitions_points, nearest_transition);
     if (distance < h_BRIDGE_REQ_DISTANCE) {
         global_state.PushStateBridge(nearest_transition);
-        std::clog << "put bridge\n";
     }
 }
 

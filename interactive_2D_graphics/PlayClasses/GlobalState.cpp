@@ -49,8 +49,9 @@ std::shared_ptr<std::vector<int>> readTransitions(const std::string &transitions
             exit(2);
         }
         for (int j = 0; j < line.length() / h_MAP_CODE_SIZE; ++j) {
-            transitions_data->push_back(
-                    std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE)));
+            int room = std::stoi(line.substr(j * h_MAP_CODE_SIZE, h_MAP_CODE_SIZE));
+            assert((0<=room) && (room<h_N_ROOMS));
+            transitions_data->push_back(room);
         };
     }
     input_stream.close();
@@ -129,7 +130,7 @@ Point GlobalState::getNewPlayerPosition(int old_room_ind) {
     for(int i = 0; i< this->room_transitions_data->size(); ++i){
         if ((*room_transitions_data)[i] != old_room_ind){continue;}
         PointT point = (*room_transitions_points)[i];
-        std::cout<<"transition point x="<<point.x<<", y="<<point.y<<"\n";
+//        std::cout<<"transition point x="<<point.x<<", y="<<point.y<<"\n";
         if (point.y == h_WINDOW_T_HEIGHT-1) { return PointT2Point(
                 PointT{point.x, point.y - h_PLAYER_NEW_POINT_SHIFT}); }
         if (point.x == h_WINDOW_T_WIDTH-1) { return PointT2Point(
@@ -169,6 +170,7 @@ void GlobalState::PushStateRoom(Point player) {
     assert((1 <= transition_direction) && (transition_direction <= 4));
     update_room = true;
     room_new_ind = (*this->room_transitions_data)[nearest_transition];
+    std::clog<<"Transition to the room " << room_new_ind << "\n";
 }
 
 bool GlobalState::PopStateRoom(Point &player_position) {
