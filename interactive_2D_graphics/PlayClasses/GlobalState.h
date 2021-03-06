@@ -58,13 +58,10 @@ private:
     int remove_logs_by_ind = -1;
     std::shared_ptr<RoomInfo> room_info;
     std::vector<bool> bridges_state;
-    std::shared_ptr<TitleMap> room_objects_map; // todo remove?
 
     // all rooms data
     std::vector<std::shared_ptr<TitleMap>> background_map_vector;
-    std::vector<std::shared_ptr<TitleMap>> objects_map_vector;
     std::vector<std::shared_ptr<RoomInfo>> common_info_vector;
-//    std::vector<std::shared_ptr<std::vector<PointT>>> transitions_points_vector;
     int room_ind = 0;
 };
 

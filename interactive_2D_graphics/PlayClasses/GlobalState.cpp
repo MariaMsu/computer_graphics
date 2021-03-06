@@ -117,9 +117,7 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
         std::clog<<"load room " << single_room_path << "\n";
         this->background_map_vector.push_back(
                 readTitleMap(single_room_path + "/background_map.txt"));
-        this->objects_map_vector.push_back(
-                readTitleMap(single_room_path + "/objects_map.txt"));
-        std::shared_ptr<RoomInfo> cur_room_info = readRoomInfo(single_room_path + "/transitions.txt");
+        std::shared_ptr<RoomInfo> cur_room_info = readRoomInfo(single_room_path + "/info.txt");
         setTransitionPoints(cur_room_info, background_map_vector.back());
         this->common_info_vector.push_back(cur_room_info);
     }
@@ -133,7 +131,6 @@ void GlobalState::reassigneState(int room_number) {
         exit(3);
     }
     this->room_background_map = this->background_map_vector[room_number];
-    this->room_objects_map = this->objects_map_vector[room_number];
     this->room_info = this->common_info_vector[room_number];
     this->bridges_state.clear();
     for (int i = 0; i < room_info->transition_points.size(); ++i) {

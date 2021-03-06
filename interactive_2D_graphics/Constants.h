@@ -5,7 +5,7 @@
 #include <array>
 #include <algorithm>
 
-#define h_PATH_ROOMS "./resources/rooms"
+#define h_PATH_ROOMS "./resources/rooms_test"
 #define h_TXT_BACKGROUND "./resources/path_background.txt"
 #define h_TXT_PLAYER "./resources/path_player.txt"
 #define h_TXT_BRIDGE "./resources/path_bridges.txt"

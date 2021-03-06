@@ -106,6 +106,9 @@ int initGL() {
     std::cout << "press right mouse button to capture/release mouse cursor  " << std::endl;
     std::cout << "W, A, S, D - movement  " << std::endl;
     std::cout << "press ESC to exit" << std::endl;
+    std::cout << "'G' to get logs" << std::endl;
+    std::cout << "'P' to put bridges" << std::endl;
+    std::cout << "Logs are needed to build bridges. After moving to another room, the bridges burn out." << std::endl;
 
     return 0;
 }
