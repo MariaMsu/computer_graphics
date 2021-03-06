@@ -27,13 +27,19 @@ Background::Background(std::string titles_path) : titles_path(std::move(titles_p
 };
 
 void Background::DrawRoom(Image &screen, std::shared_ptr<TitleMap> &background_map) {
-    for (int y = 0; y < h_WINDOW_T_HEIGHT; ++y) {
-        for (int x = 0; x < h_WINDOW_T_WIDTH; ++x) {
+    DrawArea(screen, background_map,
+             ObjectBorders{0, h_WINDOW_T_WIDTH-1, 0, h_WINDOW_T_HEIGHT-1});
+}
+
+void Background::DrawArea(Image &screen, std::shared_ptr<TitleMap> &background_map, ObjectBorders borders) {
+    for (int y = borders.y_low; y <= borders.y_heigh; ++y) {
+        for (int x = borders.x_left; x <= borders.x_right; ++x) {
             int key = (*background_map)[y][x];
             if (titles_map.count(key) == 0) {
                 std::cerr << "Title " << key << " did not loaded\n";
                 exit(5);
             }
+//            std::cout<<"DrawArea x="<<x<<", y="<<y<<"\n";
             const std::shared_ptr<Image> &title = this->titles_map[(*background_map)[y][x]];
             drawSaveAsset(screen, title, x * title->Width(), y * title->Height());
         }

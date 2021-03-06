@@ -20,4 +20,14 @@ struct PointT {
     int y;
 };
 
+struct ObjectBorders {
+    ObjectBorders()= default;;
+    explicit ObjectBorders(int x_left, int x_right, int y_low, int y_heigh) :
+            x_left(x_left), x_right(x_right), y_low(y_low), y_heigh(y_heigh) {};
+    int x_left;
+    int x_right;
+    int y_low;
+    int y_heigh;
+};
+
 #endif //MAIN_UTILSSTRUCTURES_H
