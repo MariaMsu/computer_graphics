@@ -110,7 +110,7 @@ void Player::ProcessBridge(GlobalState &global_state) {
     int nearest_transition;
     double distance = detNearestPointT(
             coords, global_state.GetTransitionsPoints(), nearest_transition);
-    if((0<=distance) &&(distance < h_BRIDGE_REQ_DISTANCE)) {
+    if ((0 <= distance) && (distance < h_BRIDGE_REQ_DISTANCE)) {
         global_state.PushStateBridge(nearest_transition);
     }
 }
@@ -119,10 +119,8 @@ void Player::ProcessLogs(GlobalState &global_state) {
     int nearest_transition;
     double distance = detNearestPointT(
             coords, global_state.log_points, nearest_transition);
-    std::cout<<"\n";
-    if ((0<=distance) &&(distance < h_LOGS_REQ_DISTANCE)) {
+    if ((0 <= distance) && (distance < h_LOGS_REQ_DISTANCE)) {
         global_state.PushStateLogs(nearest_transition);
-        std::cout<<"ProcessLogs "<<nearest_transition<<"\n";
     }
 }
 
@@ -147,19 +145,19 @@ void Player::SetPosition(Point player_position) {
 
 void Player::updateSkin() {
     if (!is_moved) {
-        if (current_skin != static_skin){
+        if (current_skin != static_skin) {
             current_skin = static_skin;
-            movement.x = 0,  movement.y = 0;
+            movement.x = 0, movement.y = 0;
             skin_ind_right = 0, skin_ind_left = 0;
         }
         return;
     }
-    if ((movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && movement.y >= h_PLAYER_SKIN_SPEED)){
+    if ((movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && movement.y >= h_PLAYER_SKIN_SPEED)) {
         current_skin = dynamic_skins_right[(skin_ind_right++) % dynamic_skins_right.size()];
         movement.x = 0, movement.y = 0;
         return;
     }
-    if ((-movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && (-movement.y) >= h_PLAYER_SKIN_SPEED)){
+    if ((-movement.x >= h_PLAYER_SKIN_SPEED) || (!movement.x && (-movement.y) >= h_PLAYER_SKIN_SPEED)) {
         current_skin = dynamic_skins_left[(skin_ind_left++) % dynamic_skins_left.size()];
         movement.x = 0, movement.y = 0;
         return;

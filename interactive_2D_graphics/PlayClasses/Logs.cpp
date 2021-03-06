@@ -8,12 +8,13 @@ Logs::Logs(const std::string &logs_asset, const std::string &attention_asset) {
     this->_weight = logs_image->Width();
 }
 
-bool Logs::initLogPoint(PointT & point){
-    for (int i = 0; i < 3; ++i){
-        point =  getRandomPoint();
-        ObjectBorders borders = ObjectBorders{point.x-1,point.x+1, point.y-1, point.y+1 };
+bool Logs::initLogPoint(PointT &point) {
+    for (int i = 0; i < 3; ++i) {
+        point = getRandomPoint();
+        ObjectBorders borders = ObjectBorders{
+            point.x - 1, point.x + 1, point.y - 1, point.y + 1};
         PointT t;
-        if (!titleTypeIntersection(borders, h_walls, _background_map, t)){ return true; }
+        if (!titleTypeIntersection(borders, h_not_flore, _background_map, t)) { return true; }
     }
     return false; // не удалось найти подходящее место
 }
@@ -22,18 +23,25 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
     _room_ind = global_state.GetRoomInd();
     _logs_number = global_state.GetLogsNumber();
     _background_map = global_state.room_background_map;
-    for (int i = 0; i < _logs_number; ++i){
+    for (int i = 0; i < _logs_number; ++i) {
         PointT point;
-//        if (initLogPoint(point)){
-            point = PointT{2,2}; //todo
+        if (initLogPoint(point)) {
             this->log_points.push_back(point);
-            std::cout<<"Draw log x="<<point.x<<", y="<<point.y<<"\n";
-            drawSaveAsset(screen, logs_image,
-                            point.x*h_TEXTURE_SIZE - h_TEXTURE_SIZE/2,
-                            point.y*h_TEXTURE_SIZE);
-        break;
+            std::cout << "Draw log x=" << point.x << ", y=" << point.y << "\n";
+            drawTrSaveAsset(screen, logs_image,
+                            point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
+                            point.y * h_TEXTURE_SIZE);
 
-//        }
+        }
     }  // todo нужно сделать по ссылке, но мне лень дебажить
     global_state.log_points = std::vector<PointT>(this->log_points);
+}
+
+void Logs::RemoveLog(int removing_ind, GlobalState &globalState, ObjectBorders &borders) {
+    assert(removing_ind < log_points.size());
+    PointT p = log_points[removing_ind];
+    borders = ObjectBorders{p.x - 1, p.x + 1, p.y, p.y};
+    log_points.erase(log_points.begin() + removing_ind);
+    globalState.log_points = log_points;
+    std::cout << "remove x=" << p.x << ", y=" << p.y << "\n";
 }
