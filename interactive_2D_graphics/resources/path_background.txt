@@ -1,100 +1,100 @@
-../resources/background/grass_pipo/grass.png
-../resources/background/grass_pipo/mountain.png
-../resources/background/grass_pipo/mountain1.png
-../resources/background/grass_pipo/mountain2.png
-../resources/background/grass_pipo/mountain3.png
-../resources/background/grass_pipo/mountain4.png
+./resources/background/grass_pipo/grass.png
+./resources/background/grass_pipo/mountain.png
+./resources/background/grass_pipo/mountain1.png
+./resources/background/grass_pipo/mountain2.png
+./resources/background/grass_pipo/mountain3.png
+./resources/background/grass_pipo/mountain4.png
 
 
 
 
-../resources/background/grass_pipo/mushroom.png
-../resources/background/grass_pipo/snag1.png
-../resources/background/grass_pipo/snag2.png
-../resources/background/grass_pipo/snag3.png
-../resources/background/grass_pipo/snag4.png
-../resources/background/grass_pipo/stump1.png
-../resources/background/grass_pipo/stump2.png
+./resources/background/grass_pipo/mushroom.png
+./resources/background/grass_pipo/snag1.png
+./resources/background/grass_pipo/snag2.png
+./resources/background/grass_pipo/snag3.png
+./resources/background/grass_pipo/snag4.png
+./resources/background/grass_pipo/stump1.png
+./resources/background/grass_pipo/stump2.png
 
 
 
-../resources/background/grass4_pipo/grass.png
-../resources/background/grass4_pipo/mountain.png
-../resources/background/grass4_pipo/mountain1.png
-../resources/background/grass4_pipo/mountain2.png
-../resources/background/grass4_pipo/mountain3.png
-../resources/background/grass4_pipo/mountain4.png
-../resources/background/grass4_pipo/mountain5.png
-../resources/background/grass4_pipo/mountain6.png
+./resources/background/grass4_pipo/grass.png
+./resources/background/grass4_pipo/mountain.png
+./resources/background/grass4_pipo/mountain1.png
+./resources/background/grass4_pipo/mountain2.png
+./resources/background/grass4_pipo/mountain3.png
+./resources/background/grass4_pipo/mountain4.png
+./resources/background/grass4_pipo/mountain5.png
+./resources/background/grass4_pipo/mountain6.png
 
 
-../resources/background/grass4_pipo/flower0.png
-../resources/background/grass4_pipo/flower1.png
-../resources/background/grass4_pipo/flower2.png
-../resources/background/grass4_pipo/flower3.png
-../resources/background/grass4_pipo/flower4.png
-
-
-
-
-
-../resources/background/sand_pipo/sand.png
-../resources/background/sand_pipo/cactus.png
-../resources/background/sand_pipo/cactus1.png
-../resources/background/sand_pipo/cactus2.png
-../resources/background/sand_pipo/cactus3.png
-../resources/background/sand_pipo/cactus4.png
-
-
-
-
-../resources/background/sand_pipo/bush1.png
-../resources/background/sand_pipo/bush2.png
-../resources/background/sand_pipo/bush3.png
-../resources/background/sand_pipo/bush4.png
-../resources/background/sand_pipo/stone1.png
-../resources/background/sand_pipo/stone2.png
-
-
-
-
-../resources/background/grass2_pipo/grass.png
-../resources/background/grass2_pipo/water1.png
-../resources/background/grass2_pipo/water2.png
-../resources/background/grass2_pipo/water3.png
-../resources/background/grass2_pipo/water4.png
-../resources/background/grass2_pipo/water5.png
-../resources/background/grass2_pipo/water6.png
-../resources/background/grass2_pipo/water7.png
-../resources/background/grass2_pipo/water8.png
-../resources/background/grass2_pipo/water9.png
-../resources/background/grass2_pipo/water10.png
-../resources/background/grass2_pipo/water11.png
-../resources/background/grass2_pipo/water12.png
-../resources/background/grass2_pipo/water13.png
-../resources/background/grass2_pipo/ground1.png
-../resources/background/grass2_pipo/ground2.png
-../resources/background/grass2_pipo/ground3.png
-../resources/background/grass2_pipo/ground4.png
-../resources/background/grass2_pipo/ground5.png
-../resources/background/grass2_pipo/ground6.png
+./resources/background/grass4_pipo/flower0.png
+./resources/background/grass4_pipo/flower1.png
+./resources/background/grass4_pipo/flower2.png
+./resources/background/grass4_pipo/flower3.png
+./resources/background/grass4_pipo/flower4.png
 
 
 
 
 
+./resources/background/sand_pipo/sand.png
+./resources/background/sand_pipo/cactus.png
+./resources/background/sand_pipo/cactus1.png
+./resources/background/sand_pipo/cactus2.png
+./resources/background/sand_pipo/cactus3.png
+./resources/background/sand_pipo/cactus4.png
+
+
+
+
+./resources/background/sand_pipo/bush1.png
+./resources/background/sand_pipo/bush2.png
+./resources/background/sand_pipo/bush3.png
+./resources/background/sand_pipo/bush4.png
+./resources/background/sand_pipo/stone1.png
+./resources/background/sand_pipo/stone2.png
+
+
+
+
+./resources/background/grass2_pipo/grass.png
+./resources/background/grass2_pipo/water1.png
+./resources/background/grass2_pipo/water2.png
+./resources/background/grass2_pipo/water3.png
+./resources/background/grass2_pipo/water4.png
+./resources/background/grass2_pipo/water5.png
+./resources/background/grass2_pipo/water6.png
+./resources/background/grass2_pipo/water7.png
+./resources/background/grass2_pipo/water8.png
+./resources/background/grass2_pipo/water9.png
+./resources/background/grass2_pipo/water10.png
+./resources/background/grass2_pipo/water11.png
+./resources/background/grass2_pipo/water12.png
+./resources/background/grass2_pipo/water13.png
+./resources/background/grass2_pipo/ground1.png
+./resources/background/grass2_pipo/ground2.png
+./resources/background/grass2_pipo/ground3.png
+./resources/background/grass2_pipo/ground4.png
+./resources/background/grass2_pipo/ground5.png
+./resources/background/grass2_pipo/ground6.png
 
 
 
 
 
 
-../resources/background/lava/l0.png
-../resources/background/lava/l1.png
-../resources/background/lava/l2.png
-../resources/background/lava/l3.png
-../resources/background/lava/l4.png
-../resources/background/lava/l5.png
-../resources/background/lava/l6.png
-../resources/background/lava/l7.png
-../resources/background/lava/l8.png
+
+
+
+
+
+./resources/background/lava/l0.png
+./resources/background/lava/l1.png
+./resources/background/lava/l2.png
+./resources/background/lava/l3.png
+./resources/background/lava/l4.png
+./resources/background/lava/l5.png
+./resources/background/lava/l6.png
+./resources/background/lava/l7.png
+./resources/background/lava/l8.png
