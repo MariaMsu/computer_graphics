@@ -38,22 +38,22 @@
 
 
 
+../resources/background/sand_pipo/sand.png
+../resources/background/sand_pipo/cactus.png
+../resources/background/sand_pipo/cactus1.png
+../resources/background/sand_pipo/cactus2.png
+../resources/background/sand_pipo/cactus3.png
+../resources/background/sand_pipo/cactus4.png
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+../resources/background/sand_pipo/bush1.png
+../resources/background/sand_pipo/bush2.png
+../resources/background/sand_pipo/bush3.png
+../resources/background/sand_pipo/bush4.png
+../resources/background/sand_pipo/stone1.png
+../resources/background/sand_pipo/stone2.png
 
 
 
