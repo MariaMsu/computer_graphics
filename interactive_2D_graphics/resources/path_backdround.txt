@@ -8,13 +8,13 @@
 
 
 
-
-
-
-
-
-
-
+../resources/background/grass_pipo/mushroom.png
+../resources/background/grass_pipo/snag1.png
+../resources/background/grass_pipo/snag2.png
+../resources/background/grass_pipo/snag3.png
+../resources/background/grass_pipo/snag4.png
+../resources/background/grass_pipo/stump1.png
+../resources/background/grass_pipo/stump2.png
 
 
 
