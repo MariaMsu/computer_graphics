@@ -7,8 +7,11 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
+#include <random>
 
 Point PointT2Point(PointT p);
+PointT getRandomPoint();
+
 double getPointsDistance(Point p1, Point p2);
 double detNearestPointT(Point main_point, std::vector<PointT>& points, int & nearest_index);
 bool titleTypeIntersection(ObjectBorders borders, const std::set<short> &title_types,

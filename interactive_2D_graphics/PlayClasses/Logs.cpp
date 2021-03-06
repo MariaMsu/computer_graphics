@@ -8,16 +8,12 @@ Logs::Logs(const std::string &logs_asset, const std::string &attention_asset) {
     this->_weight = logs_image->Width();
 }
 
-PointT getRandomPoint(int min, int max){
-    return PointT{min + (rand() % (max - min + 1)), min + (rand() % (max - min + 1))};
-}
-
 bool Logs::initLogPoint(PointT & point){
     for (int i = 0; i < 3; ++i){
-        point =  getRandomPoint(1, h_WINDOW_T_HEIGHT-2);
+        point =  getRandomPoint();
         ObjectBorders borders = ObjectBorders{point.x-1,point.x+1, point.y-1, point.y+1 };
         PointT t;
-        if (titleTypeIntersection(borders, h_walls, _background_map, t)){ return true; }
+        if (!titleTypeIntersection(borders, h_walls, _background_map, t)){ return true; }
     }
     return false; // не удалось найти подходящее место
 }
@@ -36,5 +32,4 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
         }
     }  // todo нужно сделать по ссылке, но мне лень дебажить
     global_state.log_points = std::vector<PointT>(this->log_points);
-    std::cout<<"global_state.log_points size: "<<global_state.log_points.size()<<"\n";
 }
