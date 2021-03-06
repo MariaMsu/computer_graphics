@@ -1,0 +1,8 @@
+logs_number:
+0
+transitions:
+ 05
+ 10
+ 03
+ 11
+end.

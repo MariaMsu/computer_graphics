@@ -5,12 +5,14 @@
 #include <array>
 #include <algorithm>
 
-#define h_PATH_ROOMS "./resources/rooms_test"
+#define h_PATH_ROOMS "./resources/rooms_circle"
 #define h_TXT_BACKGROUND "./resources/path_background.txt"
 #define h_TXT_PLAYER "./resources/path_player.txt"
 #define h_TXT_BRIDGE "./resources/path_bridges.txt"
 #define h_PATH_LOG "./resources/log_assets/log.png"
 #define h_PATH_LAMP "./resources/log_assets/lamp.png"
+
+#define h_N_ROOMS 18
 
 #define h_WINDOW_WIDTH 768
 #define h_WINDOW_HEIGHT 768
@@ -25,7 +27,6 @@
 #define h_PLAYER_SKIN_SPEED 10
 #define h_PLAYER_NEW_POINT_SHIFT 2
 
-#define h_N_ROOMS 4
 #define h_MAP_CODE_SIZE 3
 
 typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> TitleMap;
@@ -44,7 +45,7 @@ const std::set<short> h_not_flore = {01, 02, 03, 04, 05,
 #define h_LAVA_CENTRE 95
 #define h_BRIDGE_REQ_DISTANCE 160
 #define h_LOGS_REQ_DISTANCE 70
-#define h_INIT_LOGS_NUMBER 8
+#define h_INIT_LOGS_NUMBER 20
 
 #define h_N_ROOM_SIDES 4
 

@@ -197,7 +197,7 @@ void GlobalState::PushStateRoom(Point player) {
     assert((1 <= transition_direction) && (transition_direction <= h_N_ROOM_SIDES));
     update_room = true;
     room_new_ind = this->room_info->transition_rooms[nearest_transition];
-//    std::clog<<"Transition to the room " << room_new_ind << "\n";
+    std::clog<<"Transition to the room " << room_new_ind << "\n";
 }
 
 bool GlobalState::PopStateRoom(Point &player_position) {
