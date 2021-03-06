@@ -181,8 +181,9 @@ int main(int argc, char **argv) {
 
          int removing_ind;
          if (global_state.PopStateLogs(removing_ind)){
-             Point begin, size;
-             logs.RemoveLog(removing_ind, global_state, begin, size);
+             ObjectBorders borders;
+             logs.RemoveLog(removing_ind, global_state, borders);
+             background.DrawArea(screenBuffer, global_state.room_background_map, borders);
          }
         //log.DrawUpdate( add timer);
         player.Draw(screenBuffer, global_state);

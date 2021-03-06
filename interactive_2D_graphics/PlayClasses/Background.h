@@ -11,6 +11,7 @@ struct Background {
     explicit Background(std::string  titles_path);
 
     void DrawRoom(Image &screen, std::shared_ptr<TitleMap> &background_map);
+    void DrawArea(Image &screen, std::shared_ptr<TitleMap> &background_map, ObjectBorders borders);
 
 private:
     std::string map_path;

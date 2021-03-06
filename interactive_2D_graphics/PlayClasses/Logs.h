@@ -16,9 +16,10 @@ struct Logs {
     Logs(const std::string &logs_asset, const std::string &attention_asset);
 
     void DrawRoom(Image &screen, GlobalState& globalState);
-    void RemoveLog(int removing_ind, GlobalState& globalState, Point &begin, Point & size){
+    void RemoveLog(int removing_ind, GlobalState& globalState, ObjectBorders& borders){
         assert(removing_ind < log_points.size());
         PointT p = log_points[removing_ind];
+        borders = ObjectBorders{p.x-1, p.x+1, p.y, p.y};
         log_points.erase(log_points.begin() + removing_ind);
         globalState.log_points= log_points;
         std::cout<<"remove x="<<p.x<<", y="<<p.y<<"\n";

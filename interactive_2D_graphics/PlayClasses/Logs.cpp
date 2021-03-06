@@ -24,12 +24,16 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
     _background_map = global_state.room_background_map;
     for (int i = 0; i < _logs_number; ++i){
         PointT point;
-        if (initLogPoint(point)){
+//        if (initLogPoint(point)){
+            point = PointT{2,2}; //todo
             this->log_points.push_back(point);
             std::cout<<"Draw log x="<<point.x<<", y="<<point.y<<"\n";
-            drawTrSaveAsset(screen, logs_image,
-                            point.x*h_TEXTURE_SIZE, point.y*h_TEXTURE_SIZE); // todo
-        }
+            drawSaveAsset(screen, logs_image,
+                            point.x*h_TEXTURE_SIZE - h_TEXTURE_SIZE/2,
+                            point.y*h_TEXTURE_SIZE);
+        break;
+
+//        }
     }  // todo нужно сделать по ссылке, но мне лень дебажить
     global_state.log_points = std::vector<PointT>(this->log_points);
 }
