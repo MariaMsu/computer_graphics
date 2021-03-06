@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
     // todo remove absolute path
     GlobalState global_state = GlobalState("/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/rooms");
     Background background{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/titles_path.txt"};
-    Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player/img.png"};
+    Player player{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/player_path.txt"};
     Bridge bridge{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/bridges_path.txt"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
