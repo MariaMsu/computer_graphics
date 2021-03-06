@@ -12,7 +12,10 @@
 #define h_WINDOW_T_HEIGHT h_WINDOW_HEIGHT / h_TEXTURE_SIZE
 
 #define h_PLAYER_PHIS_WIDTH_SHIFT 15
-#define h_PLAYER_PHIS_HEIGHT_SHIFT 5
+#define h_PLAYER_PHIS_HEIGHT_SHIFT 7
+#define h_PLAYER_MOVE_SPEED 4
+#define h_PLAYER_SKIN_SPEED 10
+#define h_PLAYER_NEW_POINT_SHIFT 2
 
 #define h_N_ROOMS 3
 #define h_MAP_CODE_SIZE 3
@@ -23,9 +26,5 @@ const std::set<short> h_walls = {01, 02, 03, 04, 05};
 const std::set<short> h_lava = {10, 11, 12, 13, 14, 15, 16, 17, 18};
 #define h_LAVA_CENTRE 14
 #define h_BRIDGE_REQ_DISTANCE 160
-
-#define h_PLAYER_MOVE_SPEED 4
-#define h_PLAYER_SKIN_SPEED 8
-#define h_PLAYER_NEW_POINT_SHIFT 2
 
 #endif //MAIN_CONSTANTS_H
