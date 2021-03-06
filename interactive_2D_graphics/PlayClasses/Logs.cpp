@@ -28,6 +28,13 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
 
     all_rooms_logs_positions.insert(
             std::pair<int, std::vector<PointT>>(_room_ind, log_points));
+    attention_points.clear();
+    for(PointT log_point: log_points){
+        attention_points.push_back(Point{log_point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 4,
+                                         log_point.y * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 4});
+    }
+    last_update_time = 0;
+    last_direction_change_time = 0;
     // todo нужно сделать по ссылке, но мне лень дебажить
     global_state.log_points = std::vector<PointT>(this->log_points);
 }
@@ -57,8 +64,9 @@ void Logs::drawOldRoom(Image &screen, int room_ind) {
 void Logs::RemoveLog(int removing_ind, GlobalState &globalState, ObjectBorders &borders) {
     assert(removing_ind < log_points.size());
     PointT p = log_points[removing_ind];
-    borders = ObjectBorders{p.x - 1, p.x + 1, p.y, p.y};
+    borders = ObjectBorders{p.x - 1, p.x + 1, p.y, p.y+1};
     log_points.erase(log_points.begin() + removing_ind);
+    attention_points.erase(attention_points.begin() + removing_ind);
     globalState.log_points = log_points;
 //    std::cout << "remove x=" << p.x << ", y=" << p.y << "\n";
 }

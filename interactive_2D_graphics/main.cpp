@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
     Background background{"../resources/path_backdround.txt"};
     Player player{"../resources/path_player.txt"};
     Bridge bridge{"../resources/path_bridges.txt"};
-    Logs logs{"../resources/log1.png", "../resources/log1.png"};
+    Logs logs{"../resources/log1.png", "../resources/lamp8.png"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state.room_background_map);
@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
              logs.RemoveLog(removing_ind, global_state, borders);
              background.DrawArea(screenBuffer, global_state.room_background_map, borders);
          }
-        //log.DrawUpdate( add timer);
+        logs.DrawUpdate( screenBuffer, deltaTime);
         player.Draw(screenBuffer, global_state);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
