@@ -1,4 +1,8 @@
+room_type:
+0
+transitions:
  01
  02
 -
  03
+end.

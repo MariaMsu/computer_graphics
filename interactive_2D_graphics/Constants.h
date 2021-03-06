@@ -30,4 +30,7 @@ const std::set<short> h_lava = {91, 92, 93, 94, 95, 96, 97, 98, 99};
 #define h_LAVA_CENTRE 95
 #define h_BRIDGE_REQ_DISTANCE 160
 
+#define h_N_ROOM_TYPES 4
+#define h_N_ROOM_SIDES 4
+
 #endif //MAIN_CONSTANTS_H

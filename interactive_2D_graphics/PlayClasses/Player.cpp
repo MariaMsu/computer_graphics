@@ -125,7 +125,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
 void Player::ProcessBridge(GlobalState &global_state) {
     int nearest_transition;
     double distance = detNearestPointT(
-            coords, global_state.room_transitions_points, nearest_transition);
+            coords, global_state.GetTransitionsPoints(), nearest_transition);
     if (distance < h_BRIDGE_REQ_DISTANCE) {
         global_state.PushStateBridge(nearest_transition);
     }

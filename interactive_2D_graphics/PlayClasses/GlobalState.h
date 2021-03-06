@@ -10,6 +10,13 @@
 #include "UtilsStructures.h"
 #include "Utils.h"
 
+struct RoomInfo{
+    int room_type;
+    std::vector<int> transition_rooms;
+    std::vector<PointT> transition_points;
+
+    std::array<int, h_N_ROOM_SIDES> _last_i;  // todo rename
+};
 
 struct GlobalState {
     explicit GlobalState(const std::string &rooms_data_path);
@@ -22,7 +29,11 @@ struct GlobalState {
 
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;
-    std::shared_ptr<std::vector<PointT>> room_transitions_points;
+
+
+    std::vector<PointT> &GetTransitionsPoints(){
+        return room_info->transition_points;
+    }
 
 private:
     void reassigneState(int room_number);
@@ -40,19 +51,16 @@ private:
     bool update_room = false;
     int room_new_ind = 0;
     bool update_bridge = false;
-    std::shared_ptr<std::vector<int>> room_transitions_data;
+    std::shared_ptr<RoomInfo> room_info;
     std::vector<bool> bridges_state;
     std::shared_ptr<TitleMap> room_objects_map; // todo remove?
 
     // all rooms data
     std::vector<std::shared_ptr<TitleMap>> background_map_vector;
     std::vector<std::shared_ptr<TitleMap>> objects_map_vector;
-    std::vector<std::shared_ptr<std::vector<int>>> transitions_data_vector;
-    std::vector<std::shared_ptr<std::vector<PointT>>> transitions_points_vector;
-//    std::vector<std::shared_ptr<TransitionsData>> transitions_pos_vector;
+    std::vector<std::shared_ptr<RoomInfo>> common_info_vector;
+//    std::vector<std::shared_ptr<std::vector<PointT>>> transitions_points_vector;
     int room_ind = 0;
-    int n_rooms;
-    Point init_player_position{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
 };
 
 #endif //MAIN_GLOBALSTATE_H
