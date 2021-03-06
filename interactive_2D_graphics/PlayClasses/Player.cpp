@@ -2,10 +2,8 @@
 
 
 bool Player::Moved() const {
-    if (coords.x == old_coords.x && coords.y == old_coords.y)
-        return false;
-    else
-        return true;
+    if (coords.x == old_coords.x && coords.y == old_coords.y) {return false;}
+    return true;
 }
 
 bool titleTypeIntersection(const PlayerBorders borders, const std::set<short> &title_types,
@@ -36,9 +34,9 @@ bool isBeyondWindow(const PlayerBorders borders) {
 PlayerBorders Player::GetTitleBorders(Point coord, int x_add_space = 0, int y_add_space = 0) {
     return PlayerBorders{
             (coord.x - x_add_space) / h_TEXTURE_SIZE,
-            (coord.x + player_image.Width() + x_add_space) / h_TEXTURE_SIZE,
+            (coord.x + player_image->Width() + x_add_space) / h_TEXTURE_SIZE,
             (coord.y - y_add_space) / h_TEXTURE_SIZE,
-            (coord.y + player_image.Height() + y_add_space) / h_TEXTURE_SIZE,
+            (coord.y + player_image->Height() + y_add_space) / h_TEXTURE_SIZE,
     };
 };
 
@@ -90,30 +88,23 @@ void Player::ProcessBridge(GlobalState &global_state) {
     double distance = detNearestPointT(
             coords, global_state.room_transitions_points, nearest_transition);
     if (distance < h_BRIDGE_REQ_DISTANCE){ global_state.PushStateBridge(nearest_transition);
-    std::clog<<"put bridge\n";
+        std::clog<<"put bridge\n";
     }
 }
 
 void Player::Draw(Image &screen, GlobalState &screen_state) {
     if (Moved()) {
-        for (int y = old_coords.y; y < old_coords.y + player_image.Height(); ++y) {
-            for (int x = old_coords.x; x < old_coords.x + player_image.Width(); ++x) {
+        for (int y = old_coords.y; y < old_coords.y + player_image->Height(); ++y) {
+            for (int x = old_coords.x; x < old_coords.x + player_image->Width(); ++x) {
                 screen.PutPixel(x, y, screen.GetPixel(x, y));
             }
         }
         old_coords = coords;
     }
-//    drawAsset(screen, image_ptr, coords.x, coords.y);
-    for (int y = coords.y; y < coords.y + player_image.Height(); ++y) {
-        for (int x = coords.x; x < coords.x + player_image.Width(); ++x) {
-
-            Pixel newPix = this->player_image.GetPixel(x - coords.x, player_image.Height() - 1 - y + coords.y);
-            screen.PutPixel(x, y, blend(screen.GetPixel(x, y), newPix));
-        }
-    }
+    drawTrAsset(screen, player_image, coords.x, coords.y);
 }
 
 void Player::SetPosition(Point player_position) {
-    coords.x = player_position.x - player_image.Width() / 2;
-    coords.y = player_position.y - player_image.Height() / 2;
+    coords.x = player_position.x - player_image->Width() / 2;
+    coords.y = player_position.y - player_image->Height() / 2;
 }

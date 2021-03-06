@@ -15,6 +15,7 @@ Point PointT2Point(PointT p);
 Pixel blend(Pixel oldPixel, Pixel newPixel);
 
 void drawAsset(Image &screen, const std::shared_ptr<Image> &asset, int global_x, int global_y);
+void drawTrAsset(Image &screen, const std::shared_ptr<Image> &asset, int global_x, int global_y);
 void drawSaveAsset(Image &screen, const std::shared_ptr<Image> &asset, int global_x, int global_y);
 void drawTrSaveAsset(Image &screen, const std::shared_ptr<Image> &asset, int global_x, int global_y);
 

@@ -27,8 +27,8 @@ struct PlayerBorders {
 };
 
 struct Player {
-    explicit Player(const std::string &asset_path) : player_image(Image(asset_path)) {
-//        image_ptr = std::make_shared<Image>(player_image);
+    explicit Player(const std::string &asset_path){
+        player_image = std::make_shared<Image>(asset_path);
     };
     void SetPosition(Point player_position);
     bool Moved() const;
@@ -42,8 +42,7 @@ private:
     Point old_coords{h_WINDOW_HEIGHT / 2, h_WINDOW_WIDTH / 2};
     Pixel color{.r = 255, .g = 255, .b = 0, .a = 255};
     int move_speed = 4;
-    Image player_image;
-//    std::shared_ptr<Image> image_ptr; // double free?
+    std::shared_ptr<Image> player_image;
 };
 
 #endif //MAIN_PLAYER_H
