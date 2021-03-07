@@ -55,9 +55,9 @@ void processPlayerMovement(Player &player, GlobalState& global_state) {
         player.ProcessInput(MovementDir::LEFT, global_state);
     else if (Input.keys[GLFW_KEY_D])
         player.ProcessInput(MovementDir::RIGHT, global_state);
-    if (Input.keys[GLFW_KEY_P])
+    if (Input.keys[GLFW_KEY_DOWN])
         player.ProcessBridge(global_state);
-    if (Input.keys[GLFW_KEY_G])
+    if (Input.keys[GLFW_KEY_UP])
         player.ProcessLogs(global_state);
 }
 
@@ -107,8 +107,8 @@ int initGL() {
     std::cout << "press right mouse button to capture/release mouse cursor  " << std::endl;
     std::cout << "W, A, S, D - movement  " << std::endl;
     std::cout << "press ESC to exit" << std::endl;
-    std::cout << "'G' to get logs" << std::endl;
-    std::cout << "'P' to put bridges" << std::endl;
+    std::cout << "KEY_UP to get logs" << std::endl;
+    std::cout << "KEY_DOWN to put bridges" << std::endl;
     std::cout << "Logs are needed to build bridges. After moving to another room, the bridges burn out." << std::endl;
 
     return 0;
