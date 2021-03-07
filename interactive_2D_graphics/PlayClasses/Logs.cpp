@@ -70,3 +70,23 @@ void Logs::RemoveLog(int removing_ind, GlobalState &globalState, ObjectBorders &
     globalState.log_points = log_points;
 //    std::cout << "remove x=" << p.x << ", y=" << p.y << "\n";
 }
+
+void Logs::DrawUpdate(Image &screen, GLfloat deltaTime) {
+    last_update_time += deltaTime;
+    float k = 2;
+    last_direction_change_time = fmod((last_direction_change_time + deltaTime), k);
+    if (last_update_time < 0.05){ return;}
+    last_update_time = 0;
+    for(int i = 0; i < attention_points.size(); ++i){
+        Point p = attention_points[i];
+        for (int y = p.y; y < p.y + attention_image->Height(); ++y) {
+            for (int x = p.x; x < p.x + attention_image->Width(); ++x) {
+                screen.PutPixel(x, y, screen.GetPixel(x, y));
+            }
+        }
+        if (last_direction_change_time < (k / 2)) {  p.y += 1; }
+        else { p.y -= 1;}
+        drawTrAsset(screen, attention_image, p.x, p.y);
+        attention_points[i] = p;
+    }
+}

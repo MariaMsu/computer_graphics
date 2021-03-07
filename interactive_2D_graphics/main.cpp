@@ -6,6 +6,7 @@
 #include "PlayClasses/GlobalState.h"
 #include "PlayClasses/Bridge.h"
 #include "PlayClasses/Logs.h"
+#include "PlayClasses/PlayEnd.h"
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
@@ -150,6 +151,8 @@ int main(int argc, char **argv) {
     Player player{h_TXT_PLAYER};
     Bridge bridge{h_TXT_BRIDGE};
     Logs logs{h_PATH_LOG, h_PATH_LAMP};
+    PlayEnd play_end{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/win.png",
+                     "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/lose.png"};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state.room_background_map);
@@ -187,6 +190,12 @@ int main(int argc, char **argv) {
              logs.RemoveLog(removing_ind, global_state, borders);
              background.DrawArea(screenBuffer, global_state.room_background_map, borders);
          }
+
+        int game_end_state;
+        if (global_state.PopStateEnd(game_end_state)){
+            play_end.DrawRoom(screenBuffer, global_state);
+        }
+
         logs.DrawUpdate( screenBuffer, deltaTime);
         player.Draw(screenBuffer, global_state);
 

@@ -5,14 +5,14 @@
 #include <array>
 #include <algorithm>
 
-#define h_PATH_ROOMS "./resources/rooms_circle"
+#define h_PATH_ROOMS "./resources/rooms_test"
 #define h_TXT_BACKGROUND "./resources/path_background.txt"
 #define h_TXT_PLAYER "./resources/path_player.txt"
 #define h_TXT_BRIDGE "./resources/path_bridges.txt"
 #define h_PATH_LOG "./resources/log_assets/log.png"
 #define h_PATH_LAMP "./resources/log_assets/lamp.png"
 
-#define h_N_ROOMS 18
+#define h_N_ROOMS 4
 
 #define h_WINDOW_WIDTH 768
 #define h_WINDOW_HEIGHT 768
@@ -33,8 +33,8 @@ typedef std::array<std::array<short, h_WINDOW_T_WIDTH>, h_WINDOW_T_HEIGHT> Title
 
 const std::set<short> h_walls = {01, 02, 03, 04, 05,
                                  21, 22, 23, 24, 25, 26, 27,
-                                 41, 42, 43, 44, 45,
-                                 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73};
+                                 41, 42, 43, 44, 45};
+const std::set<short> h_water = {61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73};
 const std::set<short> h_lava = {91, 92, 93, 94, 95, 96, 97, 98, 99};
 // лол. плюсы с их переобределенияе всего и вся не могут созать сет из объединения константных
 const std::set<short> h_not_flore = {01, 02, 03, 04, 05,

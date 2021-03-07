@@ -30,6 +30,17 @@ struct GlobalState {
     void PushStateLogs(int nearest_point_ind);
     bool PopStateLogs(int & removing_ind);
 
+    void PushStateEnd(int end_state){
+        assert((end_state==-1)||(end_state==1));
+        this->end_game = -1;}
+
+    bool PopStateEnd(int& end_state){
+        if (end_game==0) {return false;}
+        end_state = this->end_game;
+        end_game = 0;
+        return true;
+    }
+
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;
     std::vector<PointT> log_points;
@@ -56,6 +67,7 @@ private:
     bool update_room = false;
     bool update_bridge = false;
     int remove_logs_by_ind = -1;
+    int end_game = 0;
     std::shared_ptr<RoomInfo> room_info;
     std::vector<bool> bridges_state;
 
