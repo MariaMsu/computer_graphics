@@ -25,9 +25,6 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
     _background_map = global_state.room_background_map;
     if (all_rooms_logs_positions.count(_room_ind) == 0) { drawNewRoom(screen); }
     else { drawOldRoom(screen, _room_ind); }
-
-    all_rooms_logs_positions.insert(
-            std::pair<int, std::vector<PointT>>(_room_ind, log_points));
     attention_points.clear();
     for(PointT log_point: log_points){
         attention_points.push_back(Point{log_point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 4,
@@ -50,6 +47,8 @@ void Logs::drawNewRoom(Image &screen) {
                         point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 2,
                         point.y * h_TEXTURE_SIZE);
     }
+    all_rooms_logs_positions.insert(
+            std::pair<int, std::vector<PointT>>(_room_ind, log_points));
 }
 
 void Logs::drawOldRoom(Image &screen, int room_ind) {
@@ -68,6 +67,7 @@ void Logs::RemoveLog(int removing_ind, GlobalState &globalState, ObjectBorders &
     log_points.erase(log_points.begin() + removing_ind);
     attention_points.erase(attention_points.begin() + removing_ind);
     globalState.log_points = log_points;
+    all_rooms_logs_positions[_room_ind] = log_points; // todo move to init method
 //    std::cout << "remove x=" << p.x << ", y=" << p.y << "\n";
 }
 
