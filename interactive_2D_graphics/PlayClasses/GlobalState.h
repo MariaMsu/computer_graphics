@@ -36,6 +36,11 @@ struct GlobalState {
 
     bool PopStateEnd(int& end_state){
         if (end_game==0) {return false;}
+        // не умариает, если наступил на лаву и сменил комнату
+        if ((end_game == -1) && update_room) {
+            end_game = 0;
+            return false;
+        }
         end_state = this->end_game;
         end_game = 0;
         return true;

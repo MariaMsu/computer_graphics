@@ -206,7 +206,9 @@ bool GlobalState::PopStateRoom(Point &player_position) {
     int old_room_ind = this->room_ind;
     this->room_ind = room_new_ind;
     reassigneState(room_new_ind);
-    player_position = getNewPlayerPosition(old_room_ind);
+    // не умариает, если наступил на лаву и сменил комнату
+    if (end_game == -1) {end_game = 0;}
+    player_position = getNewPlayerPosition(old_room_ind); // todo move
     return true;
 }
 

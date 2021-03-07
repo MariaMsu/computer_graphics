@@ -31,10 +31,10 @@ void PlayEnd::DrawUpdate(Image &screen, GLfloat deltaTime) {
         PointT t = getRandomPoint();
         int y_position = t.y * h_TEXTURE_SIZE + (h_TEXTURE_SIZE / 4 * (t.x % 4));
         int x_offset = t.x * h_TEXTURE_SIZE / 10; // todo remove magic numbers
-
         for (int y = 0; y < h_TEXTURE_SIZE; ++y) {
             for (int x = 0; x < h_WINDOW_WIDTH; ++x) {
-                screen.PutPixel( x, y_position + y, screen.GetPixel(max(0, x-x_offset), y_position+y));
+                screen.PutPixel( x, y_position + y,
+                                 screen.GetPixel(max(0, x-x_offset), y_position+y));
             }
         }
     }

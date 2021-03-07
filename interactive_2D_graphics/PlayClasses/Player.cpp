@@ -96,6 +96,7 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
     PointT intersection;
     if (titleTypeIntersection(tmp_borders, h_lava, global_state.room_background_map, intersection)) {
         global_state.PushStateRoom(coords);
+        global_state.PushStateEnd(-1);
         return;
     }
     if (titleTypeIntersection(tmp_borders, h_water, global_state.room_background_map, intersection)) {
