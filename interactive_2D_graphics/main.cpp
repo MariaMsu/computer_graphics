@@ -151,8 +151,7 @@ int main(int argc, char **argv) {
     Player player{h_TXT_PLAYER};
     Bridge bridge{h_TXT_BRIDGE};
     Logs logs{h_PATH_LOG, h_PATH_LAMP};
-    PlayEnd play_end{"/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/win.png",
-                     "/home/maria/Desktop/computer_graphics/interactive_2D_graphics/resources/lose.png"};
+    PlayEnd play_end{h_PATH_WIN, h_PATH_LOSE};
 
     Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
     background.DrawRoom(screenBuffer, global_state.room_background_map);
@@ -212,6 +211,7 @@ int main(int argc, char **argv) {
             lastFrame = currentFrame;
             glfwPollEvents();
 
+            play_end.DrawUpdate(screenBuffer, deltaTime);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             GL_CHECK_ERRORS;

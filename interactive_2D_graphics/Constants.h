@@ -11,6 +11,8 @@
 #define h_TXT_BRIDGE "./resources/path_bridges.txt"
 #define h_PATH_LOG "./resources/log_assets/log.png"
 #define h_PATH_LAMP "./resources/log_assets/lamp.png"
+#define h_PATH_WIN "./resources/play_end/win.png"
+#define h_PATH_LOSE "./resources/play_end/lose.png"
 
 #define h_N_ROOMS 4
 
