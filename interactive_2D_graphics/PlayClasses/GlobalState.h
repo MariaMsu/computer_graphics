@@ -32,7 +32,7 @@ struct GlobalState {
 
     void PushStateEnd(int end_state){
         assert((end_state==-1)||(end_state==1));
-        this->end_game = -1;}
+        this->end_game = end_state;}
 
     bool PopStateEnd(int& end_state){
         if (end_game==0) {return false;}

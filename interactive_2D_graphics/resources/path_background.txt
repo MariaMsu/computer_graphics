@@ -79,15 +79,15 @@
 ./resources/background/grass2_pipo/ground5.png
 ./resources/background/grass2_pipo/ground6.png
 
-
-
-
-
-
-
-
-
-
+./resources/background/whole/w1.png
+./resources/background/whole/w2.png
+./resources/background/whole/w3.png
+./resources/background/whole/w4.png
+./resources/background/whole/w5.png
+./resources/background/whole/w6.png
+./resources/background/whole/w7.png
+./resources/background/whole/w8.png
+./resources/background/whole/w9.png
 
 ./resources/background/lava/l0.png
 ./resources/background/lava/l1.png

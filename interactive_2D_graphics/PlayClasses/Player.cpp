@@ -102,6 +102,10 @@ void Player::ProcessInput(MovementDir dir, GlobalState &global_state) {
         global_state.PushStateEnd(-1);
         return;
     }
+    if (titleTypeIntersection(tmp_borders, h_whole, global_state.room_background_map, intersection)) {
+        global_state.PushStateEnd(1);
+        return;
+    }
     if (!isBeyondWindow(tmp_borders) &&
         !titleTypeIntersection(tmp_borders, h_walls, global_state.room_background_map, intersection)) {
         // update coordinates only if player not in the wall
