@@ -5,7 +5,7 @@
 #include <array>
 #include <algorithm>
 
-#define h_PATH_ROOMS "./resources/rooms_test"
+#define h_PATH_ROOMS "./resources/rooms_circle"
 #define h_TXT_BACKGROUND "./resources/path_background.txt"
 #define h_TXT_PLAYER "./resources/path_player.txt"
 #define h_TXT_BRIDGE "./resources/path_bridges.txt"
@@ -14,7 +14,7 @@
 #define h_PATH_WIN "./resources/play_end/win.png"
 #define h_PATH_LOSE "./resources/play_end/lose.png"
 
-#define h_N_ROOMS 4
+#define h_N_ROOMS 18
 
 #define h_WINDOW_WIDTH 768
 #define h_WINDOW_HEIGHT 768

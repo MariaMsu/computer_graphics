@@ -51,7 +51,7 @@ Image::Image(Pixel* in_data, int a_width, int a_height, int a_channels) {
 
 Pixel Image::GetPixel(int x, int y) {
     if ((x < 0) or (x >= this->width) or (y < 0) or (y >= this->height)) {
-        std::cout << "incorrect get pixel index x: " << x << " y: " << y << this->a_path << "\n";
+//        std::clog << "incorrect get pixel index x: " << x << " y: " << y << this->a_path << "\n";
         return Pixel{0, 0, 0, 0};
     }
     return saved_data[width * y + x];

@@ -1,7 +1,7 @@
 logs_number:
-2
+0
 transitions:
- 02
+ 05
 -
  00
 -

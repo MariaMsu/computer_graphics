@@ -1,8 +1,9 @@
 logs_number:
 5
 transitions:
- 01
- 08
- 07
- 13
+ 01 02 03 04
+-
+-
+-
+-
 end.

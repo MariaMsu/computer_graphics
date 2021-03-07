@@ -1,8 +1,8 @@
 logs_number:
 0
 transitions:
- 12
 -
- 06
+-
+ 13 14 15 16
 -
 end.
