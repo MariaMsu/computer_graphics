@@ -23,7 +23,7 @@
 #define h_WINDOW_T_WIDTH h_WINDOW_WIDTH / h_TEXTURE_SIZE
 #define h_WINDOW_T_HEIGHT h_WINDOW_HEIGHT / h_TEXTURE_SIZE
 
-#define h_PLAYER_PHIS_WIDTH_SHIFT 15
+#define h_PLAYER_PHIS_WIDTH_SHIFT 10
 #define h_PLAYER_PHIS_HEIGHT_SHIFT 7
 #define h_PLAYER_MOVE_SPEED 4
 #define h_PLAYER_SKIN_SPEED 10
@@ -46,7 +46,7 @@ const std::set<short> h_not_flore = {01, 02, 03, 04, 05,
                                      61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
                                      91, 92, 93, 94, 95, 96, 97, 98, 99};
 #define h_LAVA_CENTRE 95
-#define h_BRIDGE_REQ_DISTANCE 160
+#define h_BRIDGE_REQ_DISTANCE 140
 #define h_LOGS_REQ_DISTANCE 70
 #define h_INIT_LOGS_NUMBER 20
 
