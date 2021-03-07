@@ -12,7 +12,7 @@ bool Logs::initLogPoint(PointT &point) {
     for (int i = 0; i < 3; ++i) { // трижды пробуем найти место
         point = getRandomPoint();
         ObjectBorders borders = ObjectBorders{
-                point.x - 1, point.x + 1, point.y - 1, point.y + 1};
+                point.x - 1, point.x + 1, point.y, point.y};
         PointT t;
         if (!titleTypeIntersection(borders, h_not_flore, _background_map, t)) { return true; }
     }
