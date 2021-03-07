@@ -164,7 +164,8 @@ int main(int argc, char **argv) {
     GL_CHECK_ERRORS;
 
     //game loop
-    while (!glfwWindowShouldClose(window)) {
+    int game_end_state=0;
+    while (!glfwWindowShouldClose(window) && !global_state.PopStateEnd(game_end_state)) {
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -191,11 +192,6 @@ int main(int argc, char **argv) {
              background.DrawArea(screenBuffer, global_state.room_background_map, borders);
          }
 
-        int game_end_state;
-        if (global_state.PopStateEnd(game_end_state)){
-            play_end.DrawRoom(screenBuffer, global_state);
-        }
-
         logs.DrawUpdate( screenBuffer, deltaTime);
         player.Draw(screenBuffer, global_state);
 
@@ -205,6 +201,25 @@ int main(int argc, char **argv) {
         GL_CHECK_ERRORS;
 
         glfwSwapBuffers(window);
+    }
+
+    if (game_end_state != 0) {
+        play_end.DrawRoom(screenBuffer, game_end_state);
+
+        while (!glfwWindowShouldClose(window)) {
+            GLfloat currentFrame = glfwGetTime();
+            deltaTime = currentFrame - lastFrame;
+            lastFrame = currentFrame;
+            glfwPollEvents();
+
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GL_CHECK_ERRORS;
+            glDrawPixels(WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, screenBuffer.Data());
+            GL_CHECK_ERRORS;
+
+            glfwSwapBuffers(window);
+        }
     }
 
     glfwTerminate();

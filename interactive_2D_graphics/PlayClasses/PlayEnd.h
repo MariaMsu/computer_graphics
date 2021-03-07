@@ -9,7 +9,7 @@
 
 struct PlayEnd {
     PlayEnd(const std::string &path_win, const std::string &path_lose);
-    void DrawRoom(Image &screen, GlobalState& globalState);
+    void DrawRoom(Image &screen, int game_state);
 
 private:
     std::shared_ptr<Image> image_win;
