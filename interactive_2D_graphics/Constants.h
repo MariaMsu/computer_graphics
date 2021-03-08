@@ -49,6 +49,7 @@ const std::set<short> h_not_flore = {01, 02, 03, 04, 05,
 #define h_BRIDGE_REQ_DISTANCE 140
 #define h_LOGS_REQ_DISTANCE 70
 #define h_INIT_LOGS_NUMBER 20
+#define h_LOG_UPDATE_INTERVAL 5
 
 #define h_N_ROOM_SIDES 4
 

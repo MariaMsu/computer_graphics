@@ -30,21 +30,8 @@ struct GlobalState {
     void PushStateLogs(int nearest_point_ind);
     bool PopStateLogs(int & removing_ind);
 
-    void PushStateEnd(int end_state){
-        assert((end_state==-1)||(end_state==1));
-        this->end_game = end_state;}
-
-    bool PopStateEnd(int& end_state){
-        if (end_game==0) {return false;}
-        // не умариает, если наступил на лаву и сменил комнату
-        if ((end_game == -1) && update_room) {
-            end_game = 0;
-            return false;
-        }
-        end_state = this->end_game;
-        end_game = 0;
-        return true;
-    }
+    void PushStateEnd(int end_state);
+    bool PopStateEnd(int& end_state);
 
     // todo there must to be getter?
     std::shared_ptr<TitleMap> room_background_map;

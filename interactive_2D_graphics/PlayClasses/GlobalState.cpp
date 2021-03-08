@@ -222,13 +222,21 @@ bool GlobalState::PopStateLogs(int &removing_ind) {
     return true;
 }
 
-//void GlobalState::_CheckTransitions() {
-//    for(std::shared_ptr<TransitionsData> transitions: this->transitions_data_vector){
-//        for (int room: *transitions){
-//            TransitionsData target_room_t = *(this->transitions_data_vector[room]);
-//            if (std::find(target_room_t.begin(), target_room_t.end(), room) == target_room_t.end()){
-//                std::cout<<"room "<<room<<"'s transition data has not transition to "<<
-//            };
-//        }
-//    }
-//};
+void GlobalState::PushStateEnd(int end_state) {
+    assert((end_state==-1)||(end_state==1));
+    this->end_game = end_state;
+}
+
+bool GlobalState::PopStateEnd(int &end_state) {
+    if (end_game==0) {return false;}
+    // не умариает, если наступил на лаву и сменил комнату
+    if ((end_game == -1) && update_room) {
+        end_game = 0;
+        return false;
+    }
+    end_state = this->end_game;
+    end_game = 0;
+    return true;
+}
+
+
