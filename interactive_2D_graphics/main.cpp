@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    GlobalState global_state = GlobalState(h_PATH_ROOMS, 10);
+    GlobalState global_state = GlobalState(h_PATH_ROOMS, 0);
     Background background{h_TXT_BACKGROUND};
     Player player{h_TXT_PLAYER};
     Bridge bridge{h_TXT_BRIDGE};
