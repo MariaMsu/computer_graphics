@@ -19,7 +19,7 @@ struct RoomInfo{
 };
 
 struct GlobalState {
-    explicit GlobalState(const std::string &rooms_data_path);
+    explicit GlobalState(const std::string &rooms_data_path, int init_room_ind=0);
 
     void PushStateBridge(int transition_num);
     bool PopStateBridge(PointT& p);

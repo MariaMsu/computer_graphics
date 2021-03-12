@@ -111,7 +111,7 @@ void setTransitionPoints(std::shared_ptr<RoomInfo> &room_info, std::shared_ptr<T
 }
 
 
-GlobalState::GlobalState(const std::string &rooms_data_path) {
+GlobalState::GlobalState(const std::string &rooms_data_path, int init_room_ind) {
     for (int i = 0; i < h_N_ROOMS; ++i) {
         std::string single_room_path = rooms_data_path + "/r" + std::to_string(i);
         std::clog<<"load room " << single_room_path << "\n";
@@ -122,7 +122,7 @@ GlobalState::GlobalState(const std::string &rooms_data_path) {
         this->common_info_vector.push_back(cur_room_info);
     }
     this->logs_counter = h_INIT_LOGS_NUMBER;
-    this->reassigneState(0);
+    this->reassigneState(init_room_ind);
 }
 
 void GlobalState::reassigneState(int room_number) {
