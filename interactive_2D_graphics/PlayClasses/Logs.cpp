@@ -7,7 +7,7 @@ Logs::Logs(const std::string &logs_asset, const std::string &attention_asset) {
 }
 
 bool Logs::initLogPoint(PointT &point) {
-    for (int i = 0; i < 3; ++i) { // трижды пробуем найти место
+    for (int i = 0; i < 5; ++i) {  // try to find place 5 times
         point = getRandomPoint();
         ObjectBorders borders = ObjectBorders{
                 point.x - 1, point.x + 1, point.y, point.y};
@@ -37,8 +37,8 @@ void Logs::DrawRoom(Image &screen, GlobalState &global_state) {
         attention_points.push_back(Point{log_point.x * h_TEXTURE_SIZE - h_TEXTURE_SIZE / 4,
                                          log_point.y * h_TEXTURE_SIZE + h_TEXTURE_SIZE / 4});
     }
-    last_update_time = 0;
-    last_direction_change_time = 0;
+    this->last_update_time = 0;
+    this->lamp_direction = 0;
     global_state.log_points = *log_points;   // todo нужно сделать по ссылке, но мне лень дебажить
 }
 
@@ -74,10 +74,9 @@ void Logs::RemoveLog(int removing_ind, GlobalState &globalState, ObjectBorders &
 
 void Logs::DrawUpdate(Image &screen, GLfloat deltaTime) {
     last_update_time += deltaTime;
-    float k = 2;
-    last_direction_change_time = fmod((last_direction_change_time + deltaTime), k);
     if (last_update_time < 0.05){ return;}
     last_update_time = 0;
+    this->lamp_direction = (lamp_direction+1) % h_LOG_LAMP_AMPLITUDE;
     for(int i = 0; i < attention_points.size(); ++i){
         Point p = attention_points[i];
         for (int y = p.y; y < p.y + attention_image->Height(); ++y) {
@@ -85,7 +84,7 @@ void Logs::DrawUpdate(Image &screen, GLfloat deltaTime) {
                 screen.PutPixel(x, y, screen.GetPixel(x, y));
             }
         }
-        if (last_direction_change_time < (k / 2)) {  p.y += 1; }
+        if (lamp_direction < (h_LOG_LAMP_AMPLITUDE / 2)) {  p.y += 1; }
         else { p.y -= 1;}
         drawTrAsset(screen, attention_image, p.x, p.y);
         attention_points[i] = p;

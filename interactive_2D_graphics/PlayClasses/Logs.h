@@ -34,7 +34,7 @@ private:
     int _logs_number;
     unsigned int transition_counter = 0;
     GLfloat last_update_time = 0;
-    GLfloat last_direction_change_time = 0;
+    int lamp_direction = 0;
     std::shared_ptr<TitleMap> _background_map;
     std::shared_ptr<std::vector<PointT>> log_points;
     std::map<int, RoomDump> all_rooms_logs_positions;
