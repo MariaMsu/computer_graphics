@@ -1,5 +1,10 @@
 # Interactive 2D-graphics
 
+[![game video](./game_preview.png)](
+    https://drive.google.com/file/d/1N9liUsIJ7AyKvfOsFQDqwgdOqgTHmSja/view?usp=sharing 
+    "game video - click to watch"
+)
+
 ## how to install
 ```
 $ sudo apt-get install cmake
