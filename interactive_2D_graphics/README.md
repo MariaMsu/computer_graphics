@@ -27,3 +27,10 @@ The player die if he try to stand on lave or on water.
 - https://pixanna.nl/materials/celiannas-tileset/
 - https://pipoya.itch.io/pipoya-free-rpg-world-tileset-32x32-40x40-48x48
 - https://free-game-assets.itch.io/free-rpg-desert-tileset
+
+## how to run on MacOS
+To run the game on MacOS you need to replace the line 
+`<target_link_libraries(main LINK_PUBLIC ${OPENGL_gl_LIBRARY} glfw rt dl)>` 
+with the line 
+`<target_link_libraries(main LINK_PUBLIC ${OPENGL_gl_LIBRARY} glfw dl)>` 
+in CMakeLists.txt
