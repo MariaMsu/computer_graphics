@@ -10,6 +10,7 @@
 #include "geometry.h"
 #include "shapes.h"
 #include "config.h"
+#include "material.h"
 
 struct Light {
     Light(const Vec3f &p, const float i) : position(p), intensity(i) {}
@@ -96,7 +97,8 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
                 powf(std::max(0.f, -reflect(-light_dir, N) * dir), material.specular_exponent) * light.intensity;
     }
     return material.diffuse_color * diffuse_light_intensity * material.albedo[0] +
-           Vec3f(1., 1., 1.) * specular_light_intensity * material.albedo[1] + reflect_color * material.albedo[2] +
+           Vec3f(1., 1., 1.) * specular_light_intensity * material.albedo[1] +
+           reflect_color * material.albedo[2] +
            refract_color * material.albedo[3];
 }
 
@@ -129,18 +131,11 @@ void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights
 }
 
 int main() {
-    Material ivory(1.0, Vec4f(0.6, 0.3, 0.1, 0.0), Vec3f(0.4, 0.4, 0.3), 50.);
-    Material glass(1.5, Vec4f(0.0, 0.5, 0.1, 0.8), Vec3f(0.6, 0.7, 0.8), 125.);
-    Material red_rubber(1.0, Vec4f(0.9, 0.1, 0.0, 0.0), Vec3f(0.3, 0.1, 0.1), 10.);
-    Material mirror(1.0, Vec4f(0.0, 10.0, 0.8, 0.0), Vec3f(1.0, 1.0, 1.0), 1425.);
-
     std::vector<Shape *> shapes;
-    shapes.push_back(new Sphere(Vec3f(-1.5, 0.5, -18), 3, red_rubber));
-    shapes.push_back(new Parallelepiped(Vec3f(0, -4, -18), 1, 12, 12, ivory));
+    shapes.push_back(new Sphere(Vec3f(0, 1, -18), 6, glass));
+    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, ivory));
 
-//    shapes.push_back(new Sphere(Vec3f(-1.0, -1.5, -12), 2,      glass));
-//    shapes.push_back(new Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
-//    shapes.push_back(new Sphere(Vec3f( 7,    5,   -18), 4,     mirror));
+    shapes.push_back(new Sphere(Vec3f(-2, -1, -5), 1, my_material));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
