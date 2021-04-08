@@ -49,9 +49,9 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shap
 
     float checkerboard_dist = std::numeric_limits<float>::max();
     if (fabs(dir.y) > 1e-3) {
-        float d = -(orig.y + 4) / dir.y; // the checkerboard plane has equation y = -4
+        float d = -(orig.y + 6) / dir.y; // the checkerboard plane has equation y = -6
         Vec3f pt = orig + dir * d;
-        if (d > 0 && fabs(pt.x) < 10 && pt.z < -10 && pt.z > -30 && d < shapes_dist) {
+        if (d > 0 && fabs(pt.x) < 15 && pt.z < -10 && pt.z > -60 && d < shapes_dist) {
             checkerboard_dist = d;
             hit = pt;
             N = Vec3f(0, 1, 0);
@@ -68,7 +68,7 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
     Vec3f point, N;
     Material material;
 
-    if (depth > 4 || !scene_intersect(orig, dir, shapes, point, N, material)) {
+    if (depth > H_RECURSION_DEPTH || !scene_intersect(orig, dir, shapes, point, N, material)) {
         return Vec3f(0.2, 0.7, 0.8); // background color
     }
 
@@ -80,21 +80,20 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
     Vec3f refract_color = cast_ray(refract_orig, refract_dir, shapes, lights, depth + 1);
 
     float diffuse_light_intensity = 0, specular_light_intensity = 0;
-    for (size_t i = 0; i < lights.size(); i++) {
-        Vec3f light_dir = (lights[i].position - point).normalize();
-        float light_distance = (lights[i].position - point).norm();
+    for (auto light : lights) {
+        Vec3f light_dir = (light.position - point).normalize();
+        float light_distance = (light.position - point).norm();
 
-        Vec3f shadow_orig = light_dir * N < 0 ? point - N * 1e-3 : point + N *
-                                                                           1e-3; // checking if the point lies in the shadow of the lights[i]
+        Vec3f shadow_orig = light_dir * N < 0 ? point - N * 1e-3 : point + N * 1e-3; // checking if the point lies in the shadow of the lights[i]
         Vec3f shadow_pt, shadow_N;
         Material tmpmaterial;
         if (scene_intersect(shadow_orig, light_dir, shapes, shadow_pt, shadow_N, tmpmaterial) &&
             (shadow_pt - shadow_orig).norm() < light_distance)
             continue;
 
-        diffuse_light_intensity += lights[i].intensity * std::max(0.f, light_dir * N);
+        diffuse_light_intensity += light.intensity * std::max(0.f, light_dir * N);
         specular_light_intensity +=
-                powf(std::max(0.f, -reflect(-light_dir, N) * dir), material.specular_exponent) * lights[i].intensity;
+                powf(std::max(0.f, -reflect(-light_dir, N) * dir), material.specular_exponent) * light.intensity;
     }
     return material.diffuse_color * diffuse_light_intensity * material.albedo[0] +
            Vec3f(1., 1., 1.) * specular_light_intensity * material.albedo[1] + reflect_color * material.albedo[2] +
@@ -136,17 +135,17 @@ int main() {
     Material mirror(1.0, Vec4f(0.0, 10.0, 0.8, 0.0), Vec3f(1.0, 1.0, 1.0), 1425.);
 
     std::vector<Shape *> shapes;
-    shapes.push_back(new Sphere(Vec3f(-1.5, -0.5, -18), 3, red_rubber));
-    shapes.push_back(new Parallelepiped(Vec3f(-5, -1, -15), 7, 3, 4, ivory));
+    shapes.push_back(new Sphere(Vec3f(-1.5, 0.5, -18), 3, red_rubber));
+    shapes.push_back(new Parallelepiped(Vec3f(0, -4, -18), 1, 12, 12, ivory));
 
 //    shapes.push_back(new Sphere(Vec3f(-1.0, -1.5, -12), 2,      glass));
 //    shapes.push_back(new Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
 //    shapes.push_back(new Sphere(Vec3f( 7,    5,   -18), 4,     mirror));
 
     std::vector<Light> lights;
-    lights.push_back(Light(Vec3f(-20, 20, 20), 1.5));
-    lights.push_back(Light(Vec3f(30, 50, -25), 1.8));
-    lights.push_back(Light(Vec3f(30, 20, 30), 1.7));
+    lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
+    lights.emplace_back(Vec3f(30, 50, -25), 1.8);
+    lights.emplace_back(Vec3f(30, 20, 30), 1.7);
 
 
     time_t start_time = time(nullptr);
