@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 #include "geometry.h"
 #include "shapes.h"
 
@@ -27,16 +28,16 @@ Vec3f refract(const Vec3f &I, const Vec3f &N, const float eta_t, const float eta
     return k<0 ? Vec3f(1,0,0) : I*eta + N*(eta*cosi - sqrtf(k)); // k<0 = total reflection, no ray to refract. I refract it anyways, this has no physical meaning
 }
 
-bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &spheres, Vec3f &hit, Vec3f &N, Material &material) {
-    float spheres_dist = std::numeric_limits<float>::max();
-    for (size_t i=0; i < spheres.size(); i++) {
+bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &shapes, Vec3f &hit, Vec3f &N, Material &material) {
+    float shapes_dist = std::numeric_limits<float>::max();
+    for (size_t i=0; i < shapes.size(); i++) {
         float dist_i;
-        if (spheres[i]->ray_intersect(orig, dir, dist_i) && dist_i < spheres_dist) {
-            spheres_dist = dist_i;
+        if (shapes[i]->ray_intersect(orig, dir, dist_i) && dist_i < shapes_dist) {
+            shapes_dist = dist_i;
             hit = orig + dir*dist_i;
             // todo make reflection not as sphere
-            N = (hit - spheres[i]->get_center()).normalize();
-            material = spheres[i]->get_material();
+            N = (hit - shapes[i]->get_center()).normalize();
+            material = shapes[i]->get_material();
         }
     }
 
@@ -44,21 +45,21 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shap
     if (fabs(dir.y)>1e-3)  {
         float d = -(orig.y+4)/dir.y; // the checkerboard plane has equation y = -4
         Vec3f pt = orig + dir*d;
-        if (d>0 && fabs(pt.x)<10 && pt.z<-10 && pt.z>-30 && d<spheres_dist) {
+        if (d>0 && fabs(pt.x)<10 && pt.z<-10 && pt.z>-30 && d<shapes_dist) {
             checkerboard_dist = d;
             hit = pt;
             N = Vec3f(0,1,0);
             material.diffuse_color = (int(.5*hit.x+1000) + int(.5*hit.z)) & 1 ? Vec3f(.3, .3, .3) : Vec3f(.3, .2, .1);
         }
     }
-    return std::min(spheres_dist, checkerboard_dist)<1000;
+    return std::min(shapes_dist, checkerboard_dist)<1000;
 }
 
-Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &spheres, const std::vector<Light> &lights, size_t depth=0) {
+Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &shapes, const std::vector<Light> &lights, size_t depth=0) {
     Vec3f point, N;
     Material material;
 
-    if (depth>4 || !scene_intersect(orig, dir, spheres, point, N, material)) {
+    if (depth>4 || !scene_intersect(orig, dir, shapes, point, N, material)) {
         return Vec3f(0.2, 0.7, 0.8); // background color
     }
 
@@ -66,8 +67,8 @@ Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &s
     Vec3f refract_dir = refract(dir, N, material.refractive_index).normalize();
     Vec3f reflect_orig = reflect_dir*N < 0 ? point - N*1e-3 : point + N*1e-3; // offset the original point to avoid occlusion by the object itself
     Vec3f refract_orig = refract_dir*N < 0 ? point - N*1e-3 : point + N*1e-3;
-    Vec3f reflect_color = cast_ray(reflect_orig, reflect_dir, spheres, lights, depth + 1);
-    Vec3f refract_color = cast_ray(refract_orig, refract_dir, spheres, lights, depth + 1);
+    Vec3f reflect_color = cast_ray(reflect_orig, reflect_dir, shapes, lights, depth + 1);
+    Vec3f refract_color = cast_ray(refract_orig, refract_dir, shapes, lights, depth + 1);
 
     float diffuse_light_intensity = 0, specular_light_intensity = 0;
     for (size_t i=0; i<lights.size(); i++) {
@@ -77,7 +78,7 @@ Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &s
         Vec3f shadow_orig = light_dir*N < 0 ? point - N*1e-3 : point + N*1e-3; // checking if the point lies in the shadow of the lights[i]
         Vec3f shadow_pt, shadow_N;
         Material tmpmaterial;
-        if (scene_intersect(shadow_orig, light_dir, spheres, shadow_pt, shadow_N, tmpmaterial) && (shadow_pt-shadow_orig).norm() < light_distance)
+        if (scene_intersect(shadow_orig, light_dir, shapes, shadow_pt, shadow_N, tmpmaterial) && (shadow_pt-shadow_orig).norm() < light_distance)
             continue;
 
         diffuse_light_intensity  += lights[i].intensity * std::max(0.f, light_dir*N);
@@ -86,24 +87,24 @@ Vec3f cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape*> &s
     return material.diffuse_color * diffuse_light_intensity * material.albedo[0] + Vec3f(1., 1., 1.)*specular_light_intensity * material.albedo[1] + reflect_color*material.albedo[2] + refract_color*material.albedo[3];
 }
 
-void render(const std::vector<Shape*> &spheres, const std::vector<Light> &lights) {
+void render(const std::vector<Shape*> &shapes, const std::vector<Light> &lights, const std::string file_name) {
     const int   width    = 1024;
     const int   height   = 768;
     const float fov      = M_PI/3.;
     std::vector<Vec3f> framebuffer(width*height);
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (size_t j = 0; j<height; j++) { // actual rendering loop
         for (size_t i = 0; i<width; i++) {
             float dir_x =  (i + 0.5) -  width/2.;
             float dir_y = -(j + 0.5) + height/2.;    // this flips the image at the same time
             float dir_z = -height/(2.*tan(fov/2.));
-            framebuffer[i+j*width] = cast_ray(Vec3f(0,0,0), Vec3f(dir_x, dir_y, dir_z).normalize(), spheres, lights);
+            framebuffer[i+j*width] = cast_ray(Vec3f(0,0,0), Vec3f(dir_x, dir_y, dir_z).normalize(), shapes, lights);
         }
     }
 
     std::ofstream ofs; // save the framebuffer to file
-    ofs.open("./out.ppm",std::ios::binary);
+    ofs.open(file_name,std::ios::binary);
     ofs << "P6\n" << width << " " << height << "\n255\n";
     for (size_t i = 0; i < height*width; ++i) {
         Vec3f &c = framebuffer[i];
@@ -122,20 +123,25 @@ int main() {
     Material red_rubber(1.0, Vec4f(0.9,  0.1, 0.0, 0.0), Vec3f(0.3, 0.1, 0.1),   10.);
     Material     mirror(1.0, Vec4f(0.0, 10.0, 0.8, 0.0), Vec3f(1.0, 1.0, 1.0), 1425.);
 
-    std::vector<Shape*> spheres;
-    spheres.push_back(new Sphere(Vec3f( -1.5, -0.5, -18), 3, red_rubber));
-    spheres.push_back(new Parallelepiped(Vec3f(-5, -1, -16), 7, 3, 4, ivory));
+    std::vector<Shape*> shapes;
+    shapes.push_back(new Sphere(Vec3f( -1.5, -0.5, -18), 3, red_rubber));
+    shapes.push_back(new Parallelepiped(Vec3f(-5, -1, -15), 7, 3, 4, ivory));
 
-//    spheres.push_back(new Sphere(Vec3f(-1.0, -1.5, -12), 2,      glass));
-//    spheres.push_back(new Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
-//    spheres.push_back(new Sphere(Vec3f( 7,    5,   -18), 4,     mirror));
+//    shapes.push_back(new Sphere(Vec3f(-1.0, -1.5, -12), 2,      glass));
+//    shapes.push_back(new Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
+//    shapes.push_back(new Sphere(Vec3f( 7,    5,   -18), 4,     mirror));
 
     std::vector<Light>  lights;
     lights.push_back(Light(Vec3f(-20, 20,  20), 1.5));
     lights.push_back(Light(Vec3f( 30, 50, -25), 1.8));
     lights.push_back(Light(Vec3f( 30, 20,  30), 1.7));
 
-    render(spheres, lights);
+
+    time_t start_time = time(0);
+    std::string file_name = "./render_" + std::to_string(start_time) + ".ppm";
+    render(shapes, lights, file_name);
+    time_t stop_time = time(0);
+    std::cout<<"render time is "<<stop_time-start_time<<"seconds \n";
 
     return 0;
 }
