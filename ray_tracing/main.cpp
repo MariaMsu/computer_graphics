@@ -34,6 +34,7 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shap
         if (spheres[i]->ray_intersect(orig, dir, dist_i) && dist_i < spheres_dist) {
             spheres_dist = dist_i;
             hit = orig + dir*dist_i;
+            // todo make reflection not as sphere
             N = (hit - spheres[i]->get_center()).normalize();
             material = spheres[i]->get_material();
         }
@@ -122,10 +123,12 @@ int main() {
     Material     mirror(1.0, Vec4f(0.0, 10.0, 0.8, 0.0), Vec3f(1.0, 1.0, 1.0), 1425.);
 
     std::vector<Shape*> spheres;
-    spheres.push_back(new Sphere(Vec3f(-3,    0,   -16), 2,      ivory));
-    spheres.push_back(new Sphere(Vec3f(-1.0, -1.5, -12), 2,      glass));
-    spheres.push_back(new Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
-    spheres.push_back(new Sphere(Vec3f( 7,    5,   -18), 4,     mirror));
+    spheres.push_back(new Sphere(Vec3f( -1.5, -0.5, -18), 3, red_rubber));
+    spheres.push_back(new Parallelepiped(Vec3f(-5, -1, -16), 7, 3, 4, ivory));
+
+//    spheres.push_back(new Sphere(Vec3f(-1.0, -1.5, -12), 2,      glass));
+//    spheres.push_back(new Sphere(Vec3f( 1.5, -0.5, -18), 3, red_rubber));
+//    spheres.push_back(new Sphere(Vec3f( 7,    5,   -18), 4,     mirror));
 
     std::vector<Light>  lights;
     lights.push_back(Light(Vec3f(-20, 20,  20), 1.5));
