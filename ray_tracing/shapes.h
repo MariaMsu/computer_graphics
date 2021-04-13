@@ -8,9 +8,8 @@ public:
     /* orig - camera position
      * dir - direction of gaze from the camera
      * t0 - distance to nearest intersection */
-    virtual bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0) const = 0;
+    virtual bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0, Material &material) const = 0;
 
-    virtual Material get_material() const = 0;
     virtual Vec3f get_center() const = 0;
 };
 
@@ -19,12 +18,11 @@ struct Sphere: public Shape {
     float radius;
     Material material;
 
-    Material get_material() const override { return material; };
     Vec3f get_center() const override { return center; };
 
     Sphere(const Vec3f &c, const float r, const Material &m) : center(c), radius(r), material(m) {}
 
-    bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0) const override {
+    bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0, Material &material) const override {
         Vec3f L = center - orig;  // the vector from camera to the center of the sphere
         float tca = L*dir;  // projection L to the ray
         float d2 = L*L - tca*tca;  // square of the distance between the ray and the center of the sphere
@@ -34,6 +32,7 @@ struct Sphere: public Shape {
         float t1 = tca + thc;  // 2nd intersection
         if (t0 < 0) t0 = t1;  // the camera is inside the sphere & does not see the 1st intersection
         if (t0 < 0) return false;
+        material = this->material;
         return true;
     }
 };
@@ -43,7 +42,6 @@ struct Parallelepiped: public Shape {
     float height, width, depth;
     Material material;
 
-    Material get_material() const override { return material; };
     Vec3f get_center() const override { return center; };
 
 
@@ -53,7 +51,7 @@ struct Parallelepiped: public Shape {
         this->bounds[1] = Vec3f(center.x + width/2, center.y + height/2, center.z + depth/2);
     }
 
-    bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0) const override {
+    bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0, Material &material) const override {
         float txmin, txmax, tymin, tymax, tzmin, tzmax;
         // todo zero division
         Vec3f invdir = Vec3f {1/dir.x, 1/dir.y, 1/dir.z};
@@ -84,6 +82,7 @@ struct Parallelepiped: public Shape {
             t0 = txmax;
             if (t0 < 0) return false;
         }
+        material = this->material;
         return true;
     }
 

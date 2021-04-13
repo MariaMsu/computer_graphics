@@ -37,14 +37,14 @@ Vec3f refract(const Vec3f &I, const Vec3f &N, const float eta_t, const float eta
 bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes, Vec3f &hit, Vec3f &N,
                      Material &material) {
     float shapes_dist = std::numeric_limits<float>::max();
-    for (size_t i = 0; i < shapes.size(); i++) {
+    for (auto shape : shapes) {
         float dist_i;
-        if (shapes[i]->ray_intersect(orig, dir, dist_i) && dist_i < shapes_dist) {
+        if (shape->ray_intersect(orig, dir, dist_i, material) && dist_i < shapes_dist) {
             shapes_dist = dist_i;
             hit = orig + dir * dist_i;
-            // todo make reflection not as sphere
-            N = (hit - shapes[i]->get_center()).normalize();
-            material = shapes[i]->get_material();
+            // todo make reflection not as a sphere
+            N = (hit - shape->get_center()).normalize();
+//            material = shape->get_material();
         }
     }
 
@@ -132,10 +132,8 @@ void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights
 
 int main() {
     std::vector<Shape *> shapes;
-    shapes.push_back(new Sphere(Vec3f(0, 1, -18), 6, glass));
-    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, ivory));
-
-    shapes.push_back(new Sphere(Vec3f(-2, -1, -5), 1, my_material));
+    shapes.push_back(new Sphere(Vec3f(3, 1, -18), 6, glass));
+    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, glass));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
