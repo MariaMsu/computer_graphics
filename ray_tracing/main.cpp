@@ -18,6 +18,8 @@
 #define MIN(a, b) (((a)<(b))?(a):(b))
 #define MAX(a, b) (((a)>(b))?(a):(b))
 
+int screen_width = 512, screen_height = 512;
+
 struct Light {
     Light(const Vec3f &p, const float i) : position(p), intensity(i) {}
 
@@ -67,7 +69,6 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shap
         }
     }
     return std::min(shapes_dist, checkerboard_dist) < 1000;
-    return shapes_dist < 1000;
 }
 
 Vec3f
@@ -112,26 +113,31 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
 }
 
 void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights, const char *file_name) {
-    auto *framebuffer = new unsigned char[H_SCREEN_WIDTH * H_SCREEN_HEIGHT * 3];
+    auto *framebuffer = new unsigned char[screen_width * screen_height * 3];
 
-    for (size_t j = 0; j < H_SCREEN_HEIGHT; j++) { // rendering loop
-        for (size_t i = 0; i < H_SCREEN_WIDTH; i++) {
-            float dir_x = (i + 0.5) - H_SCREEN_WIDTH / 2.;
-            float dir_y = -(j + 0.5) + H_SCREEN_HEIGHT / 2.;    // this flips the image at the same time
-            float dir_z = -H_SCREEN_HEIGHT / (2. * tan(H_FIELD_OF_VIEW / 2.));
+    for (size_t j = 0; j < screen_height; j++) { // rendering loop
+        for (size_t i = 0; i < screen_width; i++) {
+            float dir_x = (i + 0.5) - screen_width / 2.;
+            float dir_y = -(j + 0.5) + screen_height / 2.;    // this flips the image at the same time
+            float dir_z = -screen_height / (2. * tan(H_FIELD_OF_VIEW / 2.));
             Vec3f pixel =
                     cast_ray(Vec3f(0, 0, 0), Vec3f(dir_x, dir_y, dir_z).normalize(), shapes, lights);
-            framebuffer[(i + j * H_SCREEN_WIDTH) * 3 + 0] = (unsigned char) MAX(0, MIN(pixel.x * 256, 256));
-            framebuffer[(i + j * H_SCREEN_WIDTH) * 3 + 1] = (unsigned char) MAX(0, MIN(pixel.y * 256, 256));
-            framebuffer[(i + j * H_SCREEN_WIDTH) * 3 + 2] = (unsigned char) MAX(0, MIN(pixel.z * 256, 256));
+            framebuffer[(i + j * screen_width) * 3 + 0] = (unsigned char) MAX(0, MIN(pixel.x * 256, 256));
+            framebuffer[(i + j * screen_width) * 3 + 1] = (unsigned char) MAX(0, MIN(pixel.y * 256, 256));
+            framebuffer[(i + j * screen_width) * 3 + 2] = (unsigned char) MAX(0, MIN(pixel.z * 256, 256));
         }
     }
 
-    stbi_write_png(file_name, H_SCREEN_WIDTH, H_SCREEN_HEIGHT, 3, framebuffer, 0);
+    stbi_write_png(file_name, screen_width, screen_height, 3, framebuffer, 0);
     delete[] framebuffer;
 }
 
-int main() {
+int main(int argc, char **argv) {
+    if ((argc >= 2) && strcmp(argv[1], "-w") == 0){
+        screen_width = 1024;
+        screen_height = 1024;
+    }
+
     std::vector<Shape *> shapes;
     shapes.push_back(new Sphere(Vec3f(0, 2, -17), 6, glass));
 
