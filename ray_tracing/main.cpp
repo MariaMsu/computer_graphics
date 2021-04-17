@@ -135,11 +135,11 @@ int main() {
     std::vector<Shape *> shapes;
     shapes.push_back(new Sphere(Vec3f(0, 2, -17), 6, glass));
 
-//    shapes.push_back(new TexturedParallelepiped(Vec3f(0, -1.5, -18), 3, 3, 3, TEXTURE_WATER));
-//    shapes.push_back(new TexturedParallelepiped(Vec3f(2, -1, -16), 3, 3, 3, TEXTURE_GROUND));
-    shapes.push_back(new TexturedParallelepiped(Vec3f(2, 1, -18), 3, 3, 3, TEXTURE_SAND));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(2.5, 2.8, -19), 3, 3, 3, TEXTURE_WATER));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(-0.5, -0.2, -19), 3, 3, 3, TEXTURE_GROUND));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(2.5, -0.2, -16), 3, 3, 3, TEXTURE_SAND));
 
-//    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, gold));
+    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, gold));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);

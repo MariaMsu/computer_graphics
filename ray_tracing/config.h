@@ -4,7 +4,7 @@
 #define H_SCREEN_WIDTH 512
 #define H_SCREEN_HEIGHT 512
 #define H_FIELD_OF_VIEW M_PI / 3.  // angle
-#define H_RECURSION_DEPTH 1
+#define H_RECURSION_DEPTH 3
 
 #define TEXTURE_SAND "../resources/sand.jpg"
 #define TEXTURE_GROUND "../resources/ground.jpg"
