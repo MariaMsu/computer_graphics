@@ -133,10 +133,12 @@ void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights
 
 int main() {
     std::vector<Shape *> shapes;
-//    shapes.push_back(new Sphere(Vec3f(3, 1, -18), 6, glass));
+    shapes.push_back(new Sphere(Vec3f(0, 2, -15.5), 6, glass));
 
-    shapes.push_back(new TexturedParallelepiped(Vec3f(-3, 1, -12), 4, 4, 4, material_for_texture));
-    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, red_rubber));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(-1, 0, -14), 3, 3, 3, material_for_texture));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(2, 0, -16), 3, 3, 3, material_for_texture));
+
+    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -16), 1, 12, 12, red_rubber));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
