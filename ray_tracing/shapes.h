@@ -158,22 +158,22 @@ struct TexturedParallelepiped: public Shape {
 
         int texture_x=0, texture_y=0;
         if (side == 0){
-            texture_x = (int) (((t0 * dir.z - center.z) +  width/2) / width * picture_width);
-            texture_y = picture_height - 1 - (int) (((t0 * dir.y - center.y) + height/2) / height * picture_height);
+            texture_x = (int) (((orig.z + t0 * dir.z - center.z) +  width/2) / width * picture_width);
+            texture_y = picture_height - 1 - (int) (((orig.y + t0 * dir.y - center.y) + height/2) / height * picture_height);
         }
         else if (side == 1) {
-            texture_x = (int) (((t0 * dir.x - center.x) +  width/2) / width * picture_width);
-            texture_y = picture_height - 1 - (int) (((t0 * dir.z - center.z) + height/2) / height * picture_height);
+            texture_x = (int) (((orig.x + t0 * dir.x - center.x) +  width/2) / width * picture_width);
+            texture_y = picture_height - 1 - (int) (((orig.z + t0 * dir.z - center.z) + height/2) / height * picture_height);
         }
         else if (side == 2) {
-            texture_x = (int) (((t0 * dir.x - center.x) +  width/2) / width * picture_width);
-            texture_y = picture_height - 1 - (int) (((t0 * dir.y - center.y) + height/2) / height * picture_height);
+            texture_x = (int) (((orig.x + t0 * dir.x - center.x) +  width/2) / width * picture_width);
+            texture_y = picture_height - 1 - (int) (((orig.y + t0 * dir.y - center.y) + height/2) / height * picture_height);
         }
 
         Material m = this->material;
 
         if ((texture_x < 0) || (texture_y < 0) || (texture_x >= picture_width) || (texture_y >= picture_height)) {
-            m.diffuse_color = Vec3f (0,0,0);
+            m.diffuse_color = Vec3f (1,1,1);
             point_material = m;
             return true;
         }
