@@ -19,11 +19,10 @@ const Material ivory(1.0, Vec4f(0.6, 0.3, 0.1, 0.0), Vec3f(0.4, 0.4, 0.3), 50.);
 const Material glass(1.5, Vec4f(0.0, 0.5, 0.1, 0.8), Vec3f(0.6, 0.7, 0.8), 125.);
 const Material red_rubber(1.0, Vec4f(0.9, 0.1, 0.0, 0.0), Vec3f(0.3, 0.1, 0.1), 10.);
 const Material mirror(1.0, Vec4f(0.0, 10.0, 0.8, 0.0), Vec3f(1.0, 1.0, 1.0), 1425.);
+const Material gold(1.0, Vec4f(0.8, 0.0, 0.0, 0.0), Vec3f(0.55, 0.55, 0.1), 100.);
 
 Material get_texture_material(Vec3f colour){
     return Material{1.0, Vec4f(0.4, 0.0, 0.0, 0.0), colour, 0.};
 }
-//const Material material_for_texture
-//    (1.0, Vec4f(0.4, 0.0, 0.0, 0.0), Vec3f(0.6, 0.7, 0.8), 0.);
 
 #endif //RAY_TRACING_MATERIAL_H

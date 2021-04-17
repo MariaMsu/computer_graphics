@@ -10,4 +10,6 @@
 #define TEXTURE_GROUND "../resources/ground.jpg"
 #define TEXTURE_WATER "../resources/water.jpg"
 
+const Vec3f background_colour = Vec3f(240. / 256., 170. / 256., 250. / 256.);
+
 #endif //RAY_TRACING_CONFIG_H
