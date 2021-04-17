@@ -6,4 +6,6 @@
 #define H_FIELD_OF_VIEW M_PI / 3.  // angle
 #define H_RECURSION_DEPTH 4
 
+#define TEXTURE_ENDER_STONE "/home/maria/Desktop/computer_graphics/ray_tracing/resources/ender_stone.jpg"
+
 #endif //RAY_TRACING_CONFIG_H

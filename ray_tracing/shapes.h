@@ -98,28 +98,16 @@ private:
 struct TexturedParallelepiped: public Shape {
     Vec3f center;
     float height, width, depth;
-    Material material;
-    unsigned char *ender_stone;
+    unsigned char *texture;
     int picture_width, picture_height;
 
     Vec3f get_center() const override { return center; };
 
-
-    TexturedParallelepiped(const Vec3f &c, const float h, const float w, const float d, const Material &m) :
-            center(c), height(h), width(w), depth(d), material(m) {
+    TexturedParallelepiped(const Vec3f &c, const float h, const float w, const float d, const char *texture_path) :
+            center(c), height(h), width(w), depth(d) {
         this->bounds[0] = Vec3f(center.x - width/2, center.y - height/2, center.z - depth/2);
         this->bounds[1] = Vec3f(center.x + width/2, center.y + height/2, center.z + depth/2);
-        ender_stone = stbi_load("/home/maria/Desktop/computer_graphics/ray_tracing/resources/ender_stone.jpg",
-                                &picture_width, &picture_height, NULL, 3);
-        std::cout<<"stbi_load size: "<<picture_width<<" "<<picture_height<<"\n";
-//        for (int i = 0; i < picture_width; ++i){
-//            for (int j = 0; j < picture_height; ++j){
-//                std::cout<<"(" << (int) ender_stone[(i*picture_width + j) * 3 + 0] << " " <<
-//                (int) ender_stone[(i*picture_width + j) * 3 + 1] << " " <<
-//                (int) ender_stone[(i*picture_width + j) * 3 + 2] << ") ";
-//            }
-//            std::cout<<"\n";
-//        }
+        texture = stbi_load(texture_path, &picture_width, &picture_height, NULL, 3);
     }
 
     bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0, Material &point_material) const override {
@@ -170,18 +158,15 @@ struct TexturedParallelepiped: public Shape {
             texture_y = picture_height - 1 - (int) (((orig.y + t0 * dir.y - center.y) + height/2) / height * picture_height);
         }
 
-        Material m = this->material;
-
         if ((texture_x < 0) || (texture_y < 0) || (texture_x >= picture_width) || (texture_y >= picture_height)) {
-            m.diffuse_color = Vec3f (1,1,1);
-            point_material = m;
+            point_material = get_texture_material(Vec3f (1,1,1));
             return true;
         }
 
-        m.diffuse_color = Vec3f (ender_stone[(texture_x + texture_y * picture_width) * 3 + 0] / 256.,
-                                 ender_stone[(texture_x + texture_y * picture_width) * 3 + 1] / 256.,
-                                 ender_stone[(texture_x + texture_y * picture_width) * 3 + 2] / 256.);
-        point_material = m;
+        Vec3f diffuse_color = Vec3f (texture[(texture_x + texture_y * picture_width) * 3 + 0] / 256.,
+                                 texture[(texture_x + texture_y * picture_width) * 3 + 1] / 256.,
+                                 texture[(texture_x + texture_y * picture_width) * 3 + 2] / 256.);
+        point_material = get_texture_material(diffuse_color);
         return true;
     }
 
