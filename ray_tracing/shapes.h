@@ -103,11 +103,15 @@ struct TexturedParallelepiped: public Shape {
 
     Vec3f get_center() const override { return center; };
 
-    TexturedParallelepiped(const Vec3f &c, const float h, const float w, const float d, const char *texture_path) :
+    TexturedParallelepiped(const Vec3f &c, const float h, const float w, const float d, const char *texture_path):
             center(c), height(h), width(w), depth(d) {
         this->bounds[0] = Vec3f(center.x - width/2, center.y - height/2, center.z - depth/2);
         this->bounds[1] = Vec3f(center.x + width/2, center.y + height/2, center.z + depth/2);
         texture = stbi_load(texture_path, &picture_width, &picture_height, NULL, 3);
+        if (texture == NULL){
+            std::cout<<"texture file '"<<texture_path<<"' not found";
+            exit(1);
+        }
     }
 
     bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0, Material &point_material) const override {
