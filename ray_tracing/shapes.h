@@ -112,6 +112,7 @@ struct TexturedParallelepiped: public Shape {
             std::cout<<"texture file '"<<texture_path<<"' not found";
             exit(1);
         }
+        //todo call stbi_write_png(texture) in destructor
     }
 
     bool ray_intersect(const Vec3f &orig, const Vec3f &dir, float &t0, Material &point_material) const override {

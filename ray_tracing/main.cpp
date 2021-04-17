@@ -12,6 +12,12 @@
 #include "config.h"
 #include "material.h"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "Lib/stb_image_write.h"
+
+#define MIN(a, b) (((a)<(b))?(a):(b))
+#define MAX(a, b) (((a)>(b))?(a):(b))
+
 struct Light {
     Light(const Vec3f &p, const float i) : position(p), intensity(i) {}
 
@@ -76,8 +82,8 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
 
     Vec3f reflect_dir = reflect(dir, N).normalize();
     Vec3f refract_dir = refract(dir, N, material.refractive_index).normalize();
-    Vec3f reflect_orig = reflect_dir * N < 0 ? point - N * 1e-3 : point + N *
-                                                                          1e-3; // offset the original point to avoid occlusion by the object itself
+    // offset the original point to avoid occlusion by the object itself
+    Vec3f reflect_orig = reflect_dir * N < 0 ? point - N * 1e-3 : point + N * 1e-3;
     Vec3f refract_orig = refract_dir * N < 0 ? point - N * 1e-3 : point + N * 1e-3;
     Vec3f reflect_color = cast_ray(reflect_orig, reflect_dir, shapes, lights, depth + 1);
     Vec3f refract_color = cast_ray(refract_orig, refract_dir, shapes, lights, depth + 1);
@@ -87,8 +93,8 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
         Vec3f light_dir = (light.position - point).normalize();
         float light_distance = (light.position - point).norm();
 
-        Vec3f shadow_orig = light_dir * N < 0 ? point - N * 1e-3 : point + N *
-                                                                           1e-3; // checking if the point lies in the shadow of the lights[i]
+        // checking if the point lies in the shadow of the lights[i]
+        Vec3f shadow_orig = light_dir * N < 0 ? point - N * 1e-3 : point + N * 1e-3;
         Vec3f shadow_pt, shadow_N;
         Material tmpmaterial;
         if (scene_intersect(shadow_orig, light_dir, shapes, shadow_pt, shadow_N, tmpmaterial) &&
@@ -105,42 +111,35 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
            + refract_color * material.albedo[3];
 }
 
-void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights, const std::string &file_name) {
-    std::vector<Vec3f> framebuffer(H_SCREEN_WIDTH * H_SCREEN_HEIGHT);
+void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights, const char *file_name) {
+    auto *framebuffer = new unsigned char[H_SCREEN_WIDTH * H_SCREEN_HEIGHT * 3];
 
-    for (size_t j = 0; j < H_SCREEN_HEIGHT; j++) { // actual rendering loop
+    for (size_t j = 0; j < H_SCREEN_HEIGHT; j++) { // rendering loop
         for (size_t i = 0; i < H_SCREEN_WIDTH; i++) {
             float dir_x = (i + 0.5) - H_SCREEN_WIDTH / 2.;
             float dir_y = -(j + 0.5) + H_SCREEN_HEIGHT / 2.;    // this flips the image at the same time
             float dir_z = -H_SCREEN_HEIGHT / (2. * tan(H_FIELD_OF_VIEW / 2.));
-            framebuffer[i + j * H_SCREEN_WIDTH] =
+            Vec3f pixel =
                     cast_ray(Vec3f(0, 0, 0), Vec3f(dir_x, dir_y, dir_z).normalize(), shapes, lights);
+            framebuffer[(i + j * H_SCREEN_WIDTH) * 3 + 0] = (unsigned char) MAX(0, MIN(pixel.x * 256, 256));
+            framebuffer[(i + j * H_SCREEN_WIDTH) * 3 + 1] = (unsigned char) MAX(0, MIN(pixel.y * 256, 256));
+            framebuffer[(i + j * H_SCREEN_WIDTH) * 3 + 2] = (unsigned char) MAX(0, MIN(pixel.z * 256, 256));
         }
     }
 
-    std::ofstream ofs; // save the framebuffer to file
-    ofs.open(file_name, std::ios::binary);
-    ofs << "P6\n" << H_SCREEN_WIDTH << " " << H_SCREEN_HEIGHT << "\n255\n";
-    for (size_t i = 0; i < H_SCREEN_HEIGHT * H_SCREEN_WIDTH; ++i) {
-        Vec3f &c = framebuffer[i];
-        float max = std::max(c[0], std::max(c[1], c[2]));
-        if (max > 1) c = c * (1. / max);
-        for (size_t j = 0; j < 3; j++) {
-            ofs << (char) (255 * std::max(0.f, std::min(1.f, framebuffer[i][j])));
-        }
-    }
-    ofs.close();
+    stbi_write_png(file_name, H_SCREEN_WIDTH, H_SCREEN_HEIGHT, 3, framebuffer, 0);
+    delete[] framebuffer;
 }
 
 int main() {
     std::vector<Shape *> shapes;
     shapes.push_back(new Sphere(Vec3f(0, 2, -17), 6, glass));
 
-    shapes.push_back(new TexturedParallelepiped(Vec3f(0, -1.5, -18), 3, 3, 3, TEXTURE_WATER));
-    shapes.push_back(new TexturedParallelepiped(Vec3f(2, -1, -16), 3, 3, 3, TEXTURE_GROUND));
+//    shapes.push_back(new TexturedParallelepiped(Vec3f(0, -1.5, -18), 3, 3, 3, TEXTURE_WATER));
+//    shapes.push_back(new TexturedParallelepiped(Vec3f(2, -1, -16), 3, 3, 3, TEXTURE_GROUND));
     shapes.push_back(new TexturedParallelepiped(Vec3f(2, 1, -18), 3, 3, 3, TEXTURE_SAND));
 
-    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, gold));
+//    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, gold));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
@@ -148,8 +147,8 @@ int main() {
     lights.emplace_back(Vec3f(40, 20, 30), 1.7);
 
     time_t start_time = time(nullptr);
-    std::string file_name = "./render_" + std::to_string(start_time) + ".ppm";
-    render(shapes, lights, file_name);
+    std::string file_name = "./render_" + std::to_string(start_time) + ".png";
+    render(shapes, lights, file_name.c_str());
     time_t stop_time = time(nullptr);
     std::cout << "render time is " << stop_time - start_time << " seconds \n";
 
