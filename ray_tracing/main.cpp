@@ -136,15 +136,16 @@ int main() {
     std::vector<Shape *> shapes;
     shapes.push_back(new Sphere(Vec3f(0, 2, -17), 6, glass));
 
-    shapes.push_back(new TexturedParallelepiped(Vec3f(0, -2, -18), 3, 3, 3, TEXTURE_WATER));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(0, -1.5, -18), 3, 3, 3, TEXTURE_WATER));
     shapes.push_back(new TexturedParallelepiped(Vec3f(2, -1, -16), 3, 3, 3, TEXTURE_GROUND));
+    shapes.push_back(new TexturedParallelepiped(Vec3f(2, 1, -18), 3, 3, 3, TEXTURE_SAND));
 
     shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, gold));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
-    lights.emplace_back(Vec3f(30, 50, -25), 1.8);
-    lights.emplace_back(Vec3f(30, 20, 30), 1.7);
+    lights.emplace_back(Vec3f(30, 70, -25), 1.8);
+    lights.emplace_back(Vec3f(40, 20, 30), 1.7);
 
     time_t start_time = time(nullptr);
     std::string file_name = "./render_" + std::to_string(start_time) + ".ppm";
