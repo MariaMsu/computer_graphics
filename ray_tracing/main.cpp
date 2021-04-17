@@ -61,6 +61,7 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Shap
         }
     }
     return std::min(shapes_dist, checkerboard_dist) < 1000;
+    return shapes_dist < 1000;
 }
 
 Vec3f
@@ -96,10 +97,10 @@ cast_ray(const Vec3f &orig, const Vec3f &dir, const std::vector<Shape *> &shapes
         specular_light_intensity +=
                 powf(std::max(0.f, -reflect(-light_dir, N) * dir), material.specular_exponent) * light.intensity;
     }
-    return material.diffuse_color * diffuse_light_intensity * material.albedo[0] +
-           Vec3f(1., 1., 1.) * specular_light_intensity * material.albedo[1] +
-           reflect_color * material.albedo[2] +
-           refract_color * material.albedo[3];
+    return material.diffuse_color * diffuse_light_intensity * material.albedo[0]
+           + Vec3f(1., 1., 1.) * specular_light_intensity * material.albedo[1]
+           + reflect_color * material.albedo[2]
+           + refract_color * material.albedo[3];
 }
 
 void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights, const std::string& file_name) {
@@ -132,8 +133,10 @@ void render(const std::vector<Shape *> &shapes, const std::vector<Light> &lights
 
 int main() {
     std::vector<Shape *> shapes;
-    shapes.push_back(new Sphere(Vec3f(3, 1, -18), 6, glass));
-    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, glass));
+//    shapes.push_back(new Sphere(Vec3f(3, 1, -18), 6, glass));
+
+    shapes.push_back(new TexturedParallelepiped(Vec3f(-3, 1, -12), 4, 4, 4, material_for_texture));
+    shapes.push_back(new Parallelepiped(Vec3f(0, -5, -18), 1, 12, 12, red_rubber));
 
     std::vector<Light> lights;
     lights.emplace_back(Vec3f(-20, 20, 20), 1.5);
