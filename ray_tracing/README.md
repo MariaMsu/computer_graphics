@@ -4,7 +4,7 @@
 $ mkdir build && cd build
 $ cmake ..
 $ make
-& ./ray_tracing 
+& ./ray_tracing  # or ./ray_tracing -w
 >> a picture with the result will appear in this directory
 ```
 
