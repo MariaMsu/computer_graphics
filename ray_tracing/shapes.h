@@ -105,6 +105,10 @@ struct TexturedParallelepiped: public Shape {
 
     TexturedParallelepiped(const Vec3f &c, const float h, const float w, const float d, const char *texture_path):
             center(c), height(h), width(w), depth(d) {
+        if ((height != width) || (width != depth)){
+            std::cout<<"Only cube is currently supported";
+            // todo support Parallelepiped
+        }
         this->bounds[0] = Vec3f(center.x - width/2, center.y - height/2, center.z - depth/2);
         this->bounds[1] = Vec3f(center.x + width/2, center.y + height/2, center.z + depth/2);
         texture = stbi_load(texture_path, &picture_width, &picture_height, NULL, 3);
